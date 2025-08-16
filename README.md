@@ -2,7 +2,7 @@
 
 A single-file web app to OCR Mario Kart results from a virtual webcam feed and keep scores.
 
-**Live site:** (TBA)
+**Live site:** https://pfqniet.github.io/mkw-lounge-tracker/
 
 ## Usage
 1. Paste the 12-player roster (`1. Name (12345 MMR)`) when prompted.
@@ -13,6 +13,7 @@ A single-file web app to OCR Mario Kart results from a virtual webcam feed and k
 
 ### Notes
 - Requires camera permission (browser will prompt).
+- All camera usage is locally processed on your device.
 - Works best in Chrome/Edge/Firefox; iOS Safari supported with `playsinline`.
 - OCR uses tesseract.js via CDN; no server, no build step.
 
