@@ -1,0 +1,30 @@
+{
+	"compilerOptions": {
+		"checkJs": true,
+		"allowJs": true,
+		"noEmit": true,
+
+		"target": "esnext",
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"lib": ["ESNext", "DOM", "DOM.Iterable"],
+		"types": [],
+
+		"strict": true,
+		"noImplicitThis": true,
+		"noImplicitReturns": true,
+		"exactOptionalPropertyTypes": true,
+		"useUnknownInCatchVariables": true,
+		"forceConsistentCasingInFileNames": true,
+		"verbatimModuleSyntax": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+
+		"skipLibCheck": true,
+	},
+	"exclude": [
+		"node_modules",
+		"dist",
+		"build"
+	]
+}
