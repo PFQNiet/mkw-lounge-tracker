@@ -21,6 +21,12 @@ export async function setupCameraList(cameraSelect, video) {
 		}
 	}
 	cameraSelect.addEventListener('change', async () => await startSelectedCamera(cameraSelect.value, video));
+
+	const lastSelectedCamera = localStorage.getItem('lastSelectedCamera');
+	if (lastSelectedCamera) {
+		cameraSelect.value = lastSelectedCamera;
+		await startSelectedCamera(lastSelectedCamera, video);
+	}
 }
 
 /**
@@ -33,6 +39,7 @@ async function startSelectedCamera(deviceId, video) {
 
 	if (!deviceId) { video.srcObject = null; return; }
 	try {
+		localStorage.setItem('lastSelectedCamera', deviceId);
 		const stream = await navigator.mediaDevices.getUserMedia({
 			video: { deviceId: { exact: deviceId } }, audio: false
 		});
