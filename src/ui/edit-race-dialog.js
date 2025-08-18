@@ -5,8 +5,8 @@ function makeDialog() {
 	const dialog = document.createElement('dialog');
 	dialog.innerHTML = `
 		<form method="dialog" class="modal">
-			<h3 style="margin:0 0 12px 0; font-size:16px">Edit race</h3>
-			<div class="grid" id="editRaceGrid" style="grid-template-columns: 1fr 160px;"></div>
+			<h3>Edit race</h3>
+			<div class="grid" style="grid-template-columns: 1fr 160px;"></div>
 			<footer>
 				<button value="delete" type="button" class="btn--danger push-left">Delete race</button>
 				<button value="cancel">Cancel</button>
@@ -14,7 +14,7 @@ function makeDialog() {
 			</footer>
 		</form>
 	`;
-	const grid = /** @type {HTMLDivElement} */(dialog.querySelector('#editRaceGrid'));
+	const grid = /** @type {HTMLDivElement} */(dialog.querySelector('div.grid'));
 	const save = /** @type {HTMLButtonElement} */(dialog.querySelector('button[value=save]'));
 	const cancel = /** @type {HTMLButtonElement} */(dialog.querySelector('button[value=cancel]'));
 	const del = /** @type {HTMLButtonElement} */(dialog.querySelector('button[value=delete]'));

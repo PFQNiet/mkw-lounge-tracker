@@ -4,7 +4,7 @@ function makeDialog() {
 	const dialog = document.createElement('dialog');
 	dialog.innerHTML = `
 		<form method="dialog" class="modal">
-			<h3 style="margin:0 0 12px 0; font-size:16px">Resolve unmatched players</h3>
+			<h3>Resolve unmatched players</h3>
 			<div class="grid"></div>
 			<footer>
 				<button value="cancel">Cancel</button>

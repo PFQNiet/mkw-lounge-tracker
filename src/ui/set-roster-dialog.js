@@ -4,8 +4,8 @@ function makeDialog() {
 	const dialog = document.createElement('dialog');
 	dialog.innerHTML = `
 		<form method="dialog" class="modal">
-			<h3 style="margin:0 0 12px 0; font-size:16px">Paste player roster</h3>
-			<p class="muted" style="margin:0 0 8px 0">Paste 12 lines like: <code>1. Adam (12345 MMR)</code></p>
+			<h3>Paste player roster</h3>
+			<p class="muted">Paste ${ROSTER_SIZE} lines like: <code>1. Adam (12345 MMR)</code></p>
 			<textarea rows="${ROSTER_SIZE}"></textarea>
 			<footer>
 				<button type="button" class="btn--primary">Use roster</button>

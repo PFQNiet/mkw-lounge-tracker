@@ -5,7 +5,7 @@ function makeDialog() {
 	const dialog = document.createElement('dialog');
 	dialog.innerHTML = `
 		<form method="dialog" class="modal">
-			<h3 style="margin:0 0 12px 0; font-size:16px">Export scores</h3>
+			<h3>Export scores</h3>
 			<textarea rows="${ROSTER_SIZE}" readonly></textarea>
 			<footer>
 				<button value="cancel">Close</button>
