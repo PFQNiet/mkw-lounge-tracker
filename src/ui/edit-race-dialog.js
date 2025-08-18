@@ -18,7 +18,6 @@ function makeDialog() {
 	const save = /** @type {HTMLButtonElement} */(dialog.querySelector('button[value=save]'));
 	const cancel = /** @type {HTMLButtonElement} */(dialog.querySelector('button[value=cancel]'));
 	const del = /** @type {HTMLButtonElement} */(dialog.querySelector('button[value=delete]'));
-	dialog.addEventListener('cancel', e=>e.preventDefault());
 	document.body.append(dialog);
 	dialog.addEventListener('close', () => dialog.remove());
 	return { dialog, grid, save, cancel, del };

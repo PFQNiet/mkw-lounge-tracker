@@ -14,27 +14,31 @@ function makeDialog() {
 	`;
 	const input = /** @type {HTMLTextAreaElement} */(dialog.querySelector('textarea'));
 	const confirm = /** @type {HTMLButtonElement} */(dialog.querySelector('button'));
-	dialog.addEventListener('cancel', e=>e.preventDefault());
 	document.body.append(dialog);
 	dialog.addEventListener('close', () => dialog.remove());
 	return { dialog, input, confirm };
 }
 
-/** @returns {Promise<Roster>} */
-export function requestRoster() {
+/**
+ * @param {HTMLButtonElement} btn
+ * @returns {Promise<Roster>}
+ */
+export function requestRoster(btn) {
 	return new Promise(resolve => {
-		const { dialog, input, confirm } = makeDialog();
-		dialog.showModal();
-		input.focus();
-		confirm.addEventListener('click', () => {
-			try {
-				const roster = Roster.parse(input.value);
-				if( !roster.full ) throw new Error(`Expected ${ROSTER_SIZE} players, got ${roster.size}`);
-				dialog.close();
-				resolve(roster);
-			} catch(err) {
-				alert(/** @type {any} */(err).message || err);
-			}
+		btn.addEventListener('click', () => {
+			const { dialog, input, confirm } = makeDialog();
+			dialog.showModal();
+			input.focus();
+			confirm.addEventListener('click', () => {
+				try {
+					const roster = Roster.parse(input.value);
+					if( !roster.full ) throw new Error(`Expected ${ROSTER_SIZE} players, got ${roster.size}`);
+					dialog.close();
+					resolve(roster);
+				} catch(err) {
+					alert(/** @type {any} */(err).message || err);
+				}
+			});
 		});
 	});
 }

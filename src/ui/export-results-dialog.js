@@ -16,7 +16,6 @@ function makeDialog() {
 	const output = /** @type {HTMLTextAreaElement} */(dialog.querySelector('textarea'));
 	const close = /** @type {HTMLButtonElement} */(dialog.querySelector('button[value=cancel]'));
 	const copy = /** @type {HTMLButtonElement} */(dialog.querySelector('button[value=copy]'));
-	dialog.addEventListener('cancel', e=>e.preventDefault());
 	document.body.append(dialog);
 	dialog.addEventListener('close', () => dialog.remove());
 	return { dialog, output, close, copy };

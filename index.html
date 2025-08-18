@@ -26,8 +26,7 @@
 		.btn--danger:hover { filter: brightness(1.12); }
 		/* Utility */
 		.push-left { margin-right:auto; }
-		/* Scoreboard controls spacing (above the Export button row) */
-		.score-actions { margin-top: 12px; }
+		.space-above { margin-top: 12px; }
 		/* Scoreboard */
 		table.score th, table.score td { border:1px solid #242424; padding:6px 8px; text-align:center; }
 		table.score th:first-child, table.score td:first-child { text-align:left; }
@@ -49,39 +48,48 @@
 <body>
 	<header class="row" style="justify-content: space-between">
 		<h1 style="font-size: 18px; font-weight: 600; margin:0">MKW Mogi Manager</h1>
-		<div class="row">
-			<label class="muted">Camera</label>
-			<select id="camera"></select>
-			<button id="capture" class="btn--primary">📸 Capture & OCR</button>
-		</div>
 	</header>
 
-	<main class="row">
-		<section class="panel" style="flex:1 1 560px; min-width: 360px;">
-			<video id="preview" autoplay playsinline muted></video>
+	<div id="step1">
+		<section class="panel" style="width:fit-content; margin:16px auto">
+			<button id="start" class="btn--primary">Get started</button>
 		</section>
-		<section class="panel" style="flex:1 1 420px; min-width: 320px;">
-			<h2>Last capture</h2>
-			<ol id="output" class="results"></ol>
+	</div>
+
+	<div id="step2" style="display:none;">
+		<main class="row">
+			<section class="panel" style="flex:1 1 560px; min-width: 360px;">
+				<video id="preview" autoplay playsinline muted></video>
+				<div class="row space-above">
+					<label class="muted">Camera</label>
+					<select id="camera" class="push-left"><option value="">Loading...</option></select>
+					<button id="capture" class="btn--primary" accesskey="c">📸 Capture & OCR</button>
+				</div>
+				<div class="panel space-above">Remember to always screenshot on Switch as well!</div>
+			</section>
+			<section class="panel" style="flex:1 1 420px; min-width: 320px;">
+				<h2>Last capture</h2>
+				<ol id="output" class="results"></ol>
+			</section>
+		</main>
+
+		<!-- Scoreboard -->
+		<section class="panel" style="max-width:1100px; margin:16px auto;">
+			<h2>Scoreboard</h2>
+			<div style="overflow:auto;">
+				<table id="scoreTable" class="score mono" style="width:100%; border-collapse:collapse;"></table>
+			</div>
+			<div class="row space-above">
+				<button id="exportScores" class="btn--primary">Export scores</button>
+			</div>
 		</section>
-	</main>
 
-	<!-- Scoreboard -->
-	<section class="panel" style="max-width:1100px; margin:16px auto;">
-		<h2>Scoreboard</h2>
-		<div style="overflow:auto;">
-			<table id="scoreTable" class="score mono" style="width:100%; border-collapse:collapse;"></table>
-		</div>
-		<div class="row score-actions">
-			<button id="exportScores" class="btn--primary">Export scores</button>
-		</div>
-	</section>
-
-	<!-- Race history (snapshots) -->
-	<section class="panel" style="max-width:1100px; margin:16px auto;">
-		<h2>Race history</h2>
-		<div id="raceGallery" class="gallery" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap:10px;"></div>
-	</section>
+		<!-- Race history (snapshots) -->
+		<section class="panel" style="max-width:1100px; margin:16px auto;">
+			<h2>Race history</h2>
+			<div id="raceGallery" class="gallery" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap:10px;"></div>
+		</section>
+	</div>
 
 	<script type="module" src="./main.js"></script>
 </body>

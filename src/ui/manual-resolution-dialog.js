@@ -15,7 +15,6 @@ function makeDialog() {
 	const grid = /** @type {HTMLDivElement} */(dialog.querySelector('div.grid'));
 	const cancel = /** @type {HTMLButtonElement} */(dialog.querySelector('button[value=cancel]'));
 	const confirm = /** @type {HTMLButtonElement} */(dialog.querySelector('button[value=confirm]'));
-	dialog.addEventListener('cancel', e=>e.preventDefault());
 	document.body.append(dialog);
 	dialog.addEventListener('close', () => dialog.remove());
 	return { dialog, grid, cancel, confirm };
@@ -74,6 +73,8 @@ export function manualResolve(placements, remaining) {
 			dialog.close();
 			resolve(false);
 		});
+
+		dialog.addEventListener('cancel', ()=>resolve(false));
 
 		dialog.showModal();
 	});

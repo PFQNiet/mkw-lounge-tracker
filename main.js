@@ -6,6 +6,11 @@ import { connectScoreboard } from "./src/ui/scoreboard.js";
 import { requestRoster } from "./src/ui/set-roster-dialog.js";
 
 async function main() {
+	const step1 = /** @type {HTMLDivElement} */(document.getElementById('step1'));
+	const step2 = /** @type {HTMLDivElement} */(document.getElementById('step2'));
+
+	const startButton = /** @type {HTMLButtonElement} */(document.getElementById('start'));
+
 	const video = /** @type {HTMLVideoElement} */(document.getElementById('preview'));
 	const cameraSelect = /** @type {HTMLSelectElement} */(document.getElementById('camera'));
 	const captureBtn = /** @type {HTMLButtonElement} */(document.getElementById('capture'));
@@ -15,10 +20,13 @@ async function main() {
 	const exportBtn = /** @type {HTMLButtonElement} */(document.getElementById('exportScores'));
 
 	setupCameraList(cameraSelect, video);
-	const roster = await requestRoster();
+	const roster = await requestRoster(startButton);
+
+	step1.style.display = 'none';
+	step2.style.display = 'block';
+
 	const mogi = new Mogi(roster);
 	setupCaptureButton(captureBtn, video, outputOl, mogi);
-
 	connectScoreboard(scoreTable, mogi);
 	connectExportButton(exportBtn, mogi);
 	connectGallery(raceGallery, mogi);
