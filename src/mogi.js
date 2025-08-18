@@ -16,6 +16,7 @@ export class Mogi extends EventTarget {
 	constructor(roster) {
 		super();
 		this.#roster = roster;
+		queueMicrotask(() => this.dispatchEvent(new Event('update')));
 	}
 
 	/**

@@ -1,5 +1,6 @@
 /** @typedef {import("../mogi.js").Mogi} Mogi */
 
+import { RACE_COUNT } from "../mogi.js";
 import { openEditRace } from "./edit-race-dialog.js";
 
 /**
@@ -9,12 +10,13 @@ import { openEditRace } from "./edit-race-dialog.js";
 export function connectScoreboard(scoreTable, mogi) {
 	mogi.addEventListener('update', () => {
 		const totals = mogi.calculatePlayerScores();
+		const races = mogi.races;
 
 		// Build <thead>
 		const thead = document.createElement('thead');
 		const hr = document.createElement('tr');
 		const hPlayer = document.createElement('th'); hPlayer.textContent = 'Player'; hr.appendChild(hPlayer);
-		for (let i = 0; i < mogi.races.length; i++) {
+		for (let i = 0; i < RACE_COUNT; i++) {
 			const th = document.createElement('th'); th.textContent = `R${i + 1}`; hr.appendChild(th);
 		}
 		const hTot = document.createElement('th'); hTot.textContent = 'Total'; hr.appendChild(hTot);
@@ -36,6 +38,12 @@ export function connectScoreboard(scoreTable, mogi) {
 				td.textContent = row?.ordinal ?? '—';
 				tr.appendChild(td);
 			}
+			for (let i = races.length; i < RACE_COUNT; i++) {
+				const td = document.createElement('td');
+				td.classList.add('muted');
+				td.textContent = '—';
+				tr.appendChild(td);
+			}
 
 			const tdTotal = document.createElement('td');
 			tdTotal.textContent = String(totals.get(p.id) || 0);
@@ -48,15 +56,20 @@ export function connectScoreboard(scoreTable, mogi) {
 		const tfoot = document.createElement('tfoot');
 		const fr = document.createElement('tr');
 		fr.appendChild(document.createElement('td')); // Commands...
-		for (let i = 0; i < mogi.races.length; i++) {
+		for (let i = 0; i < RACE_COUNT; i++) {
 			const td = document.createElement('td');
 			const btn = document.createElement('button');
 			btn.textContent = 'Edit';
-			btn.addEventListener('click', () => openEditRace(mogi, i));
+			if( i < races.length) {
+				btn.addEventListener('click', () => openEditRace(mogi, i));
+			}
+			else {
+				btn.disabled = true;
+			}
 			td.appendChild(btn);
 			fr.appendChild(td);
 		}
-		const fEmpty = document.createElement('td'); fr.appendChild(fEmpty);
+		fr.appendChild(document.createElement('td'));
 		tfoot.appendChild(fr);
 
 		// Swap table content

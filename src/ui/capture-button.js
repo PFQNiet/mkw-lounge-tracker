@@ -97,8 +97,6 @@ export function setupCaptureButton(captureButton, video, resultsList, mogi) {
 		if (!latest) renderEmptyResults(resultsList);
 		else renderResults(resultsList, latest.placements);
 	});
-
-	renderEmptyResults(resultsList);
 }
 
 /**
