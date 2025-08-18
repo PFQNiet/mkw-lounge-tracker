@@ -13,12 +13,14 @@
 		button[disabled] { opacity: .6; }
 		.panel { background:#0f0f0f; border:1px solid #222; border-radius:16px; padding:12px; }
 		.panel>h2 { margin:0 0 8px 0; font-size:16px; }
+		.panel--warning { background:#3b2b0a; border-color:#5b451a; }
 		video { width:100%; border-radius:12px; background:#000; aspect-ratio:16/9; }
 		ol.results { list-style: none; padding:0; margin:0; display:grid; gap:6px; }
 		ol.results li { display:flex; gap:8px; align-items:center; background:#141414; border:1px solid #242424; border-radius:12px; padding:8px 10px; }
 		.mono { font-variant-numeric: tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
 		.muted { color:#9aa0a6; }
 		p { margin:0 0 8px 0; }
+		#start { font-size:24px;}
 		/* Buttons: semantic variants */
 		.btn--primary { background:#0f3a15; border-color:#1f5e2a; color:#eaffea; }
 		.btn--primary:hover { filter: brightness(1.12); }
@@ -65,7 +67,7 @@
 					<select id="camera" class="push-left"><option value="">Loading...</option></select>
 					<button id="capture" class="btn--primary" accesskey="c">📸 Capture & OCR</button>
 				</div>
-				<div class="panel space-above">Remember to always screenshot on Switch as well!</div>
+				<div class="panel panel--warning space-above">⚠️ Remember to always screenshot on Switch as well!</div>
 			</section>
 			<section class="panel" style="flex:1 1 420px; min-width: 320px;">
 				<h2>Last capture</h2>
