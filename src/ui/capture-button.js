@@ -4,6 +4,7 @@
 import { captureFrame, snapshotBlobUrlFromCanvas } from "../capture.js";
 import { OCR_GRID, processResultsScreen } from "../ocr.js";
 import { Race } from "../race.js";
+import { ROSTER_SIZE } from "../roster.js";
 
 /**
  * @param {HTMLSelectElement} cameraSelect
@@ -93,9 +94,33 @@ export function setupCaptureButton(captureButton, video, resultsList, mogi) {
 
 	mogi.addEventListener('update', () => {
 		const latest = mogi.races.at(-1);
-		if (!latest) return;
-		renderResults(resultsList, latest.placements);
+		if (!latest) renderEmptyResults(resultsList);
+		else renderResults(resultsList, latest.placements);
 	});
+
+	renderEmptyResults(resultsList);
+}
+
+/**
+ * @param {HTMLOListElement} resultsList
+ */
+function renderEmptyResults(resultsList) {
+	resultsList.innerHTML = '';
+	for( let i=0; i<ROSTER_SIZE; i++) {
+		const li = document.createElement('li');
+		const rank = document.createElement('span');
+		rank.className = 'mono';
+		rank.style.width = '2ch';
+		rank.textContent = `${i+1}.`;
+		const name = document.createElement('span');
+		name.style.flex = '1 1 auto';
+		name.textContent = '—';
+		const ocr = document.createElement('span');
+		ocr.className = 'muted mono';
+		ocr.textContent = 'OCR: —';
+		li.append(rank, name, ocr);
+		resultsList.appendChild(li);
+	}
 }
 
 /**
