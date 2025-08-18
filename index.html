@@ -20,7 +20,18 @@
 		.mono { font-variant-numeric: tabular-nums; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
 		.muted { color:#9aa0a6; }
 		p { margin:0 0 8px 0; }
-		#start { font-size:24px;}
+		/* Welcome / empty state */
+		.welcome { display:grid; gap:14px; align-items:start; grid-template-columns: 1.1fr .9fr; }
+		.welcome h1 { font-size:22px; margin:0; }
+		.welcome .lead { color:#cfcfcf; margin:4px 0 10px 0; }
+		.welcome .steps { margin:0; padding:0; list-style:none; display:grid; gap:8px; }
+		.welcome .steps li { background:#111; border:1px solid #222; border-radius:12px; padding:8px 10px; }
+		.welcome .chips { display:flex; flex-wrap:wrap; gap:8px; }
+		.welcome .chip { font-size:12px; background:#1f2937; border:1px solid #2b3647; padding:4px 8px; border-radius:999px; color:#c9d1d9; }
+		.welcome .aside { background:#0f0f0f; border:1px solid #1f1f1f; border-radius:14px; padding:12px; }
+		.welcome .cta { display:flex; gap:10px; align-items:center; }
+		.icon-btn { display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:8px; }
+		.icon-btn:hover { filter:brightness(1.12); }
 		/* Buttons: semantic variants */
 		.btn--primary { background:#0f3a15; border-color:#1f5e2a; color:#eaffea; }
 		.btn--primary:hover { filter: brightness(1.12); }
@@ -48,18 +59,55 @@
 	</style>
 </head>
 <body>
-	<header class="row" style="justify-content: space-between">
-		<h1 style="font-size: 18px; font-weight: 600; margin:0">MKW Mogi Manager</h1>
-		<a href="https://github.com/PFQNiet/mkw-lounge-tracker" target="_blank" rel="noopener noreferrer">GitHub</a>
-	</header>
-
 	<div id="step1">
-		<section class="panel" style="width:fit-content; margin:16px auto">
-			<button id="start" class="btn--primary">Get started</button>
+		<section id="welcome" class="panel welcome" style="max-width:1100px; margin:16px auto;">
+			<div>
+				<h1>MKW Mogi Manager</h1>
+				<p class="lead">Capture, OCR, score; right in your browser. No installs, no uploads.</p>
+
+				<div class="chips" style="margin:6px 0 12px 0;">
+					<span class="chip">Offline OCR</span>
+					<span class="chip">Disconnect handler</span>
+					<span class="chip">Manual resolve + edit</span>
+					<span class="chip">Lounge export</span>
+				</div>
+
+				<ul class="steps">
+					<li><strong>1.</strong> Click <em>Get started</em> and paste the 12-player roster (<code>1. Name (12345 MMR)</code>).</li>
+					<li><strong>2.</strong> Pick your virtual webcam in the preview area.</li>
+					<li><strong>3.</strong> After each race, hit <em>Capture &amp; OCR</em>. We'll auto-match; if unsure, we'll ask.</li>
+					<li><strong>4.</strong> Fix anything via <em>Edit</em> &rarr; <em>Save</em>. Export scores when done.</li>
+				</ul>
+
+				<div class="cta" style="margin-top:12px;">
+					<button id="start" class="btn--primary" style="padding:10px 14px; font-weight:600;">Get started</button>
+					<a href="https://github.com/PFQNiet/mkw-lounge-tracker" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub" class="icon-btn" title="View on GitHub" style="color:#e5e5e5">
+						<!-- inline GitHub mark (inherits color) -->
+						<svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true">
+							<path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8a8 8 0 0 0 5.47 7.59c.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.62 7.62 0 0 1 8 3.47c.68 0 1.36.09 2 .26 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8 8 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
+						</svg>
+					</a>
+				</div>
+			</div>
+
+			<div class="aside">
+				<h3 style="margin:0 0 8px 0; font-size:14px;">Notes</h3>
+				<ul style="margin:0; padding-left:18px; color:#9aa0a6;">
+					<li>Race 1 must include all 12 players.</li>
+					<li>10-player races are valid; 9 or fewer are a redo.</li>
+					<li>DCs score 1 point (CPU names can appear, just confirm who DC'd).</li>
+					<li>Everything stays local in your browser.</li>
+				</ul>
+			</div>
 		</section>
 	</div>
 
 	<div id="step2" style="display:none;">
+		<header class="row" style="justify-content: space-between">
+			<h1 style="font-size: 18px; font-weight: 600; margin:0">MKW Mogi Manager</h1>
+			<a href="https://github.com/PFQNiet/mkw-lounge-tracker" target="_blank" rel="noopener noreferrer">GitHub</a>
+		</header>
+
 		<main class="row">
 			<section class="panel" style="flex:1 1 560px; min-width: 360px;">
 				<video id="preview" autoplay playsinline muted></video>
