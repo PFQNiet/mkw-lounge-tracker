@@ -18,4 +18,4 @@ A single-file web app to OCR Mario Kart results from a virtual webcam feed and k
 - OCR uses tesseract.js via CDN; no server, no build step.
 
 ## Contributing
-PRs welcome! Please keep the app buildless (plain ESM, `// @ts-check`) and pin external CDN versions.
+PRs welcome! Please keep the app buildless (plain ESM).

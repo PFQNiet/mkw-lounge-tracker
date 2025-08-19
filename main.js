@@ -19,13 +19,13 @@ async function main() {
 	const raceGallery = /** @type {HTMLDivElement} */(document.getElementById('raceGallery'));
 	const exportBtn = /** @type {HTMLButtonElement} */(document.getElementById('exportScores'));
 
-	setupCameraList(cameraSelect, video);
 	const roster = await requestRoster(startButton);
 
 	step1.style.display = 'none';
 	step2.style.display = 'block';
 
 	const mogi = new Mogi(roster);
+	setupCameraList(cameraSelect, video);
 	setupCaptureButton(captureBtn, video, outputOl, mogi);
 	connectScoreboard(scoreTable, mogi);
 	connectExportButton(exportBtn, mogi);
