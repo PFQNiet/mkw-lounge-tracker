@@ -53,7 +53,7 @@ export class Placement {
 	}
 
 	get score() {
-		if (this.#dc) return 0;
+		if (this.#dc) return 1;
 		return POINTS_BY_PLACEMENT[this.#placement - 1] ?? 0;
 	}
 
