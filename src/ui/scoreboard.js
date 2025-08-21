@@ -11,6 +11,7 @@ export function connectScoreboard(scoreTable, mogi) {
 	mogi.addEventListener('update', () => {
 		const totals = mogi.calculatePlayerScores();
 		const races = mogi.races;
+		let totalScore = 0;
 
 		// Build <thead>
 		const thead = document.createElement('thead');
@@ -24,8 +25,8 @@ export function connectScoreboard(scoreTable, mogi) {
 
 		// Build <tbody>
 		const tbody = document.createElement('tbody');
-
-		for (const p of mogi.roster) {
+		const roster = [...mogi.roster].toSorted((a, b) => (totals.get(b.id)||0) - (totals.get(a.id)||0));
+		for (const p of roster) {
 			const tr = document.createElement('tr');
 
 			const tdName = document.createElement('td'); tdName.textContent = p.name; tr.appendChild(tdName);
@@ -50,6 +51,8 @@ export function connectScoreboard(scoreTable, mogi) {
 			tr.appendChild(tdTotal);
 
 			tbody.appendChild(tr);
+
+			totalScore += totals.get(p.id) || 0;
 		}
 
 		// Build <tfoot> with Edit buttons per race column
@@ -69,7 +72,7 @@ export function connectScoreboard(scoreTable, mogi) {
 			td.appendChild(btn);
 			fr.appendChild(td);
 		}
-		fr.appendChild(document.createElement('td'));
+		fr.appendChild(document.createElement('td')).textContent = `${totalScore} / ${mogi.maxScore}`;
 		tfoot.appendChild(fr);
 
 		// Swap table content

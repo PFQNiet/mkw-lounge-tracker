@@ -1,5 +1,5 @@
 import { Roster } from './roster.js';
-import { Placement, Race } from './race.js';
+import { Placement, POINTS_BY_PLACEMENT, Race } from './race.js';
 
 export const RACE_COUNT = 12;
 
@@ -11,6 +11,7 @@ export class Mogi extends EventTarget {
 	get races() { return [...this.#races]; }
 
 	get ended() { return this.#races.length >= RACE_COUNT; }
+	get maxScore() { return POINTS_BY_PLACEMENT.reduce((a, b) => a + b) * RACE_COUNT; }
 
 	/** @param {Roster} roster */
 	constructor(roster) {
