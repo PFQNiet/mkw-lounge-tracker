@@ -164,6 +164,9 @@ p {
 	border: 1px solid #1f1f1f;
 	border-radius: 14px;
 	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
 }
 
 .welcome .aside ul {
