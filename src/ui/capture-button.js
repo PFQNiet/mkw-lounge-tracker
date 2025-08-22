@@ -1,9 +1,7 @@
 /** @typedef {import("../mogi.js").Mogi} Mogi */
 /** @typedef {import("../race.js").Placement} Placement */
 
-import { captureFrame, snapshotBlobUrlFromCanvas } from "../capture.js";
-import { OCR_GRID, processResultsScreen } from "../ocr.js";
-import { Race } from "../race.js";
+import { performCapture } from "../capture.js";
 import { ROSTER_SIZE } from "../roster.js";
 import { error, info, success, warning } from "./toast.js";
 
@@ -74,35 +72,9 @@ export function setupCaptureButton(captureButton, video, resultsList, mogi) {
 		}
 		captureButton.disabled = true;
 		captureButton.textContent = 'Processing…';
-		try {
-			const base = captureFrame(video, OCR_GRID.canvasWidth, OCR_GRID.canvasHeight);
-			// Do OCR first; this may throw MANUAL_CANCELLED
-			const placements = await processResultsScreen(base, mogi.roster);
-
-			// Only if successful, make the snapshot and push the race
-			const snapshotUrl = await snapshotBlobUrlFromCanvas(base);
-			const race = new Race(Date.now(), placements, snapshotUrl);
-			mogi.addRace(race);
-		} catch (e) {
-			// If the user canceled manual resolve, just abort quietly
-			if (/** @type {any} */(e)?.code === 'MANUAL_CANCELLED') {
-				console.log('Capture canceled by user.');
-				info('Capture canceled.');
-				return;
-			}
-			// If no scoreboard found, warn the user
-			if (/** @type {any} */(e)?.code === 'NO_SCOREBOARD') {
-				console.log('No scoreboard detected in frame.');
-				error('No scoreboard detected — try capturing on the results screen.');
-				return;
-			}
-			// Otherwise, surface the error
-			console.error(e);
-			error('OCR failed. See console for details.');
-		} finally {
-			captureButton.disabled = false;
-			captureButton.textContent = captureButtonText;
-		}
+		await performCapture(video, mogi);
+		captureButton.disabled = false;
+		captureButton.textContent = captureButtonText;
 	});
 
 	mogi.addEventListener('update', () => {

@@ -3,22 +3,30 @@ import { preprocessCrop } from './capture.js';
 import { normalizeName } from './player.js';
 import { Placement } from './race.js';
 import { manualResolve } from './ui/manual-resolution-dialog.js';
+import { popcount } from './util.js';
 
 /** @typedef {import("./roster.js").Roster} Roster */
 
 /**
  * Build row rectangles from simple parameters
- * @param {{count:number,startY:number,rowHeight:number,x:number,w:number}} p
+ * @param {{count:number,startY:number,rowHeight:number,vPad:number,x:number,w:number}} p
  */
 function generateRowRects(p) {
 	const rects = [];
-	for (let i = 0; i < p.count; i++) rects.push({ x: p.x, y: Math.round(p.startY + i * p.rowHeight), w: p.w, h: p.rowHeight });
+	for (let i = 0; i < p.count; i++) {
+		rects.push({
+			x: p.x,
+			y: Math.round(p.startY + i * p.rowHeight) + p.vPad,
+			w: p.w,
+			h: p.rowHeight - 2*p.vPad
+		});
+	}
 	return rects;
 }
 export const OCR_GRID = {
 	canvasWidth: 1920,
 	canvasHeight: 1080,
-	nameRects: generateRowRects({ count: 12, startY: 40, rowHeight: 77, x: 1270, w: 340 }),
+	nameRects: generateRowRects({ count: 12, startY: 40, rowHeight: 77, vPad: 15, x: 1270, w: 340 }),
 };
 
 /**
@@ -51,12 +59,6 @@ function levenshtein(a, b) {
  * @returns {number[]} assignment array A of length N where A[i] = j (row index for player i)
  */
 function solveAssignmentDP(cost) {
-	/**
-	 * Popcount for 32-bit masks
-	 * @param {number} x
-	 * @see https://graphics.stanford.edu/~seander/bithacks.html
-	 */
-	function popcount(x) { let c = 0; for (; x; x &= x - 1) c++; return c; }
 	const n = cost.length, SIZE = 1 << n;
 	/** @type {number[]} */ const dp = new Array(SIZE).fill(Infinity);
 	/** @type {number[]} */ const parent = new Array(SIZE).fill(-1);
@@ -98,6 +100,8 @@ async function getWorker() {
 	return _worker;
 }
 
+const scratch = document.createElement('canvas');
+
 /**
  * Core API — kicks off capture, OCR, fuzzy match, optional manual resolve, then resolves placements.
  * @param {HTMLCanvasElement} canvas
@@ -120,7 +124,7 @@ export async function processResultsScreen(canvas, roster) {
 	/** @type {{ text:string, confidence:number }[]} */
 	const rawRows = [];
 	for (const rect of nameRects) {
-		const { canvas:img, whiteRatio } = preprocessCrop(canvas, rect);
+		const { canvas:img, whiteRatio } = preprocessCrop(canvas, rect, 2, scratch);
 		if (whiteRatio < 0.02) {
 			rawRows.push({ text: '', confidence: 0 });
 			continue;

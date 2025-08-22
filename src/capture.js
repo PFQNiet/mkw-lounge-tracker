@@ -1,22 +1,18 @@
-/**
- * @param {HTMLCanvasElement} el
- * @param {CanvasRenderingContext2DSettings} [options]
- * @returns {CanvasRenderingContext2D}
- */
-function ctx2d(el, options = {}) {
-	const ctx = el.getContext('2d', options);
-	if (!ctx) throw new Error('2D context unavailable');
-	return ctx;
-}
+/** @typedef {import("./mogi.js").Mogi} Mogi */
+
+import { OCR_GRID, processResultsScreen } from "./ocr.js";
+import { Race } from "./race.js";
+import { error, info } from "./ui/toast.js";
+import { ctx2d } from "./util.js";
 
 /**
- * Capture a single frame from a video element into a canvas of known size.
+ * Capture a single frame from a video element into a canvas.
  * @param {HTMLVideoElement} videoEl
- * @param {number} w
- * @param {number} h
+ * @param {HTMLCanvasElement} [canvas]
+ * @returns {HTMLCanvasElement} The given canvas, or a new one
  */
-export function captureFrame(videoEl, w, h) {
-	const canvas = document.createElement('canvas');
+export function captureFrame(videoEl, canvas=document.createElement('canvas')) {
+	const { canvasWidth: w, canvasHeight: h } = OCR_GRID;
 	canvas.width = w; canvas.height = h;
 	const ctx = ctx2d(canvas, { willReadFrequently: true });
 	const vidW = videoEl.videoWidth, vidH = videoEl.videoHeight;
@@ -32,25 +28,16 @@ export function captureFrame(videoEl, w, h) {
  * Lightweight pre-processing (scale 2x, grayscale + threshold).
  * @param {HTMLCanvasElement} src
  * @param {{x:number,y:number,w:number,h:number}} r
+ * @param {number} [scale]
+ * @param {HTMLCanvasElement} [scratch]
  */
-export function preprocessCrop(src, r) {
-	const innerPad = 15; // crop 15px from top/bottom inside the row box
-	const sy = r.y + innerPad;
-	const sh = Math.max(1, r.h - innerPad * 2);
-
-	const crop = document.createElement('canvas');
-	crop.width = r.w; crop.height = sh;
-	const cctx = ctx2d(crop, { willReadFrequently: true });
-	cctx.drawImage(src, r.x, sy, r.w, sh, 0, 0, r.w, sh);
-
-	const scale = 2;
-	const pre = document.createElement('canvas');
-	pre.width = r.w * scale; pre.height = sh * scale;
-	const pctx = ctx2d(pre, { willReadFrequently: true });
+export function preprocessCrop(src, r, scale=1, scratch=document.createElement('canvas')) {
+	scratch.width = r.w * scale; scratch.height = r.h * scale;
+	const pctx = ctx2d(scratch, { willReadFrequently: true });
 	pctx.imageSmoothingEnabled = false;
-	pctx.drawImage(crop, 0, 0, pre.width, pre.height);
+	pctx.drawImage(src, r.x, r.y, r.w, r.h, 0, 0, r.w * scale, r.h * scale);
 
-	const img = pctx.getImageData(0, 0, pre.width, pre.height);
+	const img = pctx.getImageData(0, 0, scratch.width, scratch.height);
 	const thr = 240; // aggressive threshold
 	let whitePixels = 0;
 	for (let i = 0; i < img.data.length; i += 4) {
@@ -60,9 +47,9 @@ export function preprocessCrop(src, r) {
 		img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
 		if (v === 255) whitePixels++;
 	}
-	const whiteRatio = whitePixels / (pre.width * pre.height);
+	const whiteRatio = whitePixels / (scratch.width * scratch.height);
 	pctx.putImageData(img, 0, 0);
-	return { canvas: pre, whiteRatio };
+	return { canvas: scratch, whiteRatio };
 }
 
 /**
@@ -76,4 +63,38 @@ export function snapshotBlobUrlFromCanvas(base) {
 			b ? resolve(URL.createObjectURL(b)) : reject(new Error('toBlob failed'));
 		}, 'image/png');
 	});
+}
+
+/**
+ * Capture a frame and OCR the results screen.
+ * @param {HTMLVideoElement} video
+ * @param {Mogi} mogi
+ */
+export async function performCapture(video, mogi) {
+	try {
+		const base = captureFrame(video);
+		// Do OCR first; this may throw MANUAL_CANCELLED or NO_SCOREBOARD
+		const placements = await processResultsScreen(base, mogi.roster);
+
+		// Only if successful, make the snapshot and push the race
+		const snapshotUrl = await snapshotBlobUrlFromCanvas(base);
+		const race = new Race(Date.now(), placements, snapshotUrl);
+		mogi.addRace(race);
+	} catch (e) {
+		// If the user canceled manual resolve, just abort quietly
+		if (/** @type {any} */(e)?.code === 'MANUAL_CANCELLED') {
+			console.log('Capture canceled by user.');
+			info('Capture canceled.');
+			return;
+		}
+		// If no scoreboard found, warn the user
+		if (/** @type {any} */(e)?.code === 'NO_SCOREBOARD') {
+			console.log('No scoreboard detected in frame.');
+			error('No scoreboard detected — try capturing on the results screen.');
+			return;
+		}
+		// Otherwise, surface the error
+		console.error(e);
+		error('OCR failed. See console for details.');
+	}
 }

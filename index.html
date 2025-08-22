@@ -56,10 +56,17 @@
 				<video id="preview" autoplay playsinline muted></video>
 				<div class="row">
 					<label class="muted">Camera</label>
-					<select id="camera" class="push-left"><option value="">Loading...</option></select>
+					<select id="camera"><option value="">Loading...</option></select>
+					<ins class="spacer"></ins>
 					<button id="capture" class="btn--primary" accesskey="c">📸 Capture & OCR</button>
 				</div>
 				<div class="panel panel--warning">⚠️ Remember to always screenshot on Switch as well!</div>
+				<div class="row">
+					<ins class="spacer"></ins>
+					<label class="button">
+						<input type="checkbox" id="autoCapture" /> Auto-capture [BETA]
+					</label>
+				</div>
 			</section>
 			<section class="panel capture-view">
 				<h2>Last capture</h2>
@@ -74,7 +81,8 @@
 				<table id="scoreTable" class="score mono" style="width:100%; border-collapse:collapse;"></table>
 			</div>
 			<div class="row">
-				<a href="./" class="button btn--danger push-left">New session</a>
+				<a href="./" class="button btn--danger">New session</a>
+				<ins class="spacer"></ins>
 				<button id="exportScores" class="btn--primary" disabled>Export scores</button>
 			</div>
 		</section>

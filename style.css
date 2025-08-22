@@ -196,8 +196,8 @@ p {
 }
 
 /* Utility */
-.push-left {
-	margin-right: auto;
+.spacer {
+	flex: 10 0 0;
 }
 
 /* Main view */
