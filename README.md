@@ -11,11 +11,15 @@ A single-file web app to OCR Mario Kart results from a virtual webcam feed and k
 4. Use **Edit** under a race column to fix placements or mark DCs.
 5. **Export scores** to copy the lounge-bot format.
 
+## Contributing
+PRs welcome! Please keep the app buildless (plain ESM).
+
 ### Notes
 - Requires camera permission (browser will prompt).
 - All camera usage is locally processed on your device.
 - Works best in Chrome/Edge/Firefox; iOS Safari supported with `playsinline`.
 - OCR uses tesseract.js via CDN; no server, no build step.
 
-## Contributing
-PRs welcome! Please keep the app buildless (plain ESM).
+![Process demonstration](./img/process-demo.jpg)
+
+- "Auto-capture" feature in BETA: automatically detects when you take a screenshot on your Switch to trigger a capture.

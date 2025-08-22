@@ -3,6 +3,9 @@ import { ctx2d, popcount } from "./util.js";
 
 const HOME_ROI = { x: 506, y: 45, w: 40, h:40 };
 
+/**
+ * See: ../img/home-icon-reference.png
+ */
 const HOME_BITMASK = new Uint8Array([
 	0x00, 0x01, 0xFF, 0x80, 0x00, // ........ .......# ######## #....... ........
 	0x00, 0x0F, 0xFF, 0xF0, 0x00, // ........ ....#### ######## ####.... ........
