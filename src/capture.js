@@ -52,14 +52,17 @@ export function preprocessCrop(src, r) {
 
 	const img = pctx.getImageData(0, 0, pre.width, pre.height);
 	const thr = 240; // aggressive threshold
+	let whitePixels = 0;
 	for (let i = 0; i < img.data.length; i += 4) {
 		const r0 = img.data[i] ?? 0, g0 = img.data[i + 1] ?? 0, b0 = img.data[i + 2] ?? 0;
 		const y0 = (r0 * 299 + g0 * 587 + b0 * 114) / 1000;
 		const v = y0 > thr ? 255 : 0;
 		img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
+		if (v === 255) whitePixels++;
 	}
+	const whiteRatio = whitePixels / (pre.width * pre.height);
 	pctx.putImageData(img, 0, 0);
-	return pre;
+	return { canvas: pre, whiteRatio };
 }
 
 /**

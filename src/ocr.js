@@ -120,7 +120,11 @@ export async function processResultsScreen(canvas, roster) {
 	/** @type {{ text:string, confidence:number }[]} */
 	const rawRows = [];
 	for (const rect of nameRects) {
-		const img = preprocessCrop(canvas, rect);
+		const { canvas:img, whiteRatio } = preprocessCrop(canvas, rect);
+		if (whiteRatio < 0.02) {
+			rawRows.push({ text: '', confidence: 0 });
+			continue;
+		}
 		const { data } = await worker.recognize(img);
 		const best = (data?.text ?? '').replace(/\s+/g, ' ').trim();
 		const conf = (data && Number.isFinite(data.confidence)) ? data.confidence : 0;
@@ -210,7 +214,13 @@ export async function processResultsScreen(canvas, roster) {
 			blanks.push(j);
 		}
 	}
-	if (blanks.length >= 2) {
+	if (blanks.length > 2) {
+		const err = new Error('No scoreboard detected');
+		// @ts-ignore add a code for easy identification
+		err.code = 'NO_SCOREBOARD';
+		throw err;
+	}
+	if (blanks.length === 2) {
 		for (const j of blanks) {
 			placements[j] = placements[j].withPlayerIdAndResolvedName(null, "");
 		}

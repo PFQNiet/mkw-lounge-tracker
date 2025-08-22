@@ -83,6 +83,12 @@ export function setupCaptureButton(captureButton, video, resultsList, mogi) {
 				console.log('Capture canceled by user.');
 				return;
 			}
+			// If no scoreboard found, warn the user
+			if (/** @type {any} */(e)?.code === 'NO_SCOREBOARD') {
+				console.log('No scoreboard detected in frame.');
+				alert('No scoreboard detected — try capturing on the results screen.');
+				return;
+			}
 			// Otherwise, surface the error
 			console.error(e);
 			alert('OCR failed. See console for details.');
