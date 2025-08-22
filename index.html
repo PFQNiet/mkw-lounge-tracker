@@ -7,10 +7,16 @@
 	<link rel="stylesheet" href="./style.css" />
 </head>
 <body>
+	<header class="row" style="justify-content: space-between">
+		<h1 style="font-size: 18px; font-weight: 600; margin:0">MKW Mogi Manager</h1>
+		<a href="https://github.com/PFQNiet/mkw-lounge-tracker" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub" class="icon-btn" title="View on GitHub">
+			<img src="./img/github-logo.svg" width="20" height="20" aria-hidden="true" />
+		</a>
+	</header>
+
 	<div id="step1">
 		<section id="welcome" class="panel welcome" style="max-width:1100px; margin:16px auto;">
 			<div>
-				<h1>MKW Mogi Manager</h1>
 				<p class="lead">Capture, OCR, score; right in your browser. No installs, no uploads.</p>
 
 				<div class="chips" style="margin:6px 0 12px 0;">
@@ -29,9 +35,6 @@
 
 				<div class="cta" style="margin-top:12px;">
 					<button id="start" class="btn--primary" style="padding:10px 14px; font-weight:600;">Get started</button>
-					<a href="https://github.com/PFQNiet/mkw-lounge-tracker" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub" class="icon-btn" title="View on GitHub">
-						<img src="./img/github-logo.svg" width="20" height="20" aria-hidden="true" />
-					</a>
 				</div>
 			</div>
 
@@ -48,24 +51,17 @@
 	</div>
 
 	<div id="step2" style="display:none;">
-		<header class="row" style="justify-content: space-between">
-			<h1 style="font-size: 18px; font-weight: 600; margin:0">MKW Mogi Manager</h1>
-			<a href="https://github.com/PFQNiet/mkw-lounge-tracker" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub" class="icon-btn" title="View on GitHub">
-				<img src="./img/github-logo.svg" width="20" height="20" aria-hidden="true" />
-			</a>
-		</header>
-
 		<main class="row">
-			<section class="panel" style="flex:1 1 560px; min-width: 360px;">
+			<section class="panel main-view">
 				<video id="preview" autoplay playsinline muted></video>
-				<div class="row space-above">
+				<div class="row">
 					<label class="muted">Camera</label>
 					<select id="camera" class="push-left"><option value="">Loading...</option></select>
 					<button id="capture" class="btn--primary" accesskey="c">📸 Capture & OCR</button>
 				</div>
-				<div class="panel panel--warning space-above">⚠️ Remember to always screenshot on Switch as well!</div>
+				<div class="panel panel--warning">⚠️ Remember to always screenshot on Switch as well!</div>
 			</section>
-			<section class="panel" style="flex:1 1 420px; min-width: 320px;">
+			<section class="panel capture-view">
 				<h2>Last capture</h2>
 				<ol id="output" class="results"></ol>
 			</section>
@@ -77,8 +73,9 @@
 			<div style="overflow:auto;">
 				<table id="scoreTable" class="score mono" style="width:100%; border-collapse:collapse;"></table>
 			</div>
-			<div class="row space-above">
-				<button id="exportScores" class="btn--primary">Export scores</button>
+			<div class="row">
+				<a href="./" class="button btn--danger push-left">New session</a>
+				<button id="exportScores" class="btn--primary" disabled>Export scores</button>
 			</div>
 		</section>
 

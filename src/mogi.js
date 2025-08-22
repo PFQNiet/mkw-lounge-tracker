@@ -18,6 +18,12 @@ export class Mogi extends EventTarget {
 	constructor(roster) {
 		super();
 		this.#roster = roster;
+		window.addEventListener('beforeunload', e => {
+			if( this.#races.length > 0 && !this.ended) {
+				e.preventDefault();
+				e.returnValue = '';
+			}
+		});
 		queueMicrotask(() => this.dispatchEvent(new Event('update')));
 	}
 

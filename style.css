@@ -24,16 +24,20 @@ main {
 }
 
 select,
-button {
+button,
+.button {
 	background: #111;
 	color: #e5e5e5;
 	border: 1px solid #333;
 	border-radius: 12px;
 	padding: 8px 12px;
+	text-decoration: none;
+	cursor: pointer;
 }
 
 button[disabled] {
 	opacity: .6;
+	cursor: not-allowed;
 }
 
 .panel {
@@ -41,6 +45,9 @@ button[disabled] {
 	border: 1px solid #222;
 	border-radius: 16px;
 	padding: 12px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
 }
 
 .panel>h2 {
@@ -106,6 +113,8 @@ p {
 
 .welcome .lead {
 	color: #cfcfcf;
+	font-size: 16px;
+	font-weight: bold;
 	margin: 4px 0 10px 0;
 }
 
@@ -191,8 +200,15 @@ p {
 	margin-right: auto;
 }
 
-.space-above {
-	margin-top: 12px;
+/* Main view */
+.main-view {
+	flex: 1 1 560px;
+	min-width: 360px;
+}
+
+.capture-view {
+	flex: 1 1 420px;
+	min-width: 320px;
 }
 
 /* Scoreboard */
@@ -302,10 +318,11 @@ textarea {
 	margin: 12px;
 	display: flex;
 	flex-direction: column;
+	align-items: flex-start;
 	gap: 8px;
 	border: 0;
 	background: transparent;
-	padding: 0;
+	padding: 16px 0 0;
 	z-index: auto;
 }
 

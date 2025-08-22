@@ -72,7 +72,7 @@ export function connectScoreboard(scoreTable, mogi) {
 			td.appendChild(btn);
 			fr.appendChild(td);
 		}
-		fr.appendChild(document.createElement('td')).textContent = `${totalScore} / ${mogi.maxScore}`;
+		fr.appendChild(document.createElement('td')).append(`${totalScore}`, document.createElement('br'), `/ ${mogi.maxScore}`);
 		tfoot.appendChild(fr);
 
 		// Swap table content

@@ -53,4 +53,5 @@ function showResults(mogi) {
  */
 export function connectExportButton(btn, mogi) {
 	btn.addEventListener('click', () => showResults(mogi));
+	mogi.addEventListener('update', () => btn.disabled = !mogi.ended);
 }
