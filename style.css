@@ -106,8 +106,19 @@ p {
 	grid-template-columns: 1.1fr .9fr;
 }
 
+.welcome>div {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
 .welcome h1 {
 	font-size: 22px;
+	margin: 0;
+}
+
+.welcome h3 {
+	font-size: 16px;
 	margin: 0;
 }
 
@@ -153,6 +164,12 @@ p {
 	border: 1px solid #1f1f1f;
 	border-radius: 14px;
 	padding: 12px;
+}
+
+.welcome .aside ul {
+	margin: 0;
+	padding-left: 18px;
+	color: #9aa0a6;
 }
 
 .welcome .cta {
