@@ -1,5 +1,6 @@
 /** @typedef {import("../mogi.js").Mogi} Mogi */
 import { ROSTER_SIZE } from "../roster.js";
+import { success, warning } from "./toast.js";
 
 function makeDialog() {
 	const dialog = document.createElement('dialog');
@@ -34,17 +35,14 @@ function showResults(mogi) {
 	dialog.showModal();
 	close.addEventListener('click', () => dialog.close());
 
-	const copyText = copy.textContent;
 	copy.addEventListener('click', async () => {
 		try {
 			await navigator.clipboard.writeText(output.value);
-			copy.textContent = 'Copied!';
-			setTimeout(() => copy.textContent = copyText, 1200);
+			success('Copied to clipboard!');
 		} catch {
 			// Fallback: focus + select so the user can Cmd/Ctrl+C
 			output.focus(); output.select();
-			copy.textContent = 'Press Ctrl/Cmd+C';
-			setTimeout(() => copy.textContent = copyText, 2000);
+			warning('Failed to copy to clipboard, press Ctrl/Cmd+C to copy manually.');
 		}
 	});
 }

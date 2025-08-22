@@ -1,5 +1,6 @@
 import { Roster } from './roster.js';
 import { Placement, POINTS_BY_PLACEMENT, Race } from './race.js';
+import { info, success } from './ui/toast.js';
 
 export const RACE_COUNT = 12;
 
@@ -28,6 +29,7 @@ export class Mogi extends EventTarget {
 		this.#races.push(race);
 		this.dispatchEvent(new Event('update'));
 		if( this.#races.length === 1) this.#roster.lockIGNsFromPlacements(race.placements);
+		success(`Race ${this.#races.length} saved!`);
 	}
 
 	/**
@@ -40,6 +42,7 @@ export class Mogi extends EventTarget {
 		const newRace = oldRace.withPlacements(placements);
 		this.#races.splice(idx, 1, newRace);
 		this.dispatchEvent(new Event('update'));
+		success(`Race ${idx + 1} updated`);
 	}
 
 	/**
@@ -50,6 +53,7 @@ export class Mogi extends EventTarget {
 		if( !race) throw new Error('Race not found');
 		this.#races.splice(idx, 1);
 		this.dispatchEvent(new Event('update'));
+		info(`Race ${idx + 1} deleted`);
 	}
 
 	/**

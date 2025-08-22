@@ -56,6 +56,23 @@
 		.modal footer { display:flex; justify-content:flex-end; gap:8px; margin-top:12px; }
 		.badge { background:#1f2937; padding:2px 8px; border-radius:999px; font-size:12px; }
 		textarea { width:100%; min-height:150px; box-sizing:border-box; background:#0b0b0b; color:#e5e5e5; border:1px solid #222; border-radius:8px; padding:8px; resize:vertical }
+		/* Toasts */
+		.toasts[popover] {
+			position: fixed; inset: unset; bottom: 0; left: 0; margin: 12px;
+			display: flex; flex-direction: column; gap: 8px;
+			border: 0; background: transparent; padding: 0; /* popover chrome off */
+			z-index: auto; /* top-layer handles stacking */
+		}
+		.toast { min-width:260px; max-width:380px; background:#111; border:1px solid #222; color:#e5e5e5;
+			padding:10px 12px; border-radius:12px; box-shadow:0 6px 24px rgba(0,0,0,.35);
+			display:flex; align-items:flex-start; gap:10px; opacity:0; transform:translateY(-6px);
+			transition:opacity .2s ease, transform .2s ease; }
+		.toasts:popover-open .toast { opacity:1; transform:translateY(0); }
+		.toast .msg { flex:1 1 auto; }
+		.toast--info    { background:#0e1a2a; border-color:#2a3a55; }
+		.toast--success { background:#0f3a15; border-color:#1f5e2a; }
+		.toast--warning { background:#3a340f; border-color:#5e5a1f; }
+		.toast--error   { background:#3b0a0a; border-color:#5a1a1a; }
 	</style>
 </head>
 <body>

@@ -1,6 +1,8 @@
 /** @typedef {import("../mogi.js").Mogi} Mogi */
 /** @typedef {import("../race.js").Placement} Placement */
 
+import { error } from "./toast.js";
+
 function makeDialog() {
 	const dialog = document.createElement('dialog');
 	dialog.innerHTML = `
@@ -66,7 +68,7 @@ export function openEditRace(mogi, idx) {
 			const pid = sel.dataset.playerId || '';
 			const val = sel.value === 'dc' ? 'dc' : Number(sel.value);
 			if( val !== 'dc' && usedPlaces.has(val) ) {
-				alert('Each placement 1..12 can only be chosen once.');
+				error('Each placement 1..12 can only be chosen once.');
 				return;
 			}
 			usedPlaces.add(val);

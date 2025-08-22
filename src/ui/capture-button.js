@@ -5,6 +5,7 @@ import { captureFrame, snapshotBlobUrlFromCanvas } from "../capture.js";
 import { OCR_GRID, processResultsScreen } from "../ocr.js";
 import { Race } from "../race.js";
 import { ROSTER_SIZE } from "../roster.js";
+import { error, info, success, warning } from "./toast.js";
 
 /**
  * @param {HTMLSelectElement} cameraSelect
@@ -38,7 +39,11 @@ async function startSelectedCamera(deviceId, video) {
 	const old = /** @type {MediaStream|null} */(video.srcObject);
 	if (old) old.getTracks().forEach(t => t.stop());
 
-	if (!deviceId) { video.srcObject = null; return; }
+	if (!deviceId) {
+		video.srcObject = null;
+		info('Camera stopped.');
+		return;
+	}
 	try {
 		localStorage.setItem('lastSelectedCamera', deviceId);
 		const stream = await navigator.mediaDevices.getUserMedia({
@@ -46,10 +51,11 @@ async function startSelectedCamera(deviceId, video) {
 		});
 		video.srcObject = stream;
 		await video.play();
+		success(`Camera started: ${stream.getVideoTracks()[0]?.label || deviceId.slice(0, 6)}`);
 	} catch (err) {
 		console.error(err);
 		video.srcObject = null;
-		alert('Could not start the selected camera.');
+		error('Could not start the selected camera.');
 	}
 }
 
@@ -63,7 +69,7 @@ export function setupCaptureButton(captureButton, video, resultsList, mogi) {
 	const captureButtonText = captureButton.textContent;
 	captureButton.addEventListener('click', async () => {
 		if( mogi.ended) {
-			alert('You have reached the maximum number of races.');
+			warning('You have reached the maximum number of races.');
 			return;
 		}
 		captureButton.disabled = true;
@@ -81,17 +87,18 @@ export function setupCaptureButton(captureButton, video, resultsList, mogi) {
 			// If the user canceled manual resolve, just abort quietly
 			if (/** @type {any} */(e)?.code === 'MANUAL_CANCELLED') {
 				console.log('Capture canceled by user.');
+				info('Capture canceled.');
 				return;
 			}
 			// If no scoreboard found, warn the user
 			if (/** @type {any} */(e)?.code === 'NO_SCOREBOARD') {
 				console.log('No scoreboard detected in frame.');
-				alert('No scoreboard detected — try capturing on the results screen.');
+				error('No scoreboard detected — try capturing on the results screen.');
 				return;
 			}
 			// Otherwise, surface the error
 			console.error(e);
-			alert('OCR failed. See console for details.');
+			error('OCR failed. See console for details.');
 		} finally {
 			captureButton.disabled = false;
 			captureButton.textContent = captureButtonText;

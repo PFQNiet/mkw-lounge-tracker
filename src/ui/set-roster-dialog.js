@@ -1,4 +1,5 @@
 import { Roster, ROSTER_SIZE } from "../roster.js";
+import { error, success } from "./toast.js";
 
 function makeDialog() {
 	const dialog = document.createElement('dialog');
@@ -34,9 +35,10 @@ export function requestRoster(btn) {
 					const roster = Roster.parse(input.value);
 					if( !roster.full ) throw new Error(`Expected ${ROSTER_SIZE} players, got ${roster.size}`);
 					dialog.close();
+					success('Roster loaded!');
 					resolve(roster);
 				} catch(err) {
-					alert(/** @type {any} */(err).message || err);
+					error(/** @type {any} */(err).message || err);
 				}
 			});
 		});
