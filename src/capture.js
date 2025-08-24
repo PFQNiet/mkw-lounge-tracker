@@ -61,7 +61,7 @@ export function snapshotBlobUrlFromCanvas(base) {
 	return new Promise((resolve, reject) => {
 		base.toBlob(b => {
 			b ? resolve(URL.createObjectURL(b)) : reject(new Error('toBlob failed'));
-		}, 'image/png');
+		}, 'image/jpeg', 0.85);
 	});
 }
 
