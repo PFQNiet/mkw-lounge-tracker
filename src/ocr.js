@@ -18,7 +18,7 @@ function generateRowRects(p) {
 			x: p.x,
 			y: Math.round(p.startY + i * p.rowHeight) + p.vPad,
 			w: p.w,
-			h: p.rowHeight - 2*p.vPad
+			h: p.rowHeight - 2 * p.vPad
 		});
 	}
 	return rects;
@@ -30,27 +30,37 @@ export const OCR_GRID = {
 };
 
 /**
+ * Directional, weighted edit distance from a -> b.
+ * Costs are integers (keeps the assignment DP happy).
  * @param {string} a
  * @param {string} b
- * @see https://en.wikipedia.org/wiki/Levenshtein_distance
+ * @param {{ins:number, del:number, sub:number}} w
  */
-function levenshtein(a, b) {
+function levenshteinWeighted(a, b, w = { ins: 1, del: 1, sub: 1 }) {
 	if (a === b) return 0;
-	if (!a.length) return b.length;
-	if (!b.length) return a.length;
-	const v0 = new Array(b.length + 1).fill(0);
-	const v1 = new Array(b.length + 1).fill(0);
-	for (let i = 0; i <= b.length; i++) v0[i] = i;
-	for (let i = 0; i < a.length; i++) {
-		v1[0] = i + 1;
+	const al = a.length, bl = b.length;
+	if (!al) return bl * w.ins;
+	if (!bl) return al * w.del;
+
+	const v0 = new Array(bl + 1);
+	const v1 = new Array(bl + 1);
+	for (let j = 0; j <= bl; j++) v0[j] = j * w.ins;
+
+	for (let i = 0; i < al; i++) {
+		v1[0] = (i + 1) * w.del;
 		const ca = a.charCodeAt(i);
-		for (let j = 0; j < b.length; j++) {
-			const cost = ca === b.charCodeAt(j) ? 0 : 1;
-			v1[j + 1] = Math.min(v1[j] + 1, v0[j + 1] + 1, v0[j] + cost);
+		for (let j = 0; j < bl; j++) {
+			const cb = b.charCodeAt(j);
+			const costSub = ca === cb ? 0 : w.sub;
+			v1[j + 1] = Math.min(
+				v1[j] + w.ins,        // insert into a (extra char in b)
+				v0[j + 1] + w.del,    // delete from a
+				v0[j] + costSub       // substitute / match
+			);
 		}
-		for (let j = 0; j <= b.length; j++) v0[j] = v1[j];
+		for (let j = 0; j <= bl; j++) v0[j] = v1[j];
 	}
-	return v1[b.length];
+	return v1[bl];
 }
 
 /**
@@ -111,7 +121,8 @@ const scratch = document.createElement('canvas');
 export async function processResultsScreen(canvas, roster) {
 	const { nameRects } = OCR_GRID;
 	const whitelist = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 -_[]|.',
-		maxEditDistance = 3;
+		levCosts = { ins: 3, del: 1, sub: 2 },
+		maxEditDistance = 10;
 
 	const worker = await getWorker();
 	await worker.setParameters({
@@ -124,7 +135,7 @@ export async function processResultsScreen(canvas, roster) {
 	/** @type {{ text:string, confidence:number }[]} */
 	const rawRows = [];
 	for (const rect of nameRects) {
-		const { canvas:img, whiteRatio } = preprocessCrop(canvas, rect, 2, scratch);
+		const { canvas: img, whiteRatio } = preprocessCrop(canvas, rect, 2, scratch);
 		if (whiteRatio < 0.02) {
 			rawRows.push({ text: '', confidence: 0 });
 			continue;
@@ -137,8 +148,16 @@ export async function processResultsScreen(canvas, roster) {
 
 	// Prepare normalized data
 	const normRoster = [...roster].map(p => ({ id: p.id, name: p.name, norm: normalizeName(p.name) }));
-	const placements = rawRows.map((row, i) => new Placement(i+1, null, row.text, row.text, row.confidence, false));
+	const placements = rawRows.map((row, i) => new Placement(i + 1, null, row.text, row.text, row.confidence, false));
 	const normRows = rawRows.map(r => normalizeName(r.text));
+
+	// Early exit if 2+ blanks
+	if (normRows.filter(s => !s).length > 2) {
+		const err = new Error('No scoreboard detected');
+		// @ts-ignore add a code for easy identification
+		err.code = 'NO_SCOREBOARD';
+		throw err;
+	}
 
 	// Build an integer cost matrix: players (rows) × OCR rows (cols)
 	const N = normRoster.length; // expect 12
@@ -164,7 +183,7 @@ export async function processResultsScreen(canvas, roster) {
 	for (let i = 0; i < N; i++) {
 		for (let j = 0; j < N; j++) {
 			if (isBlankCol[j]) continue;
-			const d = levenshtein(targetNorm[i], normRows[j]);
+			const d = levenshteinWeighted(targetNorm[i], normRows[j], levCosts);
 			cost[i][j] = d;
 			if (d > maxNonBlankCost) maxNonBlankCost = d;
 		}
@@ -182,7 +201,6 @@ export async function processResultsScreen(canvas, roster) {
 	}
 
 	// Pass 3: if a row exactly matches a known IGN, heavily penalize assigning it to anyone else.
-	// (Optionally treat <=1 edit away as “match” to be robust to tiny OCR noise.)
 	for (let j = 0; j < N; j++) {
 		if (isBlankCol[j]) continue;
 		const owner = ignOwner.get(normRows[j]);
@@ -205,40 +223,34 @@ export async function processResultsScreen(canvas, roster) {
 	}
 
 	// Ambiguity handling:
-	//  - If a row has *non-blank* OCR and its assigned distance exceeds maxEditDistance, force manual.
-	//  - If there are 2+ blank rows, force manual for those blanks.
-	const blanks = [];
+	//  - Mark blank rows as disconnected
+	//  - If a row has *non-blank* OCR and its assigned distance exceeds maxEditDistance, revoke assignment
 	for (let j = 0; j < N; j++) {
 		const isBlank = !normRows[j];
-		if (!isBlank && assignedDist[j] > maxEditDistance) {
-			placements[j] = placements[j].withPlayerIdAndResolvedName(null, placements[j].ocrText);
-		}
 		if (isBlank) {
 			placements[j] = placements[j].withPlacement(placements[j].placement, true);
-			blanks.push(j);
 		}
-	}
-	if (blanks.length > 2) {
-		const err = new Error('No scoreboard detected');
-		// @ts-ignore add a code for easy identification
-		err.code = 'NO_SCOREBOARD';
-		throw err;
-	}
-	if (blanks.length === 2) {
-		for (const j of blanks) {
-			placements[j] = placements[j].withPlayerIdAndResolvedName(null, "");
+		else if (assignedDist[j] > maxEditDistance) {
+			placements[j] = placements[j].withPlayerIdAndResolvedName(null, placements[j].ocrText);
 		}
 	}
 
 	// If anything is unresolved, open the manual resolver with the remaining players
 	if (placements.some(p => !p.playerId)) {
 		const remaining = normRoster.filter(p => !placements.some(r => r.playerId === p.id));
-		const confirmed = await manualResolve(placements, remaining);
-		if (!confirmed) {
-			const err = new Error('Manual resolve canceled');
-			// @ts-ignore add a code for easy identification
-			err.code = 'MANUAL_CANCELLED';
-			throw err;
+		if (remaining.length === 1) {
+			// One mismatch: just auto-assign it
+			const missingIndex = placements.findIndex(p => !p.playerId);
+			placements[missingIndex] = placements[missingIndex].withPlayerIdAndResolvedName(remaining[0].id, remaining[0].name);
+		}
+		else {
+			const confirmed = await manualResolve(placements, remaining);
+			if (!confirmed) {
+				const err = new Error('Manual resolve canceled');
+				// @ts-ignore add a code for easy identification
+				err.code = 'MANUAL_CANCELLED';
+				throw err;
+			}
 		}
 	}
 
