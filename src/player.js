@@ -48,4 +48,8 @@ export class Player {
 		const mmr  = Number(m[3]);
 		return new Player(`seed-${seed}`, name, seed, mmr);
 	}
+
+	toRosterString() {
+		return `${this.#seed}. ${this.#name} (${this.#mmr} MMR)`;
+	}
 }

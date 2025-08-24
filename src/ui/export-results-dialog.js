@@ -1,4 +1,5 @@
 /** @typedef {import("../mogi.js").Mogi} Mogi */
+import { exportZip } from "../export-zip.js";
 import { ROSTER_SIZE } from "../roster.js";
 import { success, warning } from "./toast.js";
 
@@ -48,10 +49,19 @@ function showResults(mogi) {
 }
 
 /**
- * @param {HTMLButtonElement} btn
+ * @param {HTMLButtonElement} resultsButton
+ * @param {HTMLButtonElement} downloadButton
  * @param {Mogi} mogi
  */
-export function connectExportButton(btn, mogi) {
-	btn.addEventListener('click', () => showResults(mogi));
-	mogi.addEventListener('update', () => btn.disabled = !mogi.ended);
+export function connectExportButton(resultsButton, downloadButton, mogi) {
+	resultsButton.addEventListener('click', () => showResults(mogi));
+	downloadButton.addEventListener('click', async () => {
+		downloadButton.disabled = true;
+		await exportZip(mogi);
+		downloadButton.disabled = false;
+	});
+	mogi.addEventListener('update', () => {
+		resultsButton.disabled = !mogi.ended;
+		downloadButton.disabled = !mogi.ended;
+	});
 }

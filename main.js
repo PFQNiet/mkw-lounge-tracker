@@ -20,6 +20,7 @@ async function main() {
 	const scoreTable = /** @type {HTMLTableElement} */(document.getElementById('scoreTable'));
 	const raceGallery = /** @type {HTMLDivElement} */(document.getElementById('raceGallery'));
 	const exportBtn = /** @type {HTMLButtonElement} */(document.getElementById('exportScores'));
+	const downloadBtn = /** @type {HTMLButtonElement} */(document.getElementById('downloadMogi'));
 
 	const roster = await requestRoster(startButton);
 
@@ -31,7 +32,7 @@ async function main() {
 	setupCaptureButton(captureBtn, video, outputOl, mogi);
 	setupAutoCapture(autoCaptureToggle, captureBtn, video, mogi);
 	connectScoreboard(scoreTable, mogi);
-	connectExportButton(exportBtn, mogi);
+	connectExportButton(exportBtn, downloadBtn, mogi);
 	connectGallery(raceGallery, mogi);
 }
 
