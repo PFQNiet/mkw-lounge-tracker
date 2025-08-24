@@ -106,7 +106,7 @@ function solveAssignmentDP(cost) {
 let _worker = /** @type {any} */(null);
 async function getWorker() {
 	if (_worker) return _worker;
-	_worker = await Tesseract.createWorker('eng', 1, { logger: () => { } });
+	_worker = await Tesseract.createWorker('eng', 1, { logger: () => { } }, { load_system_dawg: 'F', load_freq_dawg: 'F' });
 	return _worker;
 }
 
@@ -128,7 +128,7 @@ export async function processResultsScreen(canvas, roster) {
 	await worker.setParameters({
 		tessedit_char_whitelist: whitelist,
 		preserve_interword_spaces: '1', user_defined_dpi: '300',
-		load_system_dawg: 'F', load_freq_dawg: 'F', textord_heavy_nr: '1',
+		textord_heavy_nr: '1',
 		tessedit_pageseg_mode: '7' // SINGLE_LINE
 	});
 
