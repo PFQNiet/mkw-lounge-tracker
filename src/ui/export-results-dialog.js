@@ -26,7 +26,13 @@ function makeDialog() {
 /** @param {Mogi} mogi */
 function formatResults(mogi) {
 	const scores = mogi.calculatePlayerScores();
-	return [...mogi.roster].map(p => `${p.name} ${scores.get(p.id)}`).join('\n');
+	const scoresArray = [...scores.values()];
+	const roster = [...mogi.roster];
+	return roster.map(p => {
+		const score = scores.get(p.id) ?? 0;
+		const rank = scoresArray.filter(x => x > score).length + 1;
+		return `${p.nameOfPlayerToCredit(rank)} ${score}`;
+	}).join('\n');
 }
 
 /** @param {Mogi} mogi */

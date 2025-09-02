@@ -30,7 +30,7 @@ export class Roster {
 			const raw = row.ocrText.trim();
 			const norm = normalizeName(raw);
 			if (!norm) continue;
-			ply.ign = raw;
+			ply.activePlayer.ign = raw;
 		}
 	}
 

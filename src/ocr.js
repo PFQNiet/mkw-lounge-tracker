@@ -147,7 +147,7 @@ export async function processResultsScreen(canvas, roster) {
 	}
 
 	// Prepare normalized data
-	const normRoster = [...roster].map(p => ({ id: p.id, name: p.name, norm: normalizeName(p.name) }));
+	const rosterArray = [...roster];
 	const placements = rawRows.map((row, i) => new Placement(i + 1, null, row.text, row.text, row.confidence, false));
 	const normRows = rawRows.map(r => normalizeName(r.text));
 
@@ -160,20 +160,11 @@ export async function processResultsScreen(canvas, roster) {
 	}
 
 	// Build an integer cost matrix: players (rows) × OCR rows (cols)
-	const N = normRoster.length; // expect 12
+	const N = rosterArray.length; // expect 12
 	const isBlankCol = normRows.map(s => !s);
 
 	// Use IGN if available, else roster name, for each player
-	const targetNorm = [...roster].map(p => normalizeName(p.ign ?? p.name));
-
-	// Map known IGNs -> owner index (for strong preference)
-	/** @type {Map<string, number>} */
-	const ignOwner = new Map();
-	[...roster].forEach((p, i) => {
-		if (p.ign) {
-			ignOwner.set(normalizeName(p.ign), i);
-		}
-	});
+	const targetNorm = rosterArray.map(p => normalizeName(p.activePlayer.ign));
 
 	/** @type {number[][]} */
 	const cost = Array.from({ length: N }, () => Array(N).fill(0));
@@ -203,8 +194,8 @@ export async function processResultsScreen(canvas, roster) {
 	// Pass 3: if a row exactly matches a known IGN, heavily penalize assigning it to anyone else.
 	for (let j = 0; j < N; j++) {
 		if (isBlankCol[j]) continue;
-		const owner = ignOwner.get(normRows[j]);
-		if (owner == null) continue;
+		const owner = targetNorm.indexOf(normRows[j]);
+		if (owner < 0) continue;
 		for (let i = 0; i < N; i++) {
 			if (i === owner) continue;
 			cost[i][j] += IGN_MISMATCH_PENALTY;
@@ -218,7 +209,7 @@ export async function processResultsScreen(canvas, roster) {
 	/** @type {number[]} */ const assignedDist = new Array(N).fill(0);
 	for (let i = 0; i < N; i++) {
 		const j = assign[i];
-		placements[j] = placements[j].withPlayerIdAndResolvedName(normRoster[i].id, normRoster[i].name);
+		placements[j] = placements[j].withPlayerIdAndResolvedName(rosterArray[i].id, rosterArray[i].name);
 		assignedDist[j] = cost[i][j];
 	}
 
@@ -237,7 +228,7 @@ export async function processResultsScreen(canvas, roster) {
 
 	// If anything is unresolved, open the manual resolver with the remaining players
 	if (placements.some(p => !p.playerId)) {
-		const remaining = normRoster.filter(p => !placements.some(r => r.playerId === p.id));
+		const remaining = rosterArray.filter(p => !placements.some(r => r.playerId === p.id));
 		if (remaining.length === 1) {
 			// One mismatch: just auto-assign it
 			const missingIndex = placements.findIndex(p => !p.playerId);

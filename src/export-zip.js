@@ -11,14 +11,20 @@ function formatManifest(mogi) {
 	return JSON.stringify({
 		meta: {
 			createdAt: mogi.startDate.toISOString(),
-			formatVersion: 1
+			formatVersion: 2
 		},
 		roster: [...mogi.roster].map(p => ({
 			id: p.id,
 			name: p.name,
-			seed: p.seed ?? null,
-			mmr: p.mmr ?? null,
-			ign: p.ign ?? null
+			seed: p.seed,
+			mmr: p.mmr,
+			ign: p.ign,
+			substitutes: p.substitutes.map(s => ({
+				id: s.id,
+				name: s.name,
+				ign: s.ign,
+				joinedAt: s.joinedAt
+			}))
 		})),
 		races: mogi.races.map(r => ({
 			timestamp: r.timestamp,
@@ -28,7 +34,8 @@ function formatManifest(mogi) {
 				resolvedName: x.resolvedName,
 				ocrText: x.ocrText,
 				ocrConfidence: x.ocrConfidence,
-				dc: x.dc === true
+				dc: x.dc,
+				score: x.score
 			}))
 		}))
 	}, null, 2);
@@ -38,7 +45,12 @@ function formatManifest(mogi) {
  * @param {Mogi} mogi
  */
 function formatRoster(mogi) {
-	return [...mogi.roster].map(p => p.toRosterString()).join('\n')+'\n';
+	const roster = [...mogi.roster];
+	const mainList = roster.map(p => p.toRosterString());
+	const subList = roster
+		.map(p => [p.name].concat(p.substitutes.map(s => `- replaced by ${s.name} from Race ${s.joinedAt+1}`)))
+		.filter(x => x.length > 1);
+	return `${mainList.join('\n')}\n${subList.length > 0 ? `\nSubstitutions:\n${subList.join('\n')}` : ''}`;
 }
 
 /**
