@@ -79,6 +79,7 @@ export async function performCapture(video, mogi) {
 		// Only if successful, make the snapshot and push the race
 		const snapshotUrl = await snapshotBlobUrlFromCanvas(base);
 		const race = new Race(Date.now(), placements, snapshotUrl);
+		mogi.roster.lockIGNsFromPlacements(placements);
 		mogi.addRace(race);
 	} catch (e) {
 		// If the user canceled manual resolve, just abort quietly

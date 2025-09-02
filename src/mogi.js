@@ -38,7 +38,6 @@ export class Mogi extends EventTarget {
 		if( this.ended) throw new Error('Too many races');
 		this.#races.push(race);
 		this.dispatchEvent(new Event('update'));
-		if( this.#races.length === 1) this.#roster.lockIGNsFromPlacements(race.placements);
 		success(`Race ${this.#races.length} saved!`);
 	}
 
