@@ -49,7 +49,8 @@ function formatRoster(mogi) {
 	const mainList = roster.map(p => p.toRosterString());
 	const subList = roster
 		.map(p => [p.name].concat(p.substitutes.map(s => `- replaced by ${s.name} from Race ${s.joinedAt+1}`)))
-		.filter(x => x.length > 1);
+		.filter(x => x.length > 1)
+		.map(x => x.join('\n'));
 	return `${mainList.join('\n')}\n${subList.length > 0 ? `\nSubstitutions:\n${subList.join('\n')}` : ''}`;
 }
 

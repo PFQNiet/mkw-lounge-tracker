@@ -11,6 +11,7 @@ export class Mogi extends EventTarget {
 	/** @type {Race[]} */ #races = [];
 	get races() { return [...this.#races]; }
 
+	get size() { return this.#races.length; }
 	get ended() { return this.#races.length >= RACE_COUNT; }
 	get maxScore() { return POINTS_BY_PLACEMENT.reduce((a, b) => a + b) * RACE_COUNT; }
 
@@ -28,7 +29,11 @@ export class Mogi extends EventTarget {
 				e.returnValue = '';
 			}
 		});
-		queueMicrotask(() => this.dispatchEvent(new Event('update')));
+		queueMicrotask(() => this.triggerUpdate());
+	}
+
+	triggerUpdate() {
+		this.dispatchEvent(new Event('update'));
 	}
 
 	/**
@@ -37,7 +42,7 @@ export class Mogi extends EventTarget {
 	addRace(race) {
 		if( this.ended) throw new Error('Too many races');
 		this.#races.push(race);
-		this.dispatchEvent(new Event('update'));
+		this.triggerUpdate();
 		success(`Race ${this.#races.length} saved!`);
 	}
 
@@ -50,7 +55,7 @@ export class Mogi extends EventTarget {
 		if( !oldRace) throw new Error('Race not found');
 		const newRace = oldRace.withPlacements(placements);
 		this.#races.splice(idx, 1, newRace);
-		this.dispatchEvent(new Event('update'));
+		this.triggerUpdate();
 		success(`Race ${idx + 1} updated`);
 	}
 
@@ -61,7 +66,7 @@ export class Mogi extends EventTarget {
 		const race = this.#races.at(idx);
 		if( !race) throw new Error('Race not found');
 		this.#races.splice(idx, 1);
-		this.dispatchEvent(new Event('update'));
+		this.triggerUpdate();
 		info(`Race ${idx + 1} deleted`);
 	}
 

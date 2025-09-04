@@ -2,6 +2,7 @@
 
 import { RACE_COUNT } from "../mogi.js";
 import { openEditRace } from "./edit-race-dialog.js";
+import { openEditRoster } from "./edit-roster-dialog.js";
 
 /**
  * @param {HTMLTableElement} scoreTable
@@ -58,7 +59,10 @@ export function connectScoreboard(scoreTable, mogi) {
 		// Build <tfoot> with Edit buttons per race column
 		const tfoot = document.createElement('tfoot');
 		const fr = document.createElement('tr');
-		fr.appendChild(document.createElement('td')); // Commands...
+		const rosterButton = document.createElement('button');
+		rosterButton.textContent = 'Edit Roster';
+		rosterButton.addEventListener('click', () => openEditRoster(mogi));
+		fr.appendChild(document.createElement('td')).appendChild(rosterButton);
 		for (let i = 0; i < RACE_COUNT; i++) {
 			const td = document.createElement('td');
 			const btn = document.createElement('button');

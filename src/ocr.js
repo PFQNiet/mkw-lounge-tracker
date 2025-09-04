@@ -209,7 +209,7 @@ export async function processResultsScreen(canvas, roster) {
 	/** @type {number[]} */ const assignedDist = new Array(N).fill(0);
 	for (let i = 0; i < N; i++) {
 		const j = assign[i];
-		placements[j] = placements[j].withPlayerIdAndResolvedName(rosterArray[i].id, rosterArray[i].name);
+		placements[j] = placements[j].withPlayerIdAndResolvedName(rosterArray[i].id, rosterArray[i].activePlayer.name);
 		assignedDist[j] = cost[i][j];
 	}
 
@@ -232,7 +232,7 @@ export async function processResultsScreen(canvas, roster) {
 		if (remaining.length === 1) {
 			// One mismatch: just auto-assign it
 			const missingIndex = placements.findIndex(p => !p.playerId);
-			placements[missingIndex] = placements[missingIndex].withPlayerIdAndResolvedName(remaining[0].id, remaining[0].name);
+			placements[missingIndex] = placements[missingIndex].withPlayerIdAndResolvedName(remaining[0].id, remaining[0].activePlayer.name);
 		}
 		else {
 			const confirmed = await manualResolve(placements, remaining);

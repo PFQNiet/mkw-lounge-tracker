@@ -1,5 +1,5 @@
-import { RACE_COUNT } from "./mogi";
-import { ROSTER_SIZE } from "./roster";
+import { RACE_COUNT } from "./mogi.js";
+import { ROSTER_SIZE } from "./roster.js";
 
 /**
  * @param {string & {normalized?:never}} s
@@ -32,11 +32,15 @@ export class Player {
 	/** @type {string} */ #ign = '';
 	get ign() { return this.#ign === '' ? this.#name : this.#ign; } // use given name if ign not set
 	set ign(ign) { this.#ign = this.#ign === '' ? ign : this.#ign; } // only allow setting once
+	get rawIgn() { return this.#ign; }
+	set rawIgn(ign) { this.#ign = ign; }
 
 	/** @type {Substitute[]} */ #substitutes = [];
 	get substitutes() { return [...this.#substitutes]; }
 	/** @param {Substitute} sub */
 	addSubstitute(sub) { this.#substitutes.push(sub); }
+	/** @param {Substitute} sub */
+	removeSubstitute(sub) { this.#substitutes = this.#substitutes.filter(s => s !== sub); }
 
 	/** @returns {Player|Substitute} */
 	get activePlayer() { return this.#substitutes.at(-1) ?? this; }
@@ -99,9 +103,12 @@ export class Substitute {
 	/** @type {string} */ #ign = '';
 	get ign() { return this.#ign == '' ? this.#name : this.#ign; } // use given name if ign not set
 	set ign(ign) { this.#ign = this.#ign == '' ? ign : this.#ign; } // only allow setting once
+	get rawIgn() { return this.#ign; }
+	set rawIgn(ign) { this.#ign = ign; }
 
 	/** @type {number} */ #joinedAt;
 	get joinedAt() { return this.#joinedAt; }
+	set joinedAt(joinedAt) { this.#joinedAt = joinedAt; }
 
 	/**
 	 * @param {string} id

@@ -1,4 +1,5 @@
 /** @typedef {import("../race.js").Placement} Placement */
+/** @typedef {import("../player.js").Player} Player */
 
 function makeDialog() {
 	const dialog = document.createElement('dialog');
@@ -22,7 +23,7 @@ function makeDialog() {
 
 /**
  * @param {Placement[]} placements
- * @param {{id:string,name:string}[]} remaining
+ * @param {Player[]} remaining
  * @returns {Promise<boolean>} true = confirmed/applied, false = canceled
  */
 export function manualResolve(placements, remaining) {
@@ -41,7 +42,7 @@ export function manualResolve(placements, remaining) {
 			const y3 = document.createElement('div');
 			const sel = document.createElement('select'); sel.dataset.placement = String(row.placement);
 			const empty = document.createElement('option'); empty.value = ''; empty.textContent = '— Select player —'; sel.appendChild(empty);
-			for (const p of remaining) { const opt = document.createElement('option'); opt.value = p.id; opt.textContent = p.name; sel.appendChild(opt); }
+			for (const p of remaining) { const opt = document.createElement('option'); opt.value = p.id; opt.textContent = p.activePlayer.name; sel.appendChild(opt); }
 			y3.appendChild(sel);
 			grid.append(y1, y2, y3);
 		}
@@ -62,7 +63,7 @@ export function manualResolve(placements, remaining) {
 				if( !row) return;
 				const p = remaining.find(pp => pp.id === s.value);
 				if( !p) return;
-				placements[idx] = row.withPlayerIdAndResolvedName(p.id, p.name);
+				placements[idx] = row.withPlayerIdAndResolvedName(p.id, p.activePlayer.name);
 			}
 
 			dialog.close();
