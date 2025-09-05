@@ -2,6 +2,9 @@
 
 import { checkOverlay } from "../autocapture.js";
 import { performCapture } from "../capture.js";
+import { Config } from "../util.js";
+
+const configKey = 'autoCapture';
 
 /**
  * @param {HTMLInputElement} toggle
@@ -25,16 +28,16 @@ export function setupAutoCapture(toggle, captureButton, video, mogi) {
 			}
 		}, 200);
 		captureButton.disabled = true;
-		localStorage.setItem('autoCapture', 'on');
+		Config.set(configKey, 'on');
 	}
 	function stopPoll() {
 		clearInterval(interval);
 		interval = 0;
 		captureButton.disabled = false;
-		localStorage.setItem('autoCapture', 'off');
+		Config.set(configKey, 'off');
 	}
 
-	if( localStorage.getItem('autoCapture') === 'on' ) {
+	if( Config.get(configKey) === 'on' ) {
 		toggle.checked = true;
 		startPoll();
 	}

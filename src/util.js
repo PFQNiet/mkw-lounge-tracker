@@ -15,3 +15,16 @@ export function ctx2d(el, options = {}) {
 	if (!ctx) throw new Error('2D context unavailable');
 	return ctx;
 }
+
+export const Config = {
+	/**
+	 * @param {string} key
+	 * @param {string} [def]
+	 */
+	get: (key, def='') => localStorage.getItem(key) ?? def,
+	/**
+	 * @param {string} key
+	 * @param {string} value
+	 */
+	set: (key, value) => localStorage.setItem(key, value),
+};
