@@ -6,7 +6,7 @@ export default {
 	},
 
 	text: {
-		title: "Mogi Manager MKW",
+		title: "MKW Mogi Manager",
 		loading: "Wird geladen…",
 		processing: "Wird verarbeitet…",
 		save: "Speichern",
