@@ -45,13 +45,19 @@ export function openEditRoster(mogi) {
 
 		const subcontainer = document.createElement('div');
 		const sub = p.substitutes.at(-1);
+		const subname = document.createElement('div');
+		if( sub) subname.textContent = sub.name;
+		else {
+			subname.textContent = '(none)';
+			subname.classList.add('muted');
+		}
 		const subbutton = document.createElement('button');
 		subbutton.textContent = 'Edit';
 		subbutton.addEventListener('click', () => {
 			dialog.close();
 			openSubstitutePlayer(mogi, p);
 		});
-		subcontainer.append(sub ? sub.name : '(none)', ' ', subbutton);
+		subcontainer.append(subname, ' ', subbutton);
 
 		grid.append(name, input, subcontainer);
 	}

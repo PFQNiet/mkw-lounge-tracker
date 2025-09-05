@@ -30,13 +30,14 @@ export function connectScoreboard(scoreTable, mogi) {
 		for (const p of roster) {
 			const tr = document.createElement('tr');
 
-			const tdName = document.createElement('td'); tdName.textContent = p.name; tr.appendChild(tdName);
+			const tdName = document.createElement('td'); tdName.textContent = p.activePlayer.name; tr.appendChild(tdName);
 
 			// Each race: show placement number; use '—' if not present
 			for (const r of mogi.races) {
 				const td = document.createElement('td');
 				// find this player's placement in this race
 				const row = r.placements.find(x => x.playerId === p.id);
+				td.classList.add(`place-${row?.placement ?? 0}`);
 				td.textContent = row?.ordinal ?? '—';
 				tr.appendChild(td);
 			}
@@ -48,7 +49,7 @@ export function connectScoreboard(scoreTable, mogi) {
 			}
 
 			const tdTotal = document.createElement('td');
-			tdTotal.textContent = String(totals.get(p.id) || 0);
+			tdTotal.textContent = String(totals.get(p.id) || 0).padStart(3, '\u2007');
 			tr.appendChild(tdTotal);
 
 			tbody.appendChild(tr);

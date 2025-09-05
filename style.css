@@ -250,6 +250,50 @@ table.score thead th {
 	top: 0;
 }
 
+.place-1 {
+	color: #f5c542;
+}
+
+.place-2 {
+	color: #b8c2cc;
+}
+
+.place-3 {
+	color: #b56b2c;
+}
+
+.place-4,
+.place-5,
+.place-6,
+.place-7,
+.place-8,
+.place-9,
+.place-10,
+.place-11,
+.place-12 {
+	color: #7388c7;
+}
+
+table.score tbody tr:nth-child(2n) {
+	background: #33333320;
+}
+
+table.score tbody tr:nth-child(n+7) td {
+	background: #80000020;
+}
+
+table.score tbody tr:nth-child(1) {
+	background: #f5c54220;
+}
+
+table.score tbody tr:nth-child(2) {
+	background: #b8c2cc20;
+}
+
+table.score tbody tr:nth-child(3) {
+	background: #b56b2c20;
+}
+
 .gallery a {
 	display: block;
 	background: #141414;

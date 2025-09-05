@@ -60,7 +60,7 @@ export class Placement {
 	get ordinal() {
 		if (this.#dc) return '—';
 		const ordinal = ['st','nd','rd'][this.#placement-1] ?? 'th';
-		return `${this.#placement}${ordinal}`;
+		return `${this.#placement < 10 ? '\u2007' : ''}${this.#placement}${ordinal}`;
 	}
 }
 
