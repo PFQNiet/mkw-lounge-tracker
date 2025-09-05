@@ -18,6 +18,7 @@ export function setupAutoCapture(toggle, captureButton, video, mogi) {
 	let cooldown = false;
 	function startPoll() {
 		interval = setInterval(() => {
+			if( mogi.ended ) return;
 			if( cooldown ) return;
 			if( checkOverlay(video) ) hits += 1;
 			if( hits > 2 ) {

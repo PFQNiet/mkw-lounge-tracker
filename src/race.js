@@ -56,12 +56,6 @@ export class Placement {
 		if (this.#dc) return 1;
 		return POINTS_BY_PLACEMENT[this.#placement - 1] ?? 0;
 	}
-
-	get ordinal() {
-		if (this.#dc) return '—';
-		const ordinal = ['st','nd','rd'][this.#placement-1] ?? 'th';
-		return `${this.#placement < 10 ? '\u2007' : ''}${this.#placement}${ordinal}`;
-	}
 }
 
 export class Race {

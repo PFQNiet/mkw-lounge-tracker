@@ -1,15 +1,17 @@
 /** @typedef {import("../race.js").Placement} Placement */
 /** @typedef {import("../player.js").Player} Player */
 
+import { fmt, t } from "../i18n/i18n.js";
+
 function makeDialog() {
 	const dialog = document.createElement('dialog');
 	dialog.innerHTML = `
 		<form method="dialog" class="modal">
-			<h3>Resolve unmatched players</h3>
+			<h3>${t('manualResolution.title')}</h3>
 			<div class="grid"></div>
 			<footer>
-				<button value="cancel">Cancel</button>
-				<button value="confirm" type="button" class="btn--primary">Confirm</button>
+				<button value="cancel">${t('cancel')}</button>
+				<button value="confirm" type="button" class="btn--primary">${t('confirm')}</button>
 			</footer>
 		</form>
 	`;
@@ -34,15 +36,12 @@ export function manualResolve(placements, remaining) {
 		const unresolved = placements.filter(p => !p.playerId);
 
 		for (const row of unresolved) {
-			const y1 = document.createElement('div'); y1.className = 'mono muted'; y1.textContent = `${row.placement}.`;
-			const y2 = document.createElement('div'); y2.textContent = 'OCR: ';
-			const chip = document.createElement('span'); chip.className = 'badge';
-			chip.textContent = `${row.ocrText || '(blank)'} · ${Math.round(row.ocrConfidence)}%`;
-			y2.appendChild(chip);
+			const y1 = document.createElement('div'); y1.className = 'mono muted'; y1.textContent = fmt.place(row.placement);
+			const y2 = document.createElement('div'); y2.textContent = t('capture.ocrResult', { ocrText: row.ocrText, ocrConfidence: row.ocrConfidence });
 			const y3 = document.createElement('div');
 			const sel = document.createElement('select'); sel.dataset.placement = String(row.placement);
-			const empty = document.createElement('option'); empty.value = ''; empty.textContent = '— Select player —'; sel.appendChild(empty);
-			for (const p of remaining) { const opt = document.createElement('option'); opt.value = p.id; opt.textContent = p.activePlayer.name; sel.appendChild(opt); }
+			sel.add(new Option(t('manualResolution.selectPlayer'), ''));
+			for (const p of remaining) sel.add(new Option(p.activePlayer.name, p.id));
 			y3.appendChild(sel);
 			grid.append(y1, y2, y3);
 		}

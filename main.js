@@ -1,14 +1,21 @@
+import { initI18n } from "./src/i18n/i18n.js";
 import { Mogi } from "./src/mogi.js";
 import { setupAutoCapture } from "./src/ui/autocapture-toggle.js";
 import { setupCameraList, setupCaptureButton } from "./src/ui/capture-button.js";
 import { connectExportButton } from "./src/ui/export-results-dialog.js";
 import { connectGallery } from "./src/ui/gallery.js";
+import { setupLocaleSwitcher } from "./src/ui/locale-switcher.js";
 import { connectScoreboard } from "./src/ui/scoreboard.js";
 import { requestRoster } from "./src/ui/set-roster-dialog.js";
 
 async function main() {
 	const step1 = /** @type {HTMLDivElement} */(document.getElementById('step1'));
 	const step2 = /** @type {HTMLDivElement} */(document.getElementById('step2'));
+
+	const localeSelect = /** @type {HTMLSelectElement} */(document.getElementById('locale'));
+
+	setupLocaleSwitcher(localeSelect);
+	initI18n();
 
 	const startButton = /** @type {HTMLButtonElement} */(document.getElementById('start'));
 

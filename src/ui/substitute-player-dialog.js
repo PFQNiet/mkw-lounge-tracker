@@ -1,6 +1,7 @@
 /** @typedef {import("../mogi.js").Mogi} Mogi */
 /** @typedef {import("../player.js").Player} Player */
 
+import { t } from "../i18n/i18n.js";
 import { RACE_COUNT } from "../mogi.js";
 import { Substitute } from "../player.js";
 import { openEditRoster } from "./edit-roster-dialog.js";
@@ -10,15 +11,15 @@ function makeDialog() {
 	const dialog = document.createElement('dialog');
 	dialog.innerHTML = `
 		<form method="dialog" class="modal">
-			<h3>Substitute player <span class="name"></span></h3>
+			<h3>${t('substitutePlayer.title')} <span class="name"></span></h3>
 			<div class="grid" style="grid-template-columns: 1fr 1fr 160px;">
-				<b>Lounge name</b>
-				<b>In-game name</b>
-				<b>Joined race #</b>
+				<b>${t('editRoster.loungeName')}</b>
+				<b>${t('editRoster.ingameName')}</b>
+				<b>${t('substitutePlayer.joinedAt')}</b>
 			</div>
 			<footer>
-				<button value="cancel">Cancel</button>
-				<button value="save" type="button" class="btn--primary">Save</button>
+				<button value="cancel">${t('cancel')}</button>
+				<button value="save" type="button" class="btn--primary">${t('save')}</button>
 			</footer>
 		</form>
 	`;
@@ -48,7 +49,7 @@ export function openSubstitutePlayer(mogi, player) {
 		const ingameName = document.createElement('input');
 		ingameName.name = 'ingameName';
 		ingameName.dataset.playerId = s.id;
-		ingameName.placeholder = '(autodetect)';
+		ingameName.placeholder = t('editRoster.autodetect');
 		ingameName.value = s.rawIgn;
 
 		const joinedAt = document.createElement('input');
@@ -65,11 +66,11 @@ export function openSubstitutePlayer(mogi, player) {
 	{ // new substitute
 		const loungeName = document.createElement('input');
 		loungeName.name = 'loungeName';
-		loungeName.placeholder = 'New Substitute';
+		loungeName.placeholder = t('substitutePlayer.newSubstitute');
 
 		const ingameName = document.createElement('input');
 		ingameName.name = 'ingameName';
-		ingameName.placeholder = '(autodetect)';
+		ingameName.placeholder = t('editRoster.autodetect');
 
 		const joinedAt = document.createElement('input');
 		joinedAt.name = 'joinedAt';
@@ -106,7 +107,7 @@ export function openSubstitutePlayer(mogi, player) {
 		}
 
 		dialog.close();
-		success('Substitutes updated!');
+		success(t('substitutePlayer.substituteUpdated'));
 		mogi.triggerUpdate();
 		openEditRoster(mogi);
 	});

@@ -3,12 +3,18 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>MKW Mogi Manager</title>
+	<title data-i18n="title">MKW Mogi Manager</title>
 	<link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-	<header class="row" style="justify-content: space-between">
-		<h1 style="font-size: 18px; font-weight: 600; margin:0">MKW Mogi Manager</h1>
+	<header class="row">
+		<h1 style="font-size: 18px; font-weight: 600; margin:0" data-i18n="title">MKW Mogi Manager</h1>
+		<ins class="spacer"></ins>
+		<select id="locale" aria-label="Select locale">
+			<option value="en">English</option>
+			<option value="fr">Français</option>
+			<option value="de">Deutsch</option>
+		</select>
 		<a href="https://github.com/PFQNiet/mkw-lounge-tracker" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub" class="icon-btn" title="View on GitHub">
 			<img src="./img/github-logo.svg" width="20" height="20" aria-hidden="true" />
 		</a>
@@ -17,45 +23,45 @@
 	<div id="step1">
 		<section class="panel welcome" style="max-width:1100px; margin:16px auto;">
 			<div>
-				<p class="lead">Capture, OCR, score; right in your browser. No installs, no uploads.</p>
+				<p class="lead" data-i18n="landingPage.lead">Capture, OCR, score; right in your browser. No installs, no uploads.</p>
 
 				<div class="chips">
-					<span class="chip">Offline OCR</span>
-					<span class="chip">Disconnect handler</span>
-					<span class="chip">Manual resolve + edit</span>
-					<span class="chip">Lounge export</span>
+					<span class="chip" data-i18n="landingPage.features.0">Offline OCR</span>
+					<span class="chip" data-i18n="landingPage.features.1">Disconnect handler</span>
+					<span class="chip" data-i18n="landingPage.features.2">Manual resolve + edit</span>
+					<span class="chip" data-i18n="landingPage.features.3">Lounge export</span>
 				</div>
 
 				<ul class="steps">
-					<li><strong>1.</strong> Click <em>Get started</em> and paste the 12-player roster (<code>1. Name (12345 MMR)</code>).</li>
-					<li><strong>2.</strong> Pick your virtual webcam in the preview area.</li>
-					<li><strong>3.</strong> After each race, hit <em>Capture &amp; OCR</em>. We'll auto-match; if unsure, we'll ask.</li>
-					<li><strong>4.</strong> Fix anything via <em>Edit</em> &rarr; <em>Save</em>. Export scores when done.</li>
+					<li data-i18n="landingPage.steps.0"><strong>1.</strong> Click <em>Get started</em> and paste the 12-player roster (<code>1. Name (12345 MMR)</code>).</li>
+					<li data-i18n="landingPage.steps.1"><strong>2.</strong> Pick your virtual webcam in the preview area.</li>
+					<li data-i18n="landingPage.steps.2"><strong>3.</strong> After each race, hit <em>Capture &amp; OCR</em>. We'll auto-match; if unsure, we'll ask.</li>
+					<li data-i18n="landingPage.steps.3"><strong>4.</strong> Fix anything via <em>Edit</em> &rarr; <em>Save</em>. Export scores when done.</li>
 				</ul>
 
 				<div class="cta">
-					<button id="start" class="btn--primary" style="padding:10px 14px; font-weight:600;">🚀 Get started</button>
+					<button id="start" class="btn--primary" style="padding:10px 14px; font-weight:600;" data-i18n="landingPage.getStartedButton">🚀 Get started</button>
 				</div>
 			</div>
 
 			<div>
 				<div class="aside">
-					<h3>Notes</h3>
+					<h3 data-i18n="landingPage.notesLabel">Notes</h3>
 					<ul>
-						<li>Race 1 must include all 12 players.</li>
-						<li>10-player races are valid; 9 or fewer are a redo.</li>
-						<li>DCs score 1 point (CPU names can appear, just confirm who DC'd).</li>
-						<li>Everything stays local in your browser.</li>
-						<li>Auto-capture [BETA]: detects when you take a screenshot on your Switch and automatically captures it.</li>
+						<li data-i18n="landingPage.notes.0">Race 1 must include all 12 players.</li>
+						<li data-i18n="landingPage.notes.1">10-player races are valid; 9 or fewer are a redo.</li>
+						<li data-i18n="landingPage.notes.2">DCs score 1 point (CPU names can appear, just confirm who DC'd).</li>
+						<li data-i18n="landingPage.notes.3">Everything stays local in your browser.</li>
+						<li data-i18n="landingPage.notes.4">Auto-capture [BETA]: detects when you take a screenshot on your Switch and automatically captures it.</li>
 					</ul>
 				</div>
 
 				<div class="aside">
-					<h3>About</h3>
+					<h3 data-i18n="landingPage.aboutLabel">About</h3>
 					<ul>
-						<li>Made by <a href="https://github.com/PFQNiet" target="_blank" rel="noopener noreferrer">Niet</a></li>
-						<li><a href="https://github.com/PFQNiet/mkw-lounge-tracker" target="_blank" rel="noopener noreferrer">View source on GitHub</a></li>
-						<li><a href="https://github.com/PFQNiet/mkw-lounge-tracker/issues" target="_blank" rel="noopener noreferrer">Report a bug</a></li>
+						<li data-i18n="landingPage.about.0">Made by <a href="https://github.com/PFQNiet" target="_blank" rel="noopener noreferrer">Niet</a></li>
+						<li data-i18n="landingPage.about.1"><a href="https://github.com/PFQNiet/mkw-lounge-tracker" target="_blank" rel="noopener noreferrer">View source on GitHub</a></li>
+						<li data-i18n="landingPage.about.2"><a href="https://github.com/PFQNiet/mkw-lounge-tracker/issues" target="_blank" rel="noopener noreferrer">Report a bug</a></li>
 					</ul>
 				</div>
 			</div>
@@ -67,42 +73,42 @@
 			<section class="panel main-view">
 				<video id="preview" autoplay playsinline muted></video>
 				<div class="row">
-					<label class="muted">Camera</label>
-					<select id="camera"><option value="">Loading...</option></select>
+					<label class="muted" data-i18n="capture.camera">Camera</label>
+					<select id="camera"><option value="" data-i18n="loading">Loading...</option></select>
 					<ins class="spacer"></ins>
-					<button id="capture" class="btn--primary" accesskey="c">📸 Capture & OCR</button>
+					<button id="capture" class="btn--primary" accesskey="c" data-i18n="capture.captureButton">📸 Capture & OCR</button>
 				</div>
-				<div class="panel panel--warning">⚠️ Remember to always screenshot on Switch as well!</div>
+				<div class="panel panel--warning" data-i18n="capture.localSaveReminder">⚠️ Remember to always screenshot on Switch as well!</div>
 				<div class="row">
 					<ins class="spacer"></ins>
 					<label class="button">
-						<input type="checkbox" id="autoCapture" /> Auto-capture [BETA]
+						<input type="checkbox" id="autoCapture" /> <span data-i18n="capture.autoCaptureLabel">Auto-capture [BETA]</span>
 					</label>
 				</div>
 			</section>
 			<section class="panel capture-view">
-				<h2>Last capture</h2>
+				<h2 data-i18n="capture.lastCapture">Last capture</h2>
 				<ol id="output" class="results"></ol>
 			</section>
 		</main>
 
 		<!-- Scoreboard -->
 		<section class="panel" style="max-width:1100px; margin:16px auto;">
-			<h2>Scoreboard</h2>
+			<h2 data-i18n="scoreboard.title">Scoreboard</h2>
 			<div style="overflow:auto;">
 				<table id="scoreTable" class="score mono" style="width:100%; border-collapse:collapse;"></table>
 			</div>
 			<div class="row">
-				<a href="./" class="button btn--danger">🧹 New session</a>
+				<a href="./" class="button btn--danger" data-i18n="scoreboard.newSessionButton">🧹 New session</a>
 				<ins class="spacer"></ins>
-				<button id="downloadMogi" disabled>📦 Download ZIP</button>
-				<button id="exportScores" class="btn--primary" disabled>📤 Export scores</button>
+				<button id="downloadMogi" disabled data-i18n="scoreboard.downloadZipButton">📦 Download ZIP</button>
+				<button id="exportScores" class="btn--primary" disabled data-i18n="scoreboard.exportScoresButton">📤 Export scores</button>
 			</div>
 		</section>
 
 		<!-- Race history (snapshots) -->
 		<section class="panel" style="max-width:1100px; margin:16px auto;">
-			<h2>Race history</h2>
+			<h2 data-i18n="gallery.title">Race history</h2>
 			<div id="raceGallery" class="gallery" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap:10px;"></div>
 		</section>
 	</div>

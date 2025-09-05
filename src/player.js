@@ -1,3 +1,4 @@
+import { t } from "./i18n/i18n.js";
 import { RACE_COUNT } from "./mogi.js";
 import { ROSTER_SIZE } from "./roster.js";
 
@@ -81,7 +82,7 @@ export class Player {
 	static parse(line) {
 		const re = /^(\d+)\.\s+(.*?)\s+\((\d+)\s*MMR\)$/;
 		const m = re.exec(line);
-		if(!m) throw new Error(`Bad line: "${line}"`);
+		if(!m) throw new Error(t('rosterSetup.badLine', { line }));
 		const seed = Number(m[1]);
 		const name = String(m[2]);
 		const mmr  = Number(m[3]);

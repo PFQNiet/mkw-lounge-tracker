@@ -1,18 +1,19 @@
 /** @typedef {import("../mogi.js").Mogi} Mogi */
 /** @typedef {import("../race.js").Placement} Placement */
 
+import { fmt, t } from "../i18n/i18n.js";
 import { error } from "./toast.js";
 
 function makeDialog() {
 	const dialog = document.createElement('dialog');
 	dialog.innerHTML = `
 		<form method="dialog" class="modal">
-			<h3>Edit race</h3>
+			<h3>${t('editRace.title')}</h3>
 			<div class="grid" style="grid-template-columns: 1fr 160px;"></div>
 			<footer>
-				<button value="delete" type="button" class="btn--danger push-left">Delete race</button>
-				<button value="cancel">Cancel</button>
-				<button value="save" type="button" class="btn--primary">Save</button>
+				<button value="delete" type="button" class="btn--danger push-left">${t('editRace.deleteRaceButton')}</button>
+				<button value="cancel">${t('cancel')}</button>
+				<button value="save" type="button" class="btn--primary">${t('save')}</button>
 			</footer>
 		</form>
 	`;
@@ -47,11 +48,10 @@ export function openEditRace(mogi, idx) {
 
 		// Placements 1..12
 		for (let k = 1; k <= 12; k++) {
-			const ordinal = ['st', 'nd', 'rd'][k - 1] || 'th';
-			sel.add(new Option(`${k}${ordinal}`, String(k)));
+			sel.add(new Option(fmt.place(k), String(k)));
 		}
 		// DC option
-		sel.add(new Option('DC', 'dc'));
+		sel.add(new Option(t('editRace.disconnectedPlace'), 'dc'));
 
 		// Preselect
 		sel.value = isDC ? 'dc' : String(row?.placement ?? '');
@@ -68,7 +68,7 @@ export function openEditRace(mogi, idx) {
 			const pid = sel.dataset.playerId || '';
 			const val = sel.value === 'dc' ? 'dc' : Number(sel.value);
 			if( val !== 'dc' && usedPlaces.has(val) ) {
-				error('Each placement 1..12 can only be chosen once.');
+				error(t('editRace.uniquePlacementError'));
 				return;
 			}
 			usedPlaces.add(val);
@@ -95,7 +95,7 @@ export function openEditRace(mogi, idx) {
 	});
 
 	del.addEventListener('click', () => {
-		if (!confirm('Delete this race permanently?')) return;
+		if (!confirm(t('editRace.confirmDelete'))) return;
 		try { URL.revokeObjectURL(race.snapshotUrl); } catch { }
 
 		dialog.close();

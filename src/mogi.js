@@ -1,6 +1,7 @@
 import { Roster } from './roster.js';
 import { Placement, POINTS_BY_PLACEMENT, Race } from './race.js';
 import { info, success } from './ui/toast.js';
+import { onLocaleChange, t } from './i18n/i18n.js';
 
 export const RACE_COUNT = 12;
 
@@ -30,6 +31,7 @@ export class Mogi extends EventTarget {
 			}
 		});
 		queueMicrotask(() => this.triggerUpdate());
+		onLocaleChange(() => this.triggerUpdate()); // refresh all dynamic UI elements
 	}
 
 	triggerUpdate() {
@@ -43,7 +45,7 @@ export class Mogi extends EventTarget {
 		if( this.ended) throw new Error('Too many races');
 		this.#races.push(race);
 		this.triggerUpdate();
-		success(`Race ${this.#races.length} saved!`);
+		success(t('capture.raceSaved', { number: this.#races.length }));
 	}
 
 	/**
@@ -56,7 +58,7 @@ export class Mogi extends EventTarget {
 		const newRace = oldRace.withPlacements(placements);
 		this.#races.splice(idx, 1, newRace);
 		this.triggerUpdate();
-		success(`Race ${idx + 1} updated`);
+		success(t('editRace.raceUpdated', { number: idx+1 }));
 	}
 
 	/**
@@ -67,7 +69,7 @@ export class Mogi extends EventTarget {
 		if( !race) throw new Error('Race not found');
 		this.#races.splice(idx, 1);
 		this.triggerUpdate();
-		info(`Race ${idx + 1} deleted`);
+		info(t('editRace.raceDeleted', { number: idx+1 }));
 	}
 
 	/**

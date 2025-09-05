@@ -1,0 +1,154 @@
+export default {
+	_meta: {
+		name: 'Français',
+		dir: 'ltr',
+		code: 'fr'
+	},
+
+	text: {
+		title: "Mogi Manager MKW",
+		loading: "Chargement…",
+		processing: "Traitement…",
+		save: "Enregistrer",
+		confirm: "Confirmer",
+		cancel: "Annuler",
+		blank: "—",
+
+		landingPage: {
+			lead: "Capture, OCR, score ; directement dans votre navigateur. Aucun logiciel à installer, aucun envoi.",
+			features: [
+				"OCR hors ligne",
+				"Gestion des déconnexions",
+				"Résolution manuelle + édition",
+				"Export Lounge"
+			],
+			steps: [
+				"**1.** Cliquez sur __Commencer__ et collez la liste des 12 joueurs (`1. Nom (12345 MMR)`).",
+				"**2.** Choisissez votre webcam virtuelle dans l'aperçu.",
+				"**3.** Après chaque course, appuyez sur __Capturer & OCR__. Appariage automatique ; en cas de doute, on vous demandera.",
+				"**4.** Corrigez via __Modifier__ → __Enregistrer__. Exportez les scores quand c'est fini."
+			],
+			getStartedButton: "🚀 Commencer",
+			notesLabel: "Notes",
+			notes: [
+				"La course 1 doit inclure les 12 joueurs.",
+				"Les courses à 10 joueurs sont valides ; 9 ou moins ⇒ à refaire.",
+				"Les DC valent 1 point (des noms de CPU peuvent apparaître, confirmez qui s'est déconnecté).",
+				"Tout reste local dans votre navigateur.",
+				"Auto-capture [BÊTA] : détecte la capture d'écran sur la Switch et l'enregistre automatiquement."
+			],
+			aboutLabel: "À propos",
+			about: [
+				"Créé par [Niet](https://github.com/PFQNiet)",
+				"[Voir le code source sur GitHub](https://github.com/PFQNiet/mkw-lounge-tracker)",
+				"[Signaler un bug](https://github.com/PFQNiet/mkw-lounge-tracker/issues)"
+			]
+		},
+
+		rosterSetup: {
+			title: "Configuration de la liste",
+			instructions: "Collez {count} lignes comme : `1. Nom (5000 MMR)`",
+			wrongLength: "Attendu : {count} lignes ; reçu : {actual}.",
+			badLine: "Ligne invalide : « {line} »",
+			rosterLoaded: "Liste chargée !"
+		},
+
+		capture: {
+			camera: "Caméra",
+			noCameras: "(Aucune caméra trouvée)",
+			selectCamera: "— Sélectionner une caméra —",
+			cameraFallbackLabel: "Caméra {deviceId}",
+			cameraStopped: "Caméra arrêtée",
+			cameraStarted: "Caméra démarrée : {label}",
+			cameraFailedToStart: "Impossible de démarrer la caméra sélectionnée",
+			captureButton: "📸 Capturer & OCR",
+			localSaveReminder: "⚠️ Pensez aussi à faire une capture d'écran sur la Switch !",
+			autoCaptureLabel: "Auto-capture [BÊTA]",
+			lastCapture: "Dernière capture",
+			ocrResult: "OCR : « {ocrText} » · {ocrConfidence} %",
+			unresolved: "(non résolu)",
+			maxRacesReached: "Nombre maximal de courses atteint.",
+			captureCancelled: "Capture annulée",
+			noScoreboardDetected: "Aucun tableau de scores détecté — capturez l'écran des résultats.",
+			ocrFailed: "Échec de l'OCR. Voir la console pour plus de détails.",
+			raceSaved: "Course {number} enregistrée !"
+		},
+
+		manualResolution: {
+			title: "Résoudre les joueurs non appariés",
+			selectPlayer: "— Sélectionner un joueur —"
+		},
+
+		editRace: {
+			title: "Modifier la course",
+			deleteRaceButton: "Supprimer la course",
+			confirmDelete: "Supprimer définitivement cette course ?",
+			disconnectedPlace: "DC",
+			uniquePlacementError: "Chaque place 1..12 ne peut être choisie qu'une seule fois.",
+			raceUpdated: "Course {number} mise à jour !",
+			raceDeleted: "Course {number} supprimée !"
+		},
+
+		editRoster: {
+			title: "Modifier la liste",
+			loungeName: "Nom Lounge",
+			ingameName: "Nom en jeu",
+			substitute: "Remplaçant",
+			autodetect: "(détection auto)",
+			noSubstitute: "(aucun)",
+			editSubButton: "Modifier",
+			rosterUpdated: "Liste mise à jour !"
+		},
+
+		substitutePlayer: {
+			title: "Remplacer un joueur",
+			joinedAt: "A rejoint à la course n°",
+			newSubstitute: "Nouveau remplaçant",
+			substituteUpdated: "Remplaçant mis à jour !"
+		},
+
+		scoreboard: {
+			title: "Classement",
+			player: "Joueur",
+			raceNumber: "C{number}",
+			total: "Total",
+			editRosterButton: "Modifier la liste",
+			editRaceButton: "✏️",
+			newSessionButton: "🧹 Nouvelle session",
+			downloadZipButton: "📦 Télécharger le ZIP",
+			exportScoresButton: "📤 Exporter les scores"
+		},
+
+		exportScores: {
+			title: "Exporter les scores",
+			close: "Fermer",
+			copy: "Copier",
+			copiedToClipboard: "Copié !",
+			failedToCopy: "Échec de la copie, utilisez Ctrl/Cmd+C pour copier manuellement."
+		},
+
+		gallery: {
+			title: "Historique des courses",
+			imageAltText: "Capture de la course {number}",
+			imageCaption: "Course {number} · {time}"
+		}
+	},
+
+	format: {
+		/** @param {number} n */
+		ordinal(n) {
+			// FR ordinals: 1er, then 2e, 3e, …; we'll add a FIGURE SPACE for mono alignment on other places.
+			return `e${n === 1 ? 'r' : '\u2007'}`;
+		},
+		/** @param {number} n */
+		place(n) {
+			// Prepend a FIGURE SPACE for single-digit numbers so they align with 10+ in mono/tabular fonts.
+			return `${n < 10 ? '\u2007' : ''}${n}${this.ordinal(n)}`;
+		},
+
+		/** @param {number} n */
+		number(n) { return n.toLocaleString('fr'); },
+		/** @param {Date} d */
+		time(d) { return d.toLocaleTimeString('fr', { timeStyle: 'short' }); }
+	}
+};

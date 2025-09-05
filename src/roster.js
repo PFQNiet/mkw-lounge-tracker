@@ -1,5 +1,6 @@
 /** @typedef {import("./race.js").Placement} Placement */
 
+import { t } from "./i18n/i18n.js";
 import { normalizeName, Player } from "./player.js";
 
 export const ROSTER_SIZE = 12;
@@ -37,7 +38,7 @@ export class Roster {
 	/** @param {string} input */
 	static parse(input) {
 		const lines = input.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-		if (lines.length !== ROSTER_SIZE) throw new Error(`Expected ${ROSTER_SIZE} lines, got ${lines.length}`);
+		if (lines.length !== ROSTER_SIZE) throw new Error(t('rosterSetup.wrongLength', { count: ROSTER_SIZE, actual: lines.length }));
 		const roster = new Roster();
 		for( const line of lines) {
 			roster.add(Player.parse(line));

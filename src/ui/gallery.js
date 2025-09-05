@@ -1,5 +1,6 @@
 /** @typedef {import("../mogi.js").Mogi} Mogi */
 
+import { fmt, t } from "../i18n/i18n.js";
 import { RACE_COUNT } from "../mogi.js";
 
 /**
@@ -17,11 +18,11 @@ export function connectGallery(raceGallery, mogi) {
 				a.href = race.snapshotUrl; a.target = '_blank'; a.rel = 'noreferrer';
 			}
 			const img = document.createElement('img');
-			img.alt = `Race ${i + 1} snapshot`;
+			img.alt = t('gallery.imageAltText', { number: i + 1 });
 			img.src = race ? race.snapshotUrl : 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAAAAAA6fptVAAAACklEQVQI12NgAAAAAgAB4iG8MwAAAABJRU5ErkJggg==';
 			const cap = document.createElement('div');
 			cap.className = 'cap';
-			cap.textContent = `Race ${i + 1} · ${race ? new Date(race.timestamp).toLocaleTimeString() : '—'}`;
+			cap.textContent = t('gallery.imageCaption', { number: i + 1, time: race ? fmt.time(new Date(race.timestamp)) : t('blank') });
 			a.append(img, cap);
 			raceGallery.appendChild(a);
 		}

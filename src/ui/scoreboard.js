@@ -1,5 +1,6 @@
 /** @typedef {import("../mogi.js").Mogi} Mogi */
 
+import { fmt, t } from "../i18n/i18n.js";
 import { RACE_COUNT } from "../mogi.js";
 import { openEditRace } from "./edit-race-dialog.js";
 import { openEditRoster } from "./edit-roster-dialog.js";
@@ -17,11 +18,11 @@ export function connectScoreboard(scoreTable, mogi) {
 		// Build <thead>
 		const thead = document.createElement('thead');
 		const hr = document.createElement('tr');
-		const hPlayer = document.createElement('th'); hPlayer.textContent = 'Player'; hr.appendChild(hPlayer);
+		const hPlayer = document.createElement('th'); hPlayer.textContent = t('scoreboard.player'); hr.appendChild(hPlayer);
 		for (let i = 0; i < RACE_COUNT; i++) {
-			const th = document.createElement('th'); th.textContent = `R${i + 1}`; hr.appendChild(th);
+			const th = document.createElement('th'); th.textContent = t('scoreboard.raceNumber', { number: i + 1 }); hr.appendChild(th);
 		}
-		const hTot = document.createElement('th'); hTot.textContent = 'Total'; hr.appendChild(hTot);
+		const hTot = document.createElement('th'); hTot.textContent = t('scoreboard.total'); hr.appendChild(hTot);
 		thead.appendChild(hr);
 
 		// Build <tbody>
@@ -38,13 +39,13 @@ export function connectScoreboard(scoreTable, mogi) {
 				// find this player's placement in this race
 				const row = r.placements.find(x => x.playerId === p.id);
 				td.classList.add(`place-${row?.placement ?? 0}`);
-				td.textContent = row?.ordinal ?? '—';
+				td.textContent = row ? fmt.place(row.placement) : t('blank');
 				tr.appendChild(td);
 			}
 			for (let i = races.length; i < RACE_COUNT; i++) {
 				const td = document.createElement('td');
 				td.classList.add('muted');
-				td.textContent = '—';
+				td.textContent = t('blank');
 				tr.appendChild(td);
 			}
 
@@ -61,13 +62,13 @@ export function connectScoreboard(scoreTable, mogi) {
 		const tfoot = document.createElement('tfoot');
 		const fr = document.createElement('tr');
 		const rosterButton = document.createElement('button');
-		rosterButton.textContent = 'Edit Roster';
+		rosterButton.textContent = t('scoreboard.editRosterButton');
 		rosterButton.addEventListener('click', () => openEditRoster(mogi));
 		fr.appendChild(document.createElement('td')).appendChild(rosterButton);
 		for (let i = 0; i < RACE_COUNT; i++) {
 			const td = document.createElement('td');
 			const btn = document.createElement('button');
-			btn.textContent = 'Edit';
+			btn.textContent = t('scoreboard.editRaceButton');
 			if( i < races.length) {
 				btn.addEventListener('click', () => openEditRace(mogi, i));
 			}

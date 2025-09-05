@@ -148,7 +148,7 @@ export async function processResultsScreen(canvas, roster) {
 
 	// Prepare normalized data
 	const rosterArray = [...roster];
-	const placements = rawRows.map((row, i) => new Placement(i + 1, null, row.text, row.text, row.confidence, false));
+	const placements = rawRows.map((row, i) => new Placement(i + 1, null, row.text, row.text, Math.round(row.confidence), false));
 	const normRows = rawRows.map(r => normalizeName(r.text));
 
 	// Early exit if 2+ blanks

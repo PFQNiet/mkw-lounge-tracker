@@ -1,5 +1,6 @@
 /** @typedef {import("./mogi.js").Mogi} Mogi */
 
+import { t } from "./i18n/i18n.js";
 import { OCR_GRID, processResultsScreen } from "./ocr.js";
 import { Race } from "./race.js";
 import { error, info } from "./ui/toast.js";
@@ -85,17 +86,17 @@ export async function performCapture(video, mogi) {
 		// If the user canceled manual resolve, just abort quietly
 		if (/** @type {any} */(e)?.code === 'MANUAL_CANCELLED') {
 			console.log('Capture canceled by user.');
-			info('Capture canceled.');
+			info(t('capture.captureCancelled'));
 			return;
 		}
 		// If no scoreboard found, warn the user
 		if (/** @type {any} */(e)?.code === 'NO_SCOREBOARD') {
 			console.log('No scoreboard detected in frame.');
-			error('No scoreboard detected — try capturing on the results screen.');
+			error(t('capture.noScoreboardDetected'));
 			return;
 		}
 		// Otherwise, surface the error
 		console.error(e);
-		error('OCR failed. See console for details.');
+		error(t('capture.ocrFailed'));
 	}
 }

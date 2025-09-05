@@ -1,5 +1,6 @@
 /** @typedef {import("../mogi.js").Mogi} Mogi */
 import { exportZip } from "../export-zip.js";
+import { t } from "../i18n/i18n.js";
 import { ROSTER_SIZE } from "../roster.js";
 import { success, warning } from "./toast.js";
 
@@ -7,11 +8,11 @@ function makeDialog() {
 	const dialog = document.createElement('dialog');
 	dialog.innerHTML = `
 		<form method="dialog" class="modal">
-			<h3>Export scores</h3>
+			<h3>${t('exportScores.title')}</h3>
 			<textarea rows="${ROSTER_SIZE}" readonly></textarea>
 			<footer>
-				<button value="cancel">Close</button>
-				<button value="copy" type="button" class="btn--primary">Copy</button>
+				<button value="cancel">${t('exportScores.close')}</button>
+				<button value="copy" type="button" class="btn--primary">${t('exportScores.copy')}</button>
 			</footer>
 		</form>
 	`;
@@ -45,11 +46,11 @@ function showResults(mogi) {
 	copy.addEventListener('click', async () => {
 		try {
 			await navigator.clipboard.writeText(output.value);
-			success('Copied to clipboard!');
+			success(t('exportScores.copiedToClipboard'));
 		} catch {
 			// Fallback: focus + select so the user can Cmd/Ctrl+C
 			output.focus(); output.select();
-			warning('Failed to copy to clipboard, press Ctrl/Cmd+C to copy manually.');
+			warning(t('exportScores.failedToCopy'));
 		}
 	});
 }
