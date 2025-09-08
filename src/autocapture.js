@@ -67,7 +67,7 @@ export function checkOverlay(video) {
 	const pctx = ctx2d(canvas, { willReadFrequently: true });
 	const img = pctx.getImageData(0, 0, canvas.width, canvas.height);
 	let error = 0;
-	const maxErrorTolerance = (HOME_BITMASK.length * 8) * 0.05;
+	const maxErrorTolerance = (HOME_BITMASK.length * 8) * 0.2;
 	for( let i=0; i<HOME_BITMASK.length; i++ ) {
 		const region =
 			  (img.data[(i*8+0)*4] == 255 ? 0x80 : 0)
