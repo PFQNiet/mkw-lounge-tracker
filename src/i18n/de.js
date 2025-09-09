@@ -113,7 +113,6 @@ export default {
 			raceNumber: "R{number}",
 			total: "Gesamt",
 			editRosterButton: "Liste bearbeiten",
-			editRaceButton: "✏️",
 			newSessionButton: "🧹 Neue Session",
 			downloadZipButton: "📦 ZIP herunterladen",
 			exportScoresButton: "📤 Punkte exportieren"

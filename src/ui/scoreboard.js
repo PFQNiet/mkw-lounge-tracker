@@ -68,7 +68,7 @@ export function connectScoreboard(scoreTable, mogi) {
 		for (let i = 0; i < RACE_COUNT; i++) {
 			const td = document.createElement('td');
 			const btn = document.createElement('button');
-			btn.textContent = t('scoreboard.editRaceButton');
+			btn.textContent = "✏️";
 			if( i < races.length) {
 				btn.addEventListener('click', () => openEditRace(mogi, i));
 			}

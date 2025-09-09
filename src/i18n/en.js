@@ -105,7 +105,6 @@ export default {
 			raceNumber: "R{number}",
 			total: "Total",
 			editRosterButton: "Edit roster",
-			editRaceButton: "Edit",
 			newSessionButton: "🧹 New session",
 			downloadZipButton: "📦 Download ZIP",
 			exportScoresButton: "📤 Export scores"

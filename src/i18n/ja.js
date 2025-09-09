@@ -108,7 +108,6 @@ export default {
 			raceNumber: 'R{number}',
 			total: '合計',
 			editRosterButton: '一覧を編集',
-			editRaceButton: '編集',
 			newSessionButton: '🧹 新規セッション',
 			downloadZipButton: '📦 ZIP をダウンロード',
 			exportScoresButton: '📤 スコアをエクスポート'

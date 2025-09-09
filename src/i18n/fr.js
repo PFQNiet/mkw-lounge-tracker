@@ -113,7 +113,6 @@ export default {
 			raceNumber: "C{number}",
 			total: "Total",
 			editRosterButton: "Modifier la liste",
-			editRaceButton: "✏️",
 			newSessionButton: "🧹 Nouvelle session",
 			downloadZipButton: "📦 Télécharger le ZIP",
 			exportScoresButton: "📤 Exporter les scores"
