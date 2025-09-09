@@ -33,7 +33,7 @@ export default {
 			notes: [
 				"Rennen 1 muss alle 12 Spieler enthalten.",
 				"10-Spieler-Rennen sind gültig; 9 oder weniger ⇒ Neustart.",
-				"Unterstützt FFA-, 2v2-, 3v3-, 4v4- und 6v6-Lounge-Queue-Formate",
+				"Unterstützt FFA-, 2v2-, 3v3-, 4v4- und 6v6-Lounge-Queue-Formate.",
 				"Alles bleibt lokal in deinem Browser.",
 				"Auto-Capture [BETA]: erkennt den Ergebnisscreen der Switch und speichert automatisch."
 			],

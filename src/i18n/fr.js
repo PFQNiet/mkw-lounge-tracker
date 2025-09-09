@@ -33,7 +33,7 @@ export default {
 			notes: [
 				"La course 1 doit inclure les 12 joueurs.",
 				"Les courses à 10 joueurs sont valides ; 9 ou moins ⇒ à refaire.",
-				"Prend en charge les formats FFA, 2v2, 3v3, 4v4 et 6v6 de la file Lounge",
+				"Prend en charge les formats FFA, 2v2, 3v3, 4v4 et 6v6 de la file Lounge.",
 				"Tout reste local dans votre navigateur.",
 				"Auto-capture [BÊTA] : détecte la capture d'écran sur la Switch et l'enregistre automatiquement."
 			],

@@ -32,7 +32,7 @@ export default {
 			notes: [
 				"Race 1 must include all 12 players.",
 				"10-player races are valid; 9 or fewer are a redo.",
-				"Supports FFA, 2v2, 3v3, 4v4 and 6v6 Lounge Queue formats",
+				"Supports FFA, 2v2, 3v3, 4v4 and 6v6 Lounge Queue formats.",
 				"Everything stays local in your browser.",
 				"Auto-capture [BETA]: detects when you take a screenshot on your Switch and automatically captures it."
 			],
