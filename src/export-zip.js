@@ -11,7 +11,8 @@ function formatManifest(mogi) {
 	return JSON.stringify({
 		meta: {
 			createdAt: mogi.startDate.toISOString(),
-			formatVersion: 2
+			playersPerTeam: mogi.playersPerTeam,
+			formatVersion: 3
 		},
 		roster: [...mogi.roster].map(p => ({
 			id: p.id,
