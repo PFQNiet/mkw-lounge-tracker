@@ -33,7 +33,7 @@ export default {
 			notes: [
 				"La course 1 doit inclure les 12 joueurs.",
 				"Les courses à 10 joueurs sont valides ; 9 ou moins ⇒ à refaire.",
-				"Les DC valent 1 point (des noms de CPU peuvent apparaître, confirmez qui s'est déconnecté).",
+				"Prend en charge les formats FFA, 2v2, 3v3, 4v4 et 6v6 de la file Lounge",
 				"Tout reste local dans votre navigateur.",
 				"Auto-capture [BÊTA] : détecte la capture d'écran sur la Switch et l'enregistre automatiquement."
 			],
@@ -47,8 +47,8 @@ export default {
 
 		rosterSetup: {
 			title: "Configuration de la liste",
-			instructions: "Collez {count} lignes comme : `1. Nom (5000 MMR)`",
-			wrongLength: "Attendu : {count} lignes ; reçu : {actual}.",
+			instructions: "Collez {count} joueurs, par ex. : `1. Nom1, Nom2 (5000 MMR)`",
+			wrongLength: "{count} joueurs attendus, {actual} trouvés.",
 			badLine: "Ligne invalide : « {line} »",
 			rosterLoaded: "Liste chargée !"
 		},
@@ -109,6 +109,7 @@ export default {
 
 		scoreboard: {
 			title: "Classement",
+			team: "Équipe",
 			player: "Joueur",
 			raceNumber: "C{number}",
 			total: "Total",

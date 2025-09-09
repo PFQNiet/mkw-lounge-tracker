@@ -75,6 +75,11 @@ export function openEditRace(mogi, idx) {
 			picks.set(pid, val);
 		});
 
+		// Validate choices
+		if (picks.size !== race.placements.length) {
+			return;
+		}
+
 		// Rebuild a new placements array for this race:
 		const newRows = race.placements;
 		for (const [pid, choice] of picks) {

@@ -46,7 +46,7 @@ export function openEditRoster(mogi) {
 
 		const subcontainer = document.createElement('div');
 		const sub = p.substitutes.at(-1);
-		const subname = document.createElement('div');
+		const subname = document.createElement('span');
 		if( sub) subname.textContent = sub.name;
 		else {
 			subname.textContent = t('editRoster.noSubstitute');

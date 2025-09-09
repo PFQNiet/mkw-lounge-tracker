@@ -20,10 +20,13 @@ export class Mogi extends EventTarget {
 	#startTime = Date.now();
 	get startDate() { return new Date(this.#startTime); }
 
+	playersPerTeam = 1;
+
 	/** @param {Roster} roster */
 	constructor(roster) {
 		super();
 		this.#roster = roster;
+		this.playersPerTeam = [...roster].filter(p => p.seed === 1).length;
 		window.addEventListener('beforeunload', e => {
 			if( this.#races.length > 0 && !this.ended) {
 				e.preventDefault();

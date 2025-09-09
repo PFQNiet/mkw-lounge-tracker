@@ -236,12 +236,6 @@ table.score th,
 table.score td {
 	border: 1px solid #242424;
 	padding: 6px 8px;
-	text-align: center;
-}
-
-table.score th:first-child,
-table.score td:first-child {
-	text-align: left;
 }
 
 table.score thead th {
@@ -250,47 +244,47 @@ table.score thead th {
 	top: 0;
 }
 
-.place-1 {
+table.score .value {
+	text-align: center;
+}
+
+table.score .place {
+	color: #7388c7;
+}
+
+table.score .place-1 {
 	color: #f5c542;
 }
 
-.place-2 {
+table.score .place-2 {
 	color: #b8c2cc;
 }
 
-.place-3 {
+table.score .place-3 {
 	color: #b56b2c;
 }
 
-.place-4,
-.place-5,
-.place-6,
-.place-7,
-.place-8,
-.place-9,
-.place-10,
-.place-11,
-.place-12 {
-	color: #7388c7;
+table.score .total {
+	text-align: right;
 }
 
 table.score tbody tr:nth-child(2n) {
 	background: #33333320;
 }
 
-table.score tbody tr:nth-child(n+7) td {
+table.score tbody:not(.team-mode) tr:nth-child(n+7) td {
 	background: #80000020;
 }
 
-table.score tbody tr:nth-child(1) {
+table.score tbody td.rank-1 {
 	background: #f5c54220;
 }
 
-table.score tbody tr:nth-child(2) {
+table.score tbody td.rank-2 {
 	background: #b8c2cc20;
 }
 
-table.score tbody tr:nth-child(3) {
+table.score tbody td.rank-3 {
 	background: #b56b2c20;
 }
 

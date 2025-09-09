@@ -28,7 +28,7 @@ export default {
 			notes: [
 				'レース1は12名が必須です。',
 				'10人レースは有効。9人以下はやり直し。',
-				'DCは1点（CPU名が出る場合あり。誰がDCか確認してください）。',
+				'FFA、2v2、3v3、4v4、6v6 のラウンジキュー形式に対応しています',
 				'すべてブラウザ内で処理されます。',
 				'自動キャプチャ［ベータ］：Switchの結果画面を検出して自動保存。'
 			],
@@ -42,8 +42,8 @@ export default {
 
 		rosterSetup: {
 			title: 'プレイヤー一覧の設定',
-			instructions: '{count} 行を貼り付け：`1. 名前 (5000 MMR)`',
-			wrongLength: '必要: {count} 行 / 受信: {actual} 行',
+			instructions: '{count}人のプレイヤーを貼り付けてください。例: `1. 名前1, 名前2 (5000MMR)`',
+			wrongLength: '{count}人を想定しましたが、{actual}人になっています。',
 			badLine: '無効な行: 「{line}」',
 			rosterLoaded: '一覧を読み込みました！'
 		},
@@ -104,6 +104,7 @@ export default {
 
 		scoreboard: {
 			title: 'スコアボード',
+			team: 'チーム',
 			player: 'プレイヤー',
 			raceNumber: 'R{number}',
 			total: '合計',

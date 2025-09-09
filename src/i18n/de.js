@@ -33,7 +33,7 @@ export default {
 			notes: [
 				"Rennen 1 muss alle 12 Spieler enthalten.",
 				"10-Spieler-Rennen sind gültig; 9 oder weniger ⇒ Neustart.",
-				"DCs zählen 1 Punkt (CPU-Namen können erscheinen ; bitte bestätigen, wer DC hatte).",
+				"Unterstützt FFA-, 2v2-, 3v3-, 4v4- und 6v6-Lounge-Queue-Formate",
 				"Alles bleibt lokal in deinem Browser.",
 				"Auto-Capture [BETA]: erkennt den Ergebnisscreen der Switch und speichert automatisch."
 			],
@@ -47,8 +47,8 @@ export default {
 
 		rosterSetup: {
 			title: "Spielerliste einrichten",
-			instructions: "Füge {count} Zeilen ein wie: `1. Name (5000 MMR)`",
-			wrongLength: "Erwartet: {count} Zeilen; erhalten: {actual}.",
+			instructions: "Füge {count} Spieler ein, z. B.: `1. Name1, Name2 (5000MMR)`",
+			wrongLength: "Erwartet: {count} Spieler, erhalten: {actual}.",
 			badLine: "Ungültige Zeile: „{line}“",
 			rosterLoaded: "Liste geladen!"
 		},
@@ -109,6 +109,7 @@ export default {
 
 		scoreboard: {
 			title: "Rangliste",
+			team: "Team",
 			player: "Spieler",
 			raceNumber: "R{number}",
 			total: "Gesamt",

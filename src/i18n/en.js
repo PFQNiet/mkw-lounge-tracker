@@ -32,7 +32,7 @@ export default {
 			notes: [
 				"Race 1 must include all 12 players.",
 				"10-player races are valid; 9 or fewer are a redo.",
-				"DCs score 1 point (CPU names can appear, just confirm who DC'd).",
+				"Supports FFA, 2v2, 3v3, 4v4 and 6v6 Lounge Queue formats",
 				"Everything stays local in your browser.",
 				"Auto-capture [BETA]: detects when you take a screenshot on your Switch and automatically captures it."
 			],
@@ -45,8 +45,8 @@ export default {
 		},
 		rosterSetup: {
 			title: "Roster setup",
-			instructions: "Paste {count} lines like: `1. Name (5000 MMR)`",
-			wrongLength: "Expected {count} lines, got {actual}.",
+			instructions: "Paste {count} players like: `1. Name1, Name2 (5000 MMR)`",
+			wrongLength: "Expected {count} players, got {actual}.",
 			badLine: "Bad line: “{line}”",
 			rosterLoaded: "Roster loaded!"
 		},
@@ -101,6 +101,7 @@ export default {
 		},
 		scoreboard: {
 			title: "Scoreboard",
+			team: "Team",
 			player: "Player",
 			raceNumber: "R{number}",
 			total: "Total",

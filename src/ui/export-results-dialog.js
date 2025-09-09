@@ -29,17 +29,18 @@ function formatResults(mogi) {
 	const scores = mogi.calculatePlayerScores();
 	const scoresArray = [...scores.values()];
 	const roster = [...mogi.roster];
-	return roster.map(p => {
+	return roster.map((p,i) => {
 		const score = scores.get(p.id) ?? 0;
 		const rank = scoresArray.filter(x => x > score).length + 1;
-		return `${p.nameOfPlayerToCredit(rank)} ${score}`;
-	}).join('\n');
+		return `${p.nameOfPlayerToCredit(rank)} ${score}` + (mogi.playersPerTeam > 1 && (++i) % mogi.playersPerTeam === 0 ? '\n' : '');
+	}).join('\n').trim();
 }
 
 /** @param {Mogi} mogi */
 function showResults(mogi) {
 	const { dialog, output, close, copy } = makeDialog();
 	output.value = formatResults(mogi);
+	output.rows = output.value.split('\n').length;
 	dialog.showModal();
 	close.addEventListener('click', () => dialog.close());
 

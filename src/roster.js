@@ -38,10 +38,18 @@ export class Roster {
 	/** @param {string} input */
 	static parse(input) {
 		const lines = input.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-		if (lines.length !== ROSTER_SIZE) throw new Error(t('rosterSetup.wrongLength', { count: ROSTER_SIZE, actual: lines.length }));
 		const roster = new Roster();
+		const re = /^(\d+)\.\s+(.*?)\s+\((\d+)\s*MMR\)$/;
 		for( const line of lines) {
-			roster.add(Player.parse(line));
+			const m = re.exec(line);
+			if(!m) throw new Error(t('rosterSetup.badLine', { line }));
+			const seed  = Number(m[1]);
+			const names = String(m[2]).split(',').map(x => x.trim()).filter(Boolean);
+			const mmr   = Number(m[3]);
+			for( let i = 0; i < names.length; i++) {
+				const player = new Player(`seed-${seed}-${i}`, names[i], seed, mmr);
+				roster.add(player);
+			}
 		}
 		return roster;
 	}
