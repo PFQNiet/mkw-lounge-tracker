@@ -136,11 +136,11 @@ export async function processResultsScreen(canvas, roster) {
 	const rawRows = [];
 	for (const rect of nameRects) {
 		let { canvas: img, whiteRatio } = preprocessCrop(canvas, rect, 2, scratch);
-		if (whiteRatio < 0.02) {
+		if (whiteRatio < 0.02 || whiteRatio > 0.5) {
 			// nothing found, try using hue-based approach
 			({ canvas: img, whiteRatio } = preprocessCrop(canvas, rect, 2, scratch, true));
 			// TODO Consider saving whether or not teams-based mode is in effect, to avoid double-processing the image
-			if (whiteRatio < 0.02) {
+			if (whiteRatio < 0.02 || whiteRatio > 0.5) {
 				// still nothing found, skip
 				rawRows.push({ text: '', confidence: 0 });
 				continue;

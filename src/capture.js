@@ -42,7 +42,7 @@ export function preprocessCrop(src, r, scale=1, scratch=document.createElement('
 	const img = pctx.getImageData(0, 0, scratch.width, scratch.height);
 	const [hue] = rgb2hsv(img.data[0], img.data[1], img.data[2]);
 	const lowerThreshold = dynamicThreshold ? (hue > 25 && hue < 50 ? 130 : 100) : 0; // if hue is yellow, extend lower threshold slightly
-	const upperThreshold = 230; // aggressive threshold for white
+	const upperThreshold = 240; // aggressive threshold for white
 	let whitePixels = 0;
 	for (let i = 0; i < img.data.length; i += 4) {
 		const r0 = img.data[i] ?? 0, g0 = img.data[i + 1] ?? 0, b0 = img.data[i + 2] ?? 0;
