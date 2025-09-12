@@ -135,10 +135,16 @@ export async function processResultsScreen(canvas, roster) {
 	/** @type {{ text:string, confidence:number }[]} */
 	const rawRows = [];
 	for (const rect of nameRects) {
-		const { canvas: img, whiteRatio } = preprocessCrop(canvas, rect, 2, scratch);
+		let { canvas: img, whiteRatio } = preprocessCrop(canvas, rect, 2, scratch);
 		if (whiteRatio < 0.02) {
-			rawRows.push({ text: '', confidence: 0 });
-			continue;
+			// nothing found, try using hue-based approach
+			({ canvas: img, whiteRatio } = preprocessCrop(canvas, rect, 2, scratch, true));
+			// TODO Consider saving whether or not teams-based mode is in effect, to avoid double-processing the image
+			if (whiteRatio < 0.02) {
+				// still nothing found, skip
+				rawRows.push({ text: '', confidence: 0 });
+				continue;
+			}
 		}
 		const { data } = await worker.recognize(img);
 		const best = (data?.text ?? '').replace(/\s+/g, ' ').trim();

@@ -16,6 +16,19 @@ export function ctx2d(el, options = {}) {
 	return ctx;
 }
 
+/**
+ * @param {number} r
+ * @param {number} g
+ * @param {number} b
+ */
+export function rgb2hsv(r, g, b) {
+	const max = Math.max(r, g, b), min = Math.min(r, g, b);
+	const h = (max === min ? 0 : max === r ? (g - b) / (max - min) : max === g ? 2 + (b - r) / (max - min) : 4 + (r - g) / (max - min)) * 60;
+	const s = max === 0 ? 0 : (max - min) / max;
+	const v = max / 255;
+	return [h, s, v];
+}
+
 export const Config = {
 	/**
 	 * @param {string} key

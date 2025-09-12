@@ -4,7 +4,7 @@ import { t } from "./i18n/i18n.js";
 import { OCR_GRID, processResultsScreen } from "./ocr.js";
 import { Race } from "./race.js";
 import { error, info } from "./ui/toast.js";
-import { ctx2d } from "./util.js";
+import { ctx2d, rgb2hsv } from "./util.js";
 
 /**
  * Capture a single frame from a video element into a canvas.
@@ -31,20 +31,23 @@ export function captureFrame(videoEl, canvas=document.createElement('canvas')) {
  * @param {{x:number,y:number,w:number,h:number}} r
  * @param {number} [scale]
  * @param {HTMLCanvasElement} [scratch]
+ * @param {boolean} [dynamicThreshold] Use hue to determine threshold
  */
-export function preprocessCrop(src, r, scale=1, scratch=document.createElement('canvas')) {
+export function preprocessCrop(src, r, scale=1, scratch=document.createElement('canvas'), dynamicThreshold=false) {
 	scratch.width = r.w * scale; scratch.height = r.h * scale;
 	const pctx = ctx2d(scratch, { willReadFrequently: true });
 	pctx.imageSmoothingEnabled = false;
 	pctx.drawImage(src, r.x, r.y, r.w, r.h, 0, 0, r.w * scale, r.h * scale);
 
 	const img = pctx.getImageData(0, 0, scratch.width, scratch.height);
-	const thr = 240; // aggressive threshold
+	const [hue] = rgb2hsv(img.data[0], img.data[1], img.data[2]);
+	const lowerThreshold = dynamicThreshold ? (hue > 25 && hue < 50 ? 130 : 100) : 0; // if hue is yellow, extend lower threshold slightly
+	const upperThreshold = 230; // aggressive threshold for white
 	let whitePixels = 0;
 	for (let i = 0; i < img.data.length; i += 4) {
 		const r0 = img.data[i] ?? 0, g0 = img.data[i + 1] ?? 0, b0 = img.data[i + 2] ?? 0;
 		const y0 = (r0 * 299 + g0 * 587 + b0 * 114) / 1000;
-		const v = y0 > thr ? 255 : 0;
+		const v = y0 < lowerThreshold || y0 > upperThreshold ? 255 : 0;
 		img.data[i] = img.data[i + 1] = img.data[i + 2] = v;
 		if (v === 255) whitePixels++;
 	}
