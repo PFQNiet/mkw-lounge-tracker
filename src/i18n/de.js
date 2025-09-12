@@ -81,6 +81,7 @@ export default {
 
 		editRace: {
 			title: "Rennen bearbeiten",
+			instructions: "Wähle zwei Spieler zum Tauschen aus.",
 			deleteRaceButton: "Rennen löschen",
 			confirmDelete: "Dieses Rennen endgültig löschen?",
 			disconnectedPlace: "DC",

@@ -81,6 +81,7 @@ export default {
 
 		editRace: {
 			title: "Modifier la course",
+			instructions: "Sélectionnez deux joueurs à permuter.",
 			deleteRaceButton: "Supprimer la course",
 			confirmDelete: "Supprimer définitivement cette course ?",
 			disconnectedPlace: "DC",

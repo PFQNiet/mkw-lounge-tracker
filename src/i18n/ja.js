@@ -76,6 +76,7 @@ export default {
 
 		editRace: {
 			title: 'レースを編集',
+			instructions: '入れ替えるプレイヤーを2人選択してください。',
 			deleteRaceButton: 'レースを削除',
 			confirmDelete: 'このレースを完全に削除しますか？',
 			disconnectedPlace: 'DC',

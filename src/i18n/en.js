@@ -76,6 +76,7 @@ export default {
 		},
 		editRace: {
 			title: "Edit race",
+			instructions: "Select two players to swap them.",
 			deleteRaceButton: "Delete race",
 			confirmDelete: "Delete this race permanently?",
 			disconnectedPlace: "DC",
