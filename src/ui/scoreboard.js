@@ -67,8 +67,9 @@ export function connectScoreboard(scoreTable, mogi) {
 				const td = document.createElement('td');
 				// find this player's placement in this race
 				const row = r.placements.find(x => x.playerId === p.id);
-				td.classList.add('value', 'place', `place-${row?.placement ?? 0}`, `rank-${playerRank}`);
-				td.textContent = row ? fmt.place(row.placement) : t('blank');
+				const placement = row && !row.dc ? row.placement : null;
+				td.classList.add('value', 'place', `place-${placement ?? 0}`, `rank-${playerRank}`);
+				td.textContent = placement ? fmt.place(placement) : t('blank');
 				tr.appendChild(td);
 			}
 			for (let i = races.length; i < RACE_COUNT; i++) {
