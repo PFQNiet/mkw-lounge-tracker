@@ -45,6 +45,7 @@ function makeDialog() {
 		if( checked.length === 2) {
 			const label1 = /** @type {HTMLLabelElement} */(checked[0].closest("label"));
 			const label2 = /** @type {HTMLLabelElement} */(checked[1].closest("label"));
+			[label1.style.background, label2.style.background] = [label2.style.background, label1.style.background];
 			[label1.dataset.playerId, label2.dataset.playerId] = [label2.dataset.playerId || '', label1.dataset.playerId || ''];
 			const name1 = /** @type {HTMLSpanElement} */(label1.querySelector('span.name'));
 			const name2 = /** @type {HTMLSpanElement} */(label2.querySelector('span.name'));
@@ -84,6 +85,10 @@ export function openEditRace(mogi, idx) {
 		const isDC = row.dc;
 		const name = p.activePlayer.name;
 		const slot = isDC ? slots[ROSTER_SIZE + dcCount++] : slots[place - 1];
+		if( mogi.playersPerTeam > 1) {
+			const team = mogi.teamBySeed(p.seed);
+			if( team) slot.style.background = `${team.colour}40`;
+		}
 		slot.dataset.playerId = p.id;
 		/** @type {HTMLSpanElement} */ (slot.querySelector('span.name')).textContent = name;
 	}

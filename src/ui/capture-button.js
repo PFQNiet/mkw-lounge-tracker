@@ -83,7 +83,7 @@ export function setupCaptureButton(captureButton, video, resultsList, mogi) {
 	mogi.addEventListener('update', () => {
 		const latest = mogi.races.at(-1);
 		if (!latest) renderEmptyResults(resultsList);
-		else renderResults(resultsList, latest.placements);
+		else renderResults(resultsList, latest.placements, mogi);
 	});
 }
 
@@ -112,11 +112,17 @@ function renderEmptyResults(resultsList) {
 /**
  * @param {HTMLOListElement} resultsList
  * @param {Placement[]} placements
+ * @param {Mogi} mogi
  */
-function renderResults(resultsList, placements) {
+function renderResults(resultsList, placements, mogi) {
 	resultsList.innerHTML = '';
 	for (const r of placements) {
 		const li = document.createElement('li');
+		const player = mogi.roster.byId(r.playerId ?? '');
+		if( mogi.playersPerTeam > 1 && player) {
+			const teamData = mogi.teamBySeed(player.seed);
+			li.style.background = `linear-gradient(to right, ${teamData?.colour || '#000000'}80, ${teamData?.colour || '#000000'}20)`;
+		}
 
 		const rank = document.createElement('span');
 		rank.className = 'mono';

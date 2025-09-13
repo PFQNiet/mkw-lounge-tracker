@@ -87,6 +87,8 @@ export default {
 
 		editRoster: {
 			title: '一覧を編集',
+			team: 'チーム {id}',
+			tag: 'タグ',
 			loungeName: 'Lounge名',
 			ingameName: 'ゲーム内名',
 			substitute: '代理プレイヤー',

@@ -2,6 +2,7 @@ import { Roster } from './roster.js';
 import { Placement, POINTS_BY_PLACEMENT, Race } from './race.js';
 import { info, success } from './ui/toast.js';
 import { onLocaleChange, t } from './i18n/i18n.js';
+import { Team } from './team.js';
 
 export const RACE_COUNT = 12;
 
@@ -21,12 +22,23 @@ export class Mogi extends EventTarget {
 	get startDate() { return new Date(this.#startTime); }
 
 	playersPerTeam = 1;
+	/** @type {Team[]} */ #teams = [];
+	get teams() { return [...this.#teams]; }
+	/** @param {number} seed */
+	teamBySeed(seed) { return this.#teams.find(t => t.seed === seed); }
 
 	/** @param {Roster} roster */
 	constructor(roster) {
 		super();
 		this.#roster = roster;
-		this.playersPerTeam = [...roster].filter(p => p.seed === 1).length;
+		const players = [...roster];
+		this.playersPerTeam = players.filter(p => p.seed === 1).length;
+		if( this.playersPerTeam > 1) {
+			const teamCount = Math.max(...players.map(p=>p.seed));
+			for( let i = 1; i <= teamCount; i++) {
+				this.#teams.push(new Team(i, players.filter(p => p.seed === i)));
+			}
+		}
 		window.addEventListener('beforeunload', e => {
 			if( this.#races.length > 0 && !this.ended) {
 				e.preventDefault();

@@ -56,11 +56,20 @@ export function connectScoreboard(scoreTable, mogi) {
 			const playerRank = playerScore > 0 ? Array.from(totals.values()).filter(x => x > playerScore).length + 1 : 0;
 
 			if (mogi.playersPerTeam > 1 && team !== p.seed) {
-				const tdTeam = document.createElement('td'); tdTeam.rowSpan = mogi.playersPerTeam; tdTeam.textContent = String(p.seed); tr.appendChild(tdTeam);
-				tdTeam.classList.add(`rank-${teamRank}`);
+				const teamData = mogi.teamBySeed(p.seed);
+				const tdTeam = document.createElement('td');
+				tdTeam.rowSpan = mogi.playersPerTeam;
+				const icon = document.createElement('div');
+				icon.textContent = teamData?.icon || '👥';
+				icon.classList.add('team-icon');
+				tdTeam.append(icon, `${teamData?.tag || String(p.seed)}`);
+				tr.appendChild(tdTeam);
+				tdTeam.style.background = `${teamData?.colour || '#000000'}20`;
 			}
-			const tdName = document.createElement('td'); tdName.textContent = p.activePlayer.name; tr.appendChild(tdName);
-			tdName.classList.add(`rank-${playerRank}`);
+			const tdName = document.createElement('td');
+			tdName.textContent = p.activePlayer.name;
+			tdName.classList.add('player', `rank-${playerRank}`);
+			tr.appendChild(tdName);
 
 			// Each race: show placement number; use '—' if not present
 			for (const r of mogi.races) {
@@ -68,26 +77,26 @@ export function connectScoreboard(scoreTable, mogi) {
 				// find this player's placement in this race
 				const row = r.placements.find(x => x.playerId === p.id);
 				const placement = row && !row.dc ? row.placement : null;
-				td.classList.add('value', 'place', `place-${placement ?? 0}`, `rank-${playerRank}`);
+				td.classList.add('place', `place-${placement ?? 0}`, `rank-${playerRank}`);
 				td.textContent = placement ? fmt.place(placement) : t('blank');
 				tr.appendChild(td);
 			}
 			for (let i = races.length; i < RACE_COUNT; i++) {
 				const td = document.createElement('td');
-				td.classList.add('value', 'muted', `rank-${playerRank}`);
+				td.classList.add('muted', `rank-${playerRank}`);
 				td.textContent = t('blank');
 				tr.appendChild(td);
 			}
 
 			const tdTotal = document.createElement('td');
-			tdTotal.classList.add('total', `rank-${playerRank}`);
+			tdTotal.classList.add(`rank-${playerRank}`);
 			tdTotal.textContent = String(playerScore).padStart(3, '\u2007');
 			tr.appendChild(tdTotal);
 
 			if (mogi.playersPerTeam > 1 && team !== p.seed) {
 				team = p.seed;
 				const tdTeam = document.createElement('td');
-				tdTeam.classList.add('value', `rank-${teamRank}`);
+				tdTeam.classList.add(`rank-${teamRank}`);
 				tdTeam.rowSpan = mogi.playersPerTeam;
 				tdTeam.textContent = String(teamScore).padStart(3, '\u2007');
 				tr.appendChild(tdTeam);
@@ -112,7 +121,6 @@ export function connectScoreboard(scoreTable, mogi) {
 		fr.appendChild(fEditRoster);
 		for (let i = 0; i < RACE_COUNT; i++) {
 			const td = document.createElement('td');
-			td.classList.add('value');
 			const btn = document.createElement('button');
 			btn.textContent = "✏️";
 			if( i < races.length) {
@@ -125,7 +133,6 @@ export function connectScoreboard(scoreTable, mogi) {
 			fr.appendChild(td);
 		}
 		const fTotal = document.createElement('td');
-		fTotal.classList.add('value');
 		fTotal.append(`${totalScore}`, document.createElement('br'), `/ ${mogi.maxScore}`);
 		if (mogi.playersPerTeam > 1) {
 			fTotal.colSpan = 2;

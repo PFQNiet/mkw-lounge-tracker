@@ -1,3 +1,7 @@
+/**
+ * @typedef {import("./team.js").Team} Team
+ */
+
 import { RACE_COUNT } from "./mogi.js";
 import { ROSTER_SIZE } from "./roster.js";
 
@@ -41,7 +45,6 @@ export class Player {
 	addSubstitute(sub) { this.#substitutes.push(sub); }
 	/** @param {Substitute} sub */
 	removeSubstitute(sub) { this.#substitutes = this.#substitutes.filter(s => s !== sub); }
-
 	/** @returns {Player|Substitute} */
 	get activePlayer() { return this.#substitutes.at(-1) ?? this; }
 
@@ -63,6 +66,9 @@ export class Player {
 		// losing position
 		return this.name; // sub does not lose MMR according to 6.d.ii.
 	}
+
+	/** @type {Team|null} */
+	team = null;
 
 	/**
 	 * @param {string} id

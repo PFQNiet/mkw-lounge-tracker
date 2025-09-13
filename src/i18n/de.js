@@ -92,6 +92,8 @@ export default {
 
 		editRoster: {
 			title: "Liste bearbeiten",
+			team: "Team {id}",
+			tag: "Tag",
 			loungeName: "Lounge-Name",
 			ingameName: "In-Game-Name",
 			substitute: "Ersatzspieler",

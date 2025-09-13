@@ -86,6 +86,8 @@ export default {
 		},
 		editRoster: {
 			title: "Edit roster",
+			team: "Team {id}",
+			tag: "Tag",
 			loungeName: "Lounge name",
 			ingameName: "In-game name",
 			substitute: "Substitute",
