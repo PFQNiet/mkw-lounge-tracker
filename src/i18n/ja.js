@@ -60,7 +60,7 @@ export default {
 			localSaveReminder: '⚠️ Switch本体でもスクリーンショットを撮っておくと安心です！',
 			autoCaptureLabel: '自動キャプチャ［ベータ］',
 			lastCapture: '最新のキャプチャ',
-			ocrResult: 'OCR: 「{ocrText}」· {ocrConfidence}%',
+			ocrResult: 'OCR: 「{ocrText}」',
 			unresolved: '（未確定）',
 			maxRacesReached: 'レース数の上限に達しました。',
 			captureCancelled: 'キャプチャをキャンセルしました',

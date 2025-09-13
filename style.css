@@ -222,12 +222,12 @@ p {
 
 /* Main view */
 .main-view {
-	flex: 1 1 560px;
+	flex: 1 1 660px;
 	min-width: 360px;
 }
 
 .capture-view {
-	flex: 1 1 420px;
+	flex: 1 1 320px;
 	min-width: 320px;
 }
 

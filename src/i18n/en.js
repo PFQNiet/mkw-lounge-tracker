@@ -62,7 +62,7 @@ export default {
 			localSaveReminder: "⚠️ Remember to always screenshot on Switch as well!",
 			autoCaptureLabel: "Auto-capture [BETA]",
 			lastCapture: "Last capture",
-			ocrResult: "OCR: “{ocrText}” · {ocrConfidence}%",
+			ocrResult: "OCR: “{ocrText}”",
 			unresolved: "(unresolved)",
 			maxRacesReached: "You have reached the maximum number of races.",
 			captureCancelled: "Capture cancelled",
