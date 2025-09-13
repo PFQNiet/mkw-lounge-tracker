@@ -76,10 +76,6 @@ export class Player {
 		this.#seed = seed;
 		this.#mmr = mmr;
 	}
-
-	toRosterString() {
-		return `${this.#seed}. ${this.#name} (${this.#mmr} MMR)`;
-	}
 }
 
 export class Substitute {
