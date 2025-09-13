@@ -222,8 +222,12 @@ p {
 
 /* Main view */
 .main-view {
-	flex: 1 1 660px;
+	flex: 1 1 640px;
 	min-width: 360px;
+}
+
+#camera {
+	max-width: 240px;
 }
 
 .capture-view {

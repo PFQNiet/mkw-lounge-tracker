@@ -74,18 +74,15 @@
 			<section class="panel main-view">
 				<video id="preview" autoplay playsinline muted></video>
 				<div class="row">
-					<label class="muted" data-i18n="capture.camera">Camera</label>
-					<select id="camera"><option value="" data-i18n="loading">Loading...</option></select>
+					<label>
+						<span class="muted" data-i18n="capture.camera">Camera</span>
+						<select id="camera"><option value="" data-i18n="loading">Loading...</option></select>
+					</label>
 					<ins class="spacer"></ins>
 					<button id="capture" class="btn--primary" accesskey="c" data-i18n="capture.captureButton">📸 Capture & OCR</button>
+					<label class="button"><input type="checkbox" id="autoCapture" /> <span data-i18n="capture.autoCaptureLabel">Auto-capture</span></label>
 				</div>
 				<div class="panel panel--warning" data-i18n="capture.localSaveReminder">⚠️ Remember to always screenshot on Switch as well!</div>
-				<div class="row">
-					<ins class="spacer"></ins>
-					<label class="button">
-						<input type="checkbox" id="autoCapture" /> <span data-i18n="capture.autoCaptureLabel">Auto-capture</span>
-					</label>
-				</div>
 			</section>
 			<section class="panel capture-view">
 				<h2 data-i18n="capture.lastCapture">Last capture</h2>
