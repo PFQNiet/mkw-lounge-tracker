@@ -35,7 +35,7 @@ export default {
 				"10-Spieler-Rennen sind gültig; 9 oder weniger ⇒ Neustart.",
 				"Unterstützt FFA-, 2v2-, 3v3-, 4v4- und 6v6-Lounge-Queue-Formate.",
 				"Alles bleibt lokal in deinem Browser.",
-				"Auto-Capture [BETA]: erkennt den Ergebnisscreen der Switch und speichert automatisch."
+				"Auto-Capture: erkennt den Ergebnisscreen der Switch und speichert automatisch."
 			],
 			aboutLabel: "Über",
 			about: [
@@ -63,7 +63,7 @@ export default {
 			cameraFailedToStart: "Ausgewählte Kamera konnte nicht gestartet werden",
 			captureButton: "📸 Aufnehmen & OCR",
 			localSaveReminder: "⚠️ Mache zusätzlich einen Screenshot auf der Switch!",
-			autoCaptureLabel: "Auto-Capture [BETA]",
+			autoCaptureLabel: "Auto-Capture",
 			lastCapture: "Letzte Aufnahme",
 			ocrResult: "OCR: „{ocrText}“",
 			unresolved: "(nicht zugeordnet)",

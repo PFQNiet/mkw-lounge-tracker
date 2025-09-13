@@ -34,7 +34,7 @@ export default {
 				"10-player races are valid; 9 or fewer are a redo.",
 				"Supports FFA, 2v2, 3v3, 4v4 and 6v6 Lounge Queue formats.",
 				"Everything stays local in your browser.",
-				"Auto-capture [BETA]: detects when you take a screenshot on your Switch and automatically captures it."
+				"Auto-capture: detects when you take a screenshot on your Switch and automatically captures it."
 			],
 			aboutLabel: "About",
 			about: [
@@ -60,7 +60,7 @@ export default {
 			cameraFailedToStart: "Could not start the selected camera",
 			captureButton: "📸 Capture & OCR",
 			localSaveReminder: "⚠️ Remember to always screenshot on Switch as well!",
-			autoCaptureLabel: "Auto-capture [BETA]",
+			autoCaptureLabel: "Auto-capture",
 			lastCapture: "Last capture",
 			ocrResult: "OCR: “{ocrText}”",
 			unresolved: "(unresolved)",

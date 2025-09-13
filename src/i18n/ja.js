@@ -30,7 +30,7 @@ export default {
 				'10人レースは有効。9人以下はやり直し。',
 				'FFA、2v2、3v3、4v4、6v6 のラウンジキュー形式に対応しています。',
 				'すべてブラウザ内で処理されます。',
-				'自動キャプチャ［ベータ］：Switchの結果画面を検出して自動保存。'
+				'自動キャプチャ：Switchの結果画面を検出して自動保存。'
 			],
 			aboutLabel: '情報',
 			about: [
@@ -58,7 +58,7 @@ export default {
 			cameraFailedToStart: '選択したカメラを開始できませんでした',
 			captureButton: '📸 キャプチャ & OCR',
 			localSaveReminder: '⚠️ Switch本体でもスクリーンショットを撮っておくと安心です！',
-			autoCaptureLabel: '自動キャプチャ［ベータ］',
+			autoCaptureLabel: '自動キャプチャ',
 			lastCapture: '最新のキャプチャ',
 			ocrResult: 'OCR: 「{ocrText}」',
 			unresolved: '（未確定）',
