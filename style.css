@@ -369,7 +369,7 @@ textarea {
 	border: 1px solid #222;
 	border-radius: 8px;
 	padding: 8px;
-	resize: vertical;
+	resize: none;
 }
 
 /* Edit race dialog */

@@ -23,5 +23,6 @@ PRs welcome! Please keep the app buildless (plain ESM) and make use of JSDoc to 
 - All camera usage is locally processed on your device.
 - Works best in Chrome/Edge/Firefox; but should work in any modern browser.
 - OCR uses tesseract.js via CDN; no server, no build step.
+- Designed for Lounge Queue and provides Export in that format. Squad Queue may need adjustments to the export.
 
 ![Process demonstration](./img/process-demo.jpg)

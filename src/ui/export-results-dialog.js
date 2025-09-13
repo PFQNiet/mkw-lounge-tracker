@@ -29,7 +29,7 @@ function formatResults(mogi) {
 	const scores = mogi.calculatePlayerScores();
 	const scoresArray = [...scores.values()];
 	const roster = [...mogi.roster];
-	return roster.map((p,i) => {
+	return `!submit ${mogi.playersPerTeam} Q\n` + roster.map((p,i) => {
 		const score = scores.get(p.id) ?? 0;
 		const rank = scoresArray.filter(x => x > score).length + 1;
 		return `${p.nameOfPlayerToCredit(rank)} ${score}` + (mogi.playersPerTeam > 1 && (++i) % mogi.playersPerTeam === 0 ? '\n' : '');
