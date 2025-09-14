@@ -372,6 +372,28 @@ textarea {
 	resize: none;
 }
 
+/* Edit roster dialog */
+.editroster-container {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 12px;
+}
+
+.editroster-container:has(>.grid:only-child) {
+	grid-template-columns: 1fr;
+}
+
+.editroster-container>.grid {
+	border: 1px solid #22222280;
+	border-radius: 8px;
+	padding: 4px;
+}
+
+.editroster-container>.grid:only-child {
+	border: 0;
+	padding: 0;
+}
+
 /* Edit race dialog */
 .editrace-list {
 	display: flex;
