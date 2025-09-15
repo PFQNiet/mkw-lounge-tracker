@@ -116,9 +116,10 @@ const scratch = document.createElement('canvas');
  * Core API — kicks off capture, OCR, fuzzy match, optional manual resolve, then resolves placements.
  * @param {HTMLCanvasElement} canvas
  * @param {Roster} roster
+ * @param {boolean} teamMode
  * @returns {Promise<Placement[]>}
  */
-export async function processResultsScreen(canvas, roster) {
+export async function processResultsScreen(canvas, roster, teamMode) {
 	const { nameRects } = OCR_GRID;
 	const whitelist = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 -_[]|.',
 		levCosts = { ins: 3, del: 1, sub: 2 },
@@ -135,16 +136,11 @@ export async function processResultsScreen(canvas, roster) {
 	/** @type {{ text:string, confidence:number }[]} */
 	const rawRows = [];
 	for (const rect of nameRects) {
-		let { canvas: img, whiteRatio } = preprocessCrop(canvas, rect, 2, scratch);
+		const { canvas: img, whiteRatio } = preprocessCrop(canvas, rect, 2, scratch, teamMode);
 		if (whiteRatio < 0.02 || whiteRatio > 0.5) {
-			// nothing found, try using hue-based approach
-			({ canvas: img, whiteRatio } = preprocessCrop(canvas, rect, 2, scratch, true));
-			// TODO Consider saving whether or not teams-based mode is in effect, to avoid double-processing the image
-			if (whiteRatio < 0.02 || whiteRatio > 0.5) {
-				// still nothing found, skip
-				rawRows.push({ text: '', confidence: 0 });
-				continue;
-			}
+			// nothing found, skip
+			rawRows.push({ text: '', confidence: 0 });
+			continue;
 		}
 		const { data } = await worker.recognize(img);
 		const best = (data?.text ?? '').replace(/\s+/g, ' ').trim();

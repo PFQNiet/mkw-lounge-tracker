@@ -31,9 +31,9 @@ export function captureFrame(videoEl, canvas=document.createElement('canvas')) {
  * @param {{x:number,y:number,w:number,h:number}} r
  * @param {number} [scale]
  * @param {HTMLCanvasElement} [scratch]
- * @param {boolean} [dynamicThreshold] Use hue to determine threshold
+ * @param {boolean} [useHueBasedThreshold] Use hue to determine threshold
  */
-export function preprocessCrop(src, r, scale=1, scratch=document.createElement('canvas'), dynamicThreshold=false) {
+export function preprocessCrop(src, r, scale=1, scratch=document.createElement('canvas'), useHueBasedThreshold=false) {
 	scratch.width = r.w * scale; scratch.height = r.h * scale;
 	const pctx = ctx2d(scratch, { willReadFrequently: true });
 	pctx.imageSmoothingEnabled = false;
@@ -41,7 +41,7 @@ export function preprocessCrop(src, r, scale=1, scratch=document.createElement('
 
 	const img = pctx.getImageData(0, 0, scratch.width, scratch.height);
 	const [hue] = rgb2hsv(img.data[0], img.data[1], img.data[2]);
-	const lowerThreshold = dynamicThreshold ? (
+	const lowerThreshold = useHueBasedThreshold ? (
 		hue < 25 ? 80 : // red team
 		hue < 50 ? 130 : // yellow team
 		hue < 200 ? 80 : // green team
@@ -84,7 +84,7 @@ export async function performCapture(video, mogi) {
 	try {
 		const base = captureFrame(video);
 		// Do OCR first; this may throw MANUAL_CANCELLED or NO_SCOREBOARD
-		const placements = await processResultsScreen(base, mogi.roster);
+		const placements = await processResultsScreen(base, mogi.roster, mogi.playersPerTeam >= 3); // in 3v3 modes and higher, expect team coloured scoreboard
 
 		// Only if successful, make the snapshot and push the race
 		const snapshotUrl = await snapshotBlobUrlFromCanvas(base);
