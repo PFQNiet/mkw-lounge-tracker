@@ -38,7 +38,7 @@ async function main() {
 	setupCameraList(cameraSelect, video);
 	setupCaptureButton(captureBtn, video, outputOl, mogi);
 	setupAutoCapture(autoCaptureToggle, captureBtn, video, mogi);
-	connectScoreboard(scoreTable, mogi);
+	connectScoreboard(scoreTable, video, mogi);
 	connectExportButton(exportBtn, downloadBtn, mogi);
 	connectGallery(raceGallery, mogi);
 }

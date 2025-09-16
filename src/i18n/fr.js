@@ -70,6 +70,7 @@ export default {
 			maxRacesReached: "Nombre maximal de courses atteint.",
 			captureCancelled: "Capture annulée",
 			noScoreboardDetected: "Aucun tableau de scores détecté — capturez l'écran des résultats.",
+			noPauseScreenDetected: "Aucun nom trouvé — ouvrez l'écran Pause.",
 			ocrFailed: "Échec de l'OCR. Voir la console pour plus de détails.",
 			raceSaved: "Course {number} enregistrée !"
 		},
@@ -100,6 +101,7 @@ export default {
 			autodetect: "(détection auto)",
 			noSubstitute: "(aucun)",
 			editSubButton: "Modifier",
+			autofill: "Remplir auto.",
 			rosterUpdated: "Liste mise à jour !"
 		},
 

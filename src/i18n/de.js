@@ -70,6 +70,7 @@ export default {
 			maxRacesReached: "Maximale Anzahl Rennen erreicht.",
 			captureCancelled: "Aufnahme abgebrochen",
 			noScoreboardDetected: "Kein Ergebnisscreen erkannt — bitte den Ergebnisscreen erfassen.",
+			noPauseScreenDetected: "Keine Namen gefunden — bitte den Pausebildschirm öffnen.",
 			ocrFailed: "OCR fehlgeschlagen. Details in der Konsole.",
 			raceSaved: "Rennen {number} gespeichert!"
 		},
@@ -100,6 +101,7 @@ export default {
 			autodetect: "(automatisch erkannt)",
 			noSubstitute: "(kein)",
 			editSubButton: "Bearbeiten",
+			autofill: "Auto-füllen",
 			rosterUpdated: "Liste aktualisiert!"
 		},
 

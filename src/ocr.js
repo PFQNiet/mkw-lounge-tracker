@@ -6,10 +6,18 @@ import { manualResolve } from './ui/manual-resolution-dialog.js';
 import { popcount } from './util.js';
 
 /** @typedef {import("./roster.js").Roster} Roster */
+/**
+ * @typedef {Object} Rect
+ * @prop {number} x
+ * @prop {number} y
+ * @prop {number} w
+ * @prop {number} h
+ */
 
 /**
  * Build row rectangles from simple parameters
  * @param {{count:number,startY:number,rowHeight:number,vPad:number,x:number,w:number}} p
+ * @returns {Rect[]}
  */
 function generateRowRects(p) {
 	const rects = [];
@@ -27,6 +35,10 @@ export const OCR_GRID = {
 	canvasWidth: 1920,
 	canvasHeight: 1080,
 	nameRects: generateRowRects({ count: 12, startY: 40, rowHeight: 77, vPad: 15, x: 1270, w: 340 }),
+	pauseRects: [
+		...generateRowRects({ count: 6, startY: 90, rowHeight: 76, vPad: 15, x: 260, w: 240 }),
+		...generateRowRects({ count: 6, startY: 90, rowHeight: 76, vPad: 15, x: 670, w: 240 }),
+	]
 };
 
 /**
@@ -115,12 +127,12 @@ const scratch = document.createElement('canvas');
 /**
  * Core API — kicks off capture, OCR, fuzzy match, optional manual resolve, then resolves placements.
  * @param {HTMLCanvasElement} canvas
+ * @param {Rect[]} nameRects
  * @param {Roster} roster
  * @param {boolean} teamMode
  * @returns {Promise<Placement[]>}
  */
-export async function processResultsScreen(canvas, roster, teamMode) {
-	const { nameRects } = OCR_GRID;
+export async function processResultsScreen(canvas, nameRects, roster, teamMode=false) {
 	const whitelist = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 -',
 		levCosts = { ins: 3, del: 1, sub: 2 },
 		maxEditDistance = 10;

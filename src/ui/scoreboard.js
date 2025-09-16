@@ -7,9 +7,10 @@ import { openEditRoster } from "./edit-roster-dialog.js";
 
 /**
  * @param {HTMLTableElement} scoreTable
+ * @param {HTMLVideoElement} video
  * @param {Mogi} mogi
  */
-export function connectScoreboard(scoreTable, mogi) {
+export function connectScoreboard(scoreTable, video, mogi) {
 	mogi.addEventListener('update', () => {
 		const roster = [...mogi.roster];
 		const totals = mogi.calculatePlayerScores();
@@ -112,7 +113,7 @@ export function connectScoreboard(scoreTable, mogi) {
 		const fr = document.createElement('tr');
 		const rosterButton = document.createElement('button');
 		rosterButton.textContent = t('scoreboard.editRosterButton');
-		rosterButton.addEventListener('click', () => openEditRoster(mogi));
+		rosterButton.addEventListener('click', () => openEditRoster(mogi, video));
 		const fEditRoster = document.createElement('td');
 		fEditRoster.append(rosterButton);
 		if (mogi.playersPerTeam > 1) {

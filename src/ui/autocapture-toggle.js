@@ -1,7 +1,7 @@
 /** @typedef {import("../mogi.js").Mogi} Mogi */
 
 import { checkOverlay } from "../autocapture.js";
-import { performCapture } from "../capture.js";
+import { captureResultsScreen } from "../capture.js";
 import { Config } from "../util.js";
 
 const configKey = 'autoCapture';
@@ -22,7 +22,7 @@ export function setupAutoCapture(toggle, captureButton, video, mogi) {
 			if( cooldown ) return;
 			if( checkOverlay(video) ) hits += 1;
 			if( hits > 2 ) {
-				performCapture(video, mogi);
+				captureResultsScreen(video, mogi);
 				hits = 0;
 				cooldown = true;
 				setTimeout(() => cooldown = false, 5000);

@@ -80,12 +80,11 @@ export function snapshotBlobUrlFromCanvas(base) {
  * @param {HTMLVideoElement} video
  * @param {Mogi} mogi
  */
-export async function performCapture(video, mogi) {
+export async function captureResultsScreen(video, mogi) {
 	try {
 		const base = captureFrame(video);
-		// Do OCR first; this may throw MANUAL_CANCELLED or NO_SCOREBOARD
-		const placements = await processResultsScreen(base, mogi.roster, mogi.playersPerTeam >= 3); // in 3v3 modes and higher, expect team coloured scoreboard
-
+		// this may throw MANUAL_CANCELLED or NO_SCOREBOARD
+		const placements = await processResultsScreen(base, OCR_GRID.nameRects, mogi.roster, mogi.playersPerTeam >= 3);
 		// Only if successful, make the snapshot and push the race
 		const snapshotUrl = await snapshotBlobUrlFromCanvas(base);
 		const race = new Race(Date.now(), placements, snapshotUrl);
@@ -107,5 +106,37 @@ export async function performCapture(video, mogi) {
 		// Otherwise, surface the error
 		console.error(e);
 		error(t('capture.ocrFailed'));
+		return;
+	}
+}
+
+/**
+ * Capture pause menu player list.
+ * @param {HTMLVideoElement} video
+ * @param {Mogi} mogi
+ */
+export async function capturePauseScreen(video, mogi) {
+	try {
+		const base = captureFrame(video);
+		// this may throw MANUAL_CANCELLED or NO_SCOREBOARD
+		const placements = await processResultsScreen(base, OCR_GRID.pauseRects, mogi.roster);
+		return placements;
+	} catch (e) {
+		// If the user canceled manual resolve, just abort quietly
+		if (/** @type {any} */(e)?.code === 'MANUAL_CANCELLED') {
+			console.log('Capture canceled by user.');
+			info(t('capture.captureCancelled'));
+			return;
+		}
+		// If no scoreboard found, warn the user
+		if (/** @type {any} */(e)?.code === 'NO_SCOREBOARD') {
+			console.log('No scoreboard detected in frame.');
+			error(t('capture.noPauseScreenDetected'));
+			return;
+		}
+		// Otherwise, surface the error
+		console.error(e);
+		error(t('capture.ocrFailed'));
+		return;
 	}
 }

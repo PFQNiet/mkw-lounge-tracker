@@ -65,6 +65,7 @@ export default {
 			maxRacesReached: 'レース数の上限に達しました。',
 			captureCancelled: 'キャプチャをキャンセルしました',
 			noScoreboardDetected: 'リザルト画面を検出できませんでした。リザルト画面をキャプチャしてください。',
+			noPauseScreenDetected: '名前が検出されません。ポーズ画面を開いてください。',
 			ocrFailed: 'OCRに失敗しました。詳細はコンソールをご確認ください。',
 			raceSaved: 'レース {number} を保存しました！'
 		},
@@ -95,6 +96,7 @@ export default {
 			autodetect: '（自動検出）',
 			noSubstitute: '（なし）',
 			editSubButton: '編集',
+			autofill: '自動入力',
 			rosterUpdated: '一覧を更新しました！'
 		},
 

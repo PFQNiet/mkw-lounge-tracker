@@ -1,7 +1,7 @@
 /** @typedef {import("../mogi.js").Mogi} Mogi */
 /** @typedef {import("../race.js").Placement} Placement */
 
-import { performCapture } from "../capture.js";
+import { captureResultsScreen } from "../capture.js";
 import { t } from "../i18n/i18n.js";
 import { ROSTER_SIZE } from "../roster.js";
 import { Config } from "../util.js";
@@ -75,7 +75,7 @@ export function setupCaptureButton(captureButton, video, resultsList, mogi) {
 		}
 		captureButton.disabled = true;
 		captureButton.textContent = t('processing');
-		await performCapture(video, mogi);
+		await captureResultsScreen(video, mogi);
 		captureButton.disabled = false;
 		captureButton.textContent = t('capture.captureButton');
 	});

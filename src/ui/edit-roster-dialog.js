@@ -4,6 +4,7 @@
  * @typedef {import("../team.js").Team} Team
  */
 
+import { capturePauseScreen } from "../capture.js";
 import { t } from "../i18n/i18n.js";
 import { TEAM_COLOURS, TEAM_ICONS } from "../team.js";
 import { openSubstitutePlayer } from "./substitute-player-dialog.js";
@@ -16,7 +17,8 @@ function makeDialog() {
 			<h3>${t('editRoster.title')}</h3>
 			<div class="editroster-container"></div>
 			<footer>
-				<button value="cancel">${t('cancel')}</button>
+				<button value="autofill" type="button">${t('editRoster.autofill')}</button>
+				<button value="cancel" type="button">${t('cancel')}</button>
 				<button value="save" type="button" class="btn--primary">${t('save')}</button>
 			</footer>
 		</form>
@@ -24,9 +26,10 @@ function makeDialog() {
 	const container = /** @type {HTMLDivElement} */(dialog.querySelector('div.editroster-container'));
 	const save = /** @type {HTMLButtonElement} */(dialog.querySelector('button[value=save]'));
 	const cancel = /** @type {HTMLButtonElement} */(dialog.querySelector('button[value=cancel]'));
+	const autofill = /** @type {HTMLButtonElement} */(dialog.querySelector('button[value=autofill]'));
 	document.body.append(dialog);
 	dialog.addEventListener('close', () => dialog.remove());
-	return { dialog, container, save, cancel };
+	return { dialog, container, save, cancel, autofill };
 }
 
 /**
@@ -49,6 +52,7 @@ function createTeamRow(grid, team) {
 	name.textContent = t('editRoster.team', { id: team.seed });
 	const tag = document.createElement('input');
 	tag.name = 'tag';
+	tag.autocomplete = "off";
 	tag.dataset.teamId = String(team.seed);
 	tag.placeholder = t('editRoster.tag');
 	tag.value = team.tag;
@@ -87,6 +91,7 @@ function createPlayerRow(grid, player) {
 
 	const input = document.createElement('input');
 	input.name = 'ign';
+	input.autocomplete = "off";
 	input.dataset.playerId = player.id;
 	input.placeholder = t('editRoster.autodetect');
 	input.value = player.rawIgn;
@@ -109,9 +114,10 @@ function createPlayerRow(grid, player) {
 
 /**
  * @param {Mogi} mogi
+ * @param {HTMLVideoElement} video
  */
-export function openEditRoster(mogi) {
-	const { dialog, container, save, cancel } = makeDialog();
+export function openEditRoster(mogi, video) {
+	const { dialog, container, save, cancel, autofill } = makeDialog();
 	
 	if (mogi.playersPerTeam === 1) {
 		const grid = createGridHost(container);
@@ -193,6 +199,17 @@ export function openEditRoster(mogi) {
 		dialog.close();
 		success(t('editRoster.rosterUpdated'));
 		mogi.triggerUpdate();
+	});
+
+	autofill.addEventListener('click', async () => {
+		const targets = /** @type {HTMLInputElement[]} */([...container.querySelectorAll('input[name=ign]')]);
+		const placements = await capturePauseScreen(video, mogi);
+		if( placements) {
+			placements.forEach(p => {
+				const t = targets.find(t => t.dataset.playerId === p.playerId);
+				if( t) t.value = p.ocrText.trim();
+			});
+		}
 	});
 
 	cancel.addEventListener('click', () => {
