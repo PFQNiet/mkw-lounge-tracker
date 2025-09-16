@@ -121,7 +121,7 @@ const scratch = document.createElement('canvas');
  */
 export async function processResultsScreen(canvas, roster, teamMode) {
 	const { nameRects } = OCR_GRID;
-	const whitelist = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 -_[]|.',
+	const whitelist = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 -',
 		levCosts = { ins: 3, del: 1, sub: 2 },
 		maxEditDistance = 10;
 
@@ -137,7 +137,7 @@ export async function processResultsScreen(canvas, roster, teamMode) {
 	const rawRows = [];
 	for (const rect of nameRects) {
 		const { canvas: img, whiteRatio } = preprocessCrop(canvas, rect, 2, scratch, teamMode);
-		if (whiteRatio < 0.02 || whiteRatio > 0.5) {
+		if (whiteRatio < 0.01 || whiteRatio > 0.5) {
 			// nothing found, skip
 			rawRows.push({ text: '', confidence: 0 });
 			continue;
