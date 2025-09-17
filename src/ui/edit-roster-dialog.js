@@ -207,7 +207,7 @@ export function openEditRoster(mogi, video) {
 		if( placements) {
 			placements.forEach(p => {
 				const t = targets.find(t => t.dataset.playerId === p.playerId);
-				if( t) t.value = p.ocrText.trim();
+				if( t && t.value === '') t.value = p.ocrText.trim();
 			});
 		}
 	});
