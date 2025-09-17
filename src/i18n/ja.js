@@ -121,6 +121,7 @@ export default {
 
 		exportScores: {
 			title: 'スコアをエクスポート',
+			format: '形式',
 			close: '閉じる',
 			copy: 'コピー',
 			copiedToClipboard: 'コピーしました！',

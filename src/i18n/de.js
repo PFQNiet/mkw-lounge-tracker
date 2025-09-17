@@ -126,6 +126,7 @@ export default {
 
 		exportScores: {
 			title: "Punkte exportieren",
+			format: "Format",
 			close: "Schließen",
 			copy: "Kopieren",
 			copiedToClipboard: "Kopiert!",

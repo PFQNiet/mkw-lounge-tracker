@@ -117,6 +117,9 @@ export default {
 		},
 		exportScores: {
 			title: "Export scores",
+			format: "Format",
+			qFormat: "Lounge Queue",
+			sqFormat: "Squad Queue",
 			close: "Close",
 			copy: "Copy",
 			copiedToClipboard: "Copied to clipboard!",

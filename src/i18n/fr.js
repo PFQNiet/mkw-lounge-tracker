@@ -126,6 +126,7 @@ export default {
 
 		exportScores: {
 			title: "Exporter les scores",
+			format: "Format",
 			close: "Fermer",
 			copy: "Copier",
 			copiedToClipboard: "Copié !",

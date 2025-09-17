@@ -435,6 +435,43 @@ textarea {
 	border: 1px solid #333;
 }
 
+/* Export scores dialog */
+.export-format-toggle {
+	display: flex;
+	margin-bottom: 8px;
+	align-items: center;
+}
+
+.export-format-toggle label {
+	background: #111;
+	color: #e5e5e5;
+	border: 1px solid #333;
+	border-left-width: 0;
+	padding: 8px 12px;
+	cursor: pointer;
+}
+
+.export-format-toggle label:has(input:checked) {
+	background: #0e1a2a;
+	border-color: #2a3a55;
+}
+
+.export-format-toggle input {
+	display: none;
+}
+
+.export-format-toggle label:first-of-type {
+	border-top-left-radius: 12px;
+	border-bottom-left-radius: 12px;
+	border-left-width: 1px;
+	margin-left: 8px;
+}
+
+.export-format-toggle label:last-of-type {
+	border-top-right-radius: 12px;
+	border-bottom-right-radius: 12px;
+}
+
 /* Toasts */
 .toasts[popover] {
 	position: fixed;

@@ -17,6 +17,13 @@ export function ctx2d(el, options = {}) {
 }
 
 /**
+ * @param {number} n
+ */
+export function toLetter(n) {
+	return String.fromCharCode('A'.charCodeAt(0) + n - 1);
+}
+
+/**
  * @param {number} r
  * @param {number} g
  * @param {number} b

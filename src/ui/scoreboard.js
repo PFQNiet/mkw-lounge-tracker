@@ -2,6 +2,7 @@
 
 import { fmt, t } from "../i18n/i18n.js";
 import { RACE_COUNT } from "../mogi.js";
+import { toLetter } from "../util.js";
 import { openEditRace } from "./edit-race-dialog.js";
 import { openEditRoster } from "./edit-roster-dialog.js";
 
@@ -63,7 +64,7 @@ export function connectScoreboard(scoreTable, video, mogi) {
 				const icon = document.createElement('div');
 				icon.textContent = teamData?.icon || '👥';
 				icon.classList.add('team-icon');
-				tdTeam.append(icon, `${teamData?.tag || String(p.seed)}`);
+				tdTeam.append(icon, `${teamData?.tag || toLetter(p.seed)}`);
 				tr.appendChild(tdTeam);
 				tdTeam.style.background = `${teamData?.colour || '#000000'}20`;
 			}
