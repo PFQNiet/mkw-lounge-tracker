@@ -44,8 +44,8 @@ export function preprocessCrop(src, r, scale=1, scratch=document.createElement('
 	const lowerThreshold = useHueBasedThreshold ? (
 		hue < 25 ? 100 : // red team
 		hue < 50 ? 140 : // yellow team
-		hue < 200 ? 90 : // green team
-		hue < 300 ? 80 : // blue team
+		hue < 200 ? 80 : // green team
+		hue < 300 ? 65 : // blue team
 		100 // red team again
 	) : 0;
 	const upperThreshold = 240; // aggressive threshold for white
