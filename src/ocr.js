@@ -1,9 +1,9 @@
 import Tesseract from 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.esm.min.js';
-import { preprocessCrop } from './capture.js';
+import { preprocessCrop, snapshotBlobUrlFromCanvas } from './capture.js';
 import { normalizeName } from './player.js';
 import { Placement } from './race.js';
 import { manualResolve } from './ui/manual-resolution-dialog.js';
-import { popcount } from './util.js';
+import { isDebugMode, popcount } from './util.js';
 
 /** @typedef {import("./roster.js").Roster} Roster */
 /**
@@ -13,6 +13,75 @@ import { popcount } from './util.js';
  * @prop {number} w
  * @prop {number} h
  */
+
+/**
+ * @typedef {Object} OCRDebugRow
+ * @prop {number} idx
+ * @prop {Rect} rect
+ * @prop {number} whiteRatio
+ * @prop {string|null} rectSnapshotUrl
+ * @prop {string} ocrText
+ * @prop {number} confidence
+ * @prop {string} normalized
+ * @prop {boolean} wasBlank
+ * @prop {string|null} assignedTo row index assigned to this OCR row (-1 if none)
+ * @prop {number} assignedDistance final distance/cost used for this row
+ * @prop {boolean} disconnected marked as disconnected due to blank
+ * @prop {boolean} revokedAssign assignment revoked for exceeding max edit distance
+ */
+/**
+ * @typedef {Object} OCRDebugReport
+ * @prop {'success'|'no_scoreboard'|'manual_cancelled'|'error'} outcome
+ * @prop {string} timestampISO
+ * @prop {boolean} teamMode
+ * @prop {number} canvasWidth
+ * @prop {number} canvasHeight
+ * @prop {string|null} canvasSnapshotUrl
+ * @prop {string} whitelist
+ * @prop {{ins:number,del:number,sub:number}} levCosts
+ * @prop {number} maxEditDistance
+ * @prop {number} maxNonBlankCost
+ * @prop {number} blankCost
+ * @prop {number} ignMismatchPenalty
+ * @prop {OCRDebugRow[]} rows
+ * @prop {number[][]} costMatrix
+ * @prop {number[]} assignment player i -> row j
+ * @prop {{place:number, playerId:string|null, resolvedName:string|null}[]} finalPlacements
+ * @prop {string|undefined} errorMessage
+ */
+let _lastDebug = /** @type {OCRDebugReport|null} */(null);
+export function getLastDebugReport() { return _lastDebug; }
+function startNewDebugReport() {
+	if( _lastDebug ) {
+		/** @param {string|null} url */
+		function tryRevokeUrl(url) {
+			if( url && typeof url === 'string' && url.startsWith('blob:') ) {
+				try { URL.revokeObjectURL(url); } catch {}
+			}
+		}
+		tryRevokeUrl(_lastDebug.canvasSnapshotUrl);
+		_lastDebug.rows.forEach(r => tryRevokeUrl(r.rectSnapshotUrl));
+	}
+	return _lastDebug = /** @type {OCRDebugReport} */({
+		outcome: 'error',
+		timestampISO: new Date().toISOString(),
+		teamMode: false,
+		canvasWidth: 0,
+		canvasHeight: 0,
+		canvasSnapshotUrl: null,
+		whitelist: '',
+		levCosts: { ins: 0, del: 0, sub: 0 },
+		maxEditDistance: 0,
+		maxNonBlankCost: 0,
+		blankCost: 0,
+		ignMismatchPenalty: 0,
+		rows: [],
+		costMatrix: [],
+		assignment: [],
+		finalPlacements: [],
+		errorMessage: undefined
+	});
+}
 
 /**
  * Build row rectangles from simple parameters
@@ -133,9 +202,19 @@ const scratch = document.createElement('canvas');
  * @returns {Promise<Placement[]>}
  */
 export async function processResultsScreen(canvas, nameRects, roster, teamMode=false) {
+	const dbg = isDebugMode() ? startNewDebugReport() : null;
 	const whitelist = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 -',
 		levCosts = { ins: 3, del: 1, sub: 2 },
 		maxEditDistance = 10;
+	if( dbg ) {
+		dbg.teamMode = teamMode;
+		dbg.canvasWidth = canvas.width;
+		dbg.canvasHeight = canvas.height;
+		dbg.canvasSnapshotUrl = await snapshotBlobUrlFromCanvas(canvas);
+		dbg.whitelist = whitelist;
+		dbg.levCosts = levCosts;
+		dbg.maxEditDistance = maxEditDistance;
+	}
 
 	const worker = await getWorker();
 	await worker.setParameters({
@@ -147,17 +226,34 @@ export async function processResultsScreen(canvas, nameRects, roster, teamMode=f
 
 	/** @type {{ text:string, confidence:number }[]} */
 	const rawRows = [];
-	for (const rect of nameRects) {
+	for ( let idx = 0; idx < nameRects.length; idx++ ) {
+		const rect = nameRects[idx];
 		const { canvas: img, whiteRatio } = preprocessCrop(canvas, rect, 2, scratch, teamMode);
 		if (whiteRatio < 0.01 || whiteRatio > 0.5) {
 			// nothing found, skip
 			rawRows.push({ text: '', confidence: 0 });
+			if( dbg ) dbg.rows.push({
+				idx, rect, whiteRatio,
+				rectSnapshotUrl: await snapshotBlobUrlFromCanvas(img),
+				ocrText: '', confidence: 0,
+				normalized: '', wasBlank: true,
+				assignedTo: null, assignedDistance: 0,
+				disconnected: true, revokedAssign: false
+			});
 			continue;
 		}
 		const { data } = await worker.recognize(img);
 		const best = (data?.text ?? '').replace(/\s+/g, ' ').trim();
 		const conf = (data && Number.isFinite(data.confidence)) ? data.confidence : 0;
 		rawRows.push({ text: best, confidence: conf });
+		if( dbg ) dbg.rows.push({
+			idx, rect, whiteRatio,
+			rectSnapshotUrl: await snapshotBlobUrlFromCanvas(img),
+			ocrText: best, confidence: Math.round(conf),
+			normalized: normalizeName(best), wasBlank: false,
+			assignedTo: null, assignedDistance: 0,
+			disconnected: false, revokedAssign: false
+		});
 	}
 
 	// Prepare normalized data
@@ -167,6 +263,7 @@ export async function processResultsScreen(canvas, nameRects, roster, teamMode=f
 
 	// Early exit if 2+ blanks
 	if (normRows.filter(s => !s).length > 2) {
+		if( dbg ) dbg.outcome = 'no_scoreboard';
 		const err = new Error('No scoreboard detected');
 		// @ts-ignore add a code for easy identification
 		err.code = 'NO_SCOREBOARD';
@@ -193,10 +290,15 @@ export async function processResultsScreen(canvas, nameRects, roster, teamMode=f
 			if (d > maxNonBlankCost) maxNonBlankCost = d;
 		}
 	}
+	if( dbg ) dbg.maxNonBlankCost = maxNonBlankCost;
 
 	// Choose penalties
 	const BLANK_COST = maxNonBlankCost + 2;        // blanks are strictly worse than any non-blank match
 	const IGN_MISMATCH_PENALTY = maxNonBlankCost + 50; // big stick for stealing someone else's IGN
+	if( dbg ) {
+		dbg.blankCost = BLANK_COST;
+		dbg.ignMismatchPenalty = IGN_MISMATCH_PENALTY;
+	}
 
 	// Pass 2: assign blank costs
 	for (let i = 0; i < N; i++) {
@@ -215,9 +317,11 @@ export async function processResultsScreen(canvas, nameRects, roster, teamMode=f
 			cost[i][j] += IGN_MISMATCH_PENALTY;
 		}
 	}
+	if( dbg ) dbg.costMatrix = cost.map(row=>[...row]); // deep copy to preserve original state
 
 	// Solve globally: which OCR row should each player map to?
 	const assign = solveAssignmentDP(cost);
+	if( dbg ) dbg.assignment = [...assign];
 
 	// Apply assignment (invert to fill per-row placements) and record distances
 	/** @type {number[]} */ const assignedDist = new Array(N).fill(0);
@@ -225,6 +329,10 @@ export async function processResultsScreen(canvas, nameRects, roster, teamMode=f
 		const j = assign[i];
 		placements[j] = placements[j].withPlayerIdAndResolvedName(rosterArray[i].id, rosterArray[i].activePlayer.name);
 		assignedDist[j] = cost[i][j];
+		if( dbg && dbg.rows[j] ) {
+			dbg.rows[j].assignedTo = rosterArray[i].id;
+			dbg.rows[j].assignedDistance = assignedDist[j];
+		}
 	}
 
 	// Ambiguity handling:
@@ -234,9 +342,11 @@ export async function processResultsScreen(canvas, nameRects, roster, teamMode=f
 		const isBlank = !normRows[j];
 		if (isBlank) {
 			placements[j] = placements[j].withPlacement(placements[j].placement, true);
+			if( dbg && dbg.rows[j] ) dbg.rows[j].disconnected = true;
 		}
 		else if (assignedDist[j] > maxEditDistance) {
 			placements[j] = placements[j].withPlayerIdAndResolvedName(null, placements[j].ocrText);
+			if( dbg && dbg.rows[j] ) dbg.rows[j].revokedAssign = true;
 		}
 	}
 
@@ -251,12 +361,18 @@ export async function processResultsScreen(canvas, nameRects, roster, teamMode=f
 		else {
 			const confirmed = await manualResolve(placements, remaining);
 			if (!confirmed) {
+				if( dbg ) dbg.outcome = 'manual_cancelled';
 				const err = new Error('Manual resolve canceled');
 				// @ts-ignore add a code for easy identification
 				err.code = 'MANUAL_CANCELLED';
 				throw err;
 			}
 		}
+	}
+
+	if( dbg ) {
+		dbg.outcome = 'success';
+		dbg.finalPlacements = placements.map((p,row) => ({place: row+1, playerId: p.playerId, resolvedName: p.resolvedName}));
 	}
 
 	return placements;

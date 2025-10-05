@@ -534,3 +534,113 @@ textarea {
 	background: #3b0a0a;
 	border-color: #5a1a1a;
 }
+
+/* OCR Debug modal */
+/* OCR Debug dialog layout */
+.ocrdbg-grid {
+	display: grid;
+	grid-template-columns: 1.4fr 1fr;
+	gap: 1rem;
+	min-height: 60vh;
+}
+
+.ocrdbg-canvas-col {
+	display: flex;
+	flex-direction: column;
+	gap: .5rem;
+	min-width: 0;
+}
+
+.ocrdbg-snapshot-wrap {
+	position: relative;
+	width: 100%;
+	/* keep aspect via image; container grows */
+}
+
+.ocrdbg-snapshot {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	border-radius: 4px;
+	box-shadow: 0 0 0 1px var(--border, #444);
+}
+
+.ocrdbg-overlay {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+
+.ocrdbg-box {
+	position: absolute;
+	box-sizing: border-box;
+	border: 2px solid #8bc34a; /* green default */
+	background: transparent;
+}
+
+.ocrdbg-box.is-blank { border-color: #9e9e9e; }       /* grey */
+.ocrdbg-box.is-revoked { border-color: #f44336; }     /* red */
+.ocrdbg-box.is-assigned { border-color: #4caf50; }    /* green */
+
+.ocrdbg-tag {
+	position: absolute;
+	left: 0;
+	top: -1.4rem;
+	font: 12px/1.1 var(--mono, monospace);
+	background: rgba(0,0,0,.6);
+	color: #fff;
+	padding: 2px 6px;
+	border-radius: 3px;
+	white-space: nowrap;
+	pointer-events: none;
+	transform: translateY(-2px);
+}
+
+.ocrdbg-controls {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.ocrdbg-side {
+	min-height: 0; /* for overflow to work inside grid cells */
+	display: flex;
+	flex-direction: column;
+	gap: .75rem;
+}
+
+.ocrdbg-meta { font-size: 0.9rem; display: grid; gap: .25rem; }
+
+.ocrdbg-rows {
+	overflow: auto;
+	border: 1px solid var(--border, #444);
+	border-radius: 4px;
+	padding: .5rem;
+	display: grid;
+	gap: .5rem;
+}
+
+.ocrdbg-row {
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	gap: .5rem .75rem;
+	align-items: start;
+}
+
+.ocrdbg-thumb {
+	display: block;
+	object-fit: cover;
+	/* Show at rect size even if the underlying canvas is 2× */
+	/* Width/height are set inline from rect.w/rect.h */
+	border: 1px solid var(--border, #444);
+	border-radius: 3px;
+}
+
+.ocrdbg-row-meta .line { font-size: 12px; line-height: 1.2; }
+.ocrdbg-actions { display: flex; justify-content: flex-end; gap: .5rem; }
+#debugOcrButton {
+	position: fixed;
+	right: 1rem;
+	bottom: 1rem;
+	z-index: 1000;
+}

@@ -1,4 +1,11 @@
 /**
+ * If the URL query string includes `debug=1`, we're in debug mode.
+ */
+export function isDebugMode() {
+	return new URLSearchParams(window.location.search).get('debug') === '1';
+}
+
+/**
  * Popcount for 32-bit masks
  * @param {number} x
  * @see https://graphics.stanford.edu/~seander/bithacks.html

@@ -5,8 +5,10 @@ import { setupCameraList, setupCaptureButton } from "./src/ui/capture-button.js"
 import { connectExportButton } from "./src/ui/export-results-dialog.js";
 import { connectGallery } from "./src/ui/gallery.js";
 import { setupLocaleSwitcher } from "./src/ui/locale-switcher.js";
+import { setupDebugOcrButton } from "./src/ui/ocr-debug-dialog.js";
 import { connectScoreboard } from "./src/ui/scoreboard.js";
 import { requestRoster } from "./src/ui/set-roster-dialog.js";
+import { isDebugMode } from "./src/util.js";
 
 async function main() {
 	const step1 = /** @type {HTMLDivElement} */(document.getElementById('step1'));
@@ -41,6 +43,8 @@ async function main() {
 	connectScoreboard(scoreTable, video, mogi);
 	connectExportButton(exportBtn, downloadBtn, mogi);
 	connectGallery(raceGallery, mogi);
+
+	if( isDebugMode() ) setupDebugOcrButton();
 }
 
 main();
