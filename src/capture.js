@@ -26,7 +26,7 @@ export function captureFrame(videoEl, canvas=document.createElement('canvas')) {
 }
 
 /**
- * Lightweight pre-processing (scale 2x, grayscale + threshold).
+ * Lightweight pre-processing (scale, grayscale + threshold).
  * @param {HTMLCanvasElement} src
  * @param {{x:number,y:number,w:number,h:number}} r
  * @param {number} [scale]
@@ -44,7 +44,7 @@ export function preprocessCrop(src, r, scale=1, scratch=document.createElement('
 	const lowerThreshold = useHueBasedThreshold ? (
 		hue < 25 ? 70 : // red team
 		hue < 50 ? 120 : // yellow team
-		hue < 200 ? 60 : // green team
+		hue < 200 ? 80 : // green team
 		hue < 300 ? 50 : // blue team
 		70 // red team again
 	) : 0;
