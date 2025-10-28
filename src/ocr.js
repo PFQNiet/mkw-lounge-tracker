@@ -3,7 +3,7 @@ import { preprocessCrop, snapshotBlobUrlFromCanvas } from './capture.js';
 import { normalizeName } from './player.js';
 import { Placement } from './race.js';
 import { manualResolve } from './ui/manual-resolution-dialog.js';
-import { isDebugMode, popcount } from './util.js';
+import { ctx2d, isDebugMode, popcount } from './util.js';
 
 /** @typedef {import("./roster.js").Roster} Roster */
 /**
@@ -219,7 +219,8 @@ export async function processResultsScreen(canvas, nameRects, roster, teamMode=f
 	const worker = await getWorker();
 	await worker.setParameters({
 		tessedit_char_whitelist: whitelist,
-		preserve_interword_spaces: '1', user_defined_dpi: '96',
+		preserve_interword_spaces: '1',
+		tessedit_do_invert: '1',
 		textord_heavy_nr: '0',
 		tessedit_pageseg_mode: '6' // SINGLE_BLOCK
 	});
@@ -228,7 +229,7 @@ export async function processResultsScreen(canvas, nameRects, roster, teamMode=f
 	const rawRows = [];
 	for ( let idx = 0; idx < nameRects.length; idx++ ) {
 		const rect = nameRects[idx];
-		const { canvas: img, whiteRatio } = preprocessCrop(canvas, rect, 2, scratch, teamMode);
+		const { canvas: img, whiteRatio } = preprocessCrop(canvas, rect, 1, scratch, teamMode);
 		if (whiteRatio < 0.01 || whiteRatio > 0.3) {
 			// nothing found, skip
 			rawRows.push({ text: '', confidence: 0 });

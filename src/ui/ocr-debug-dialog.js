@@ -142,8 +142,6 @@ function buildRowsList(rowsWrap, report) {
 		thumb.className = 'ocrdbg-thumb';
 		if (r.rectSnapshotUrl) thumb.src = r.rectSnapshotUrl;
 		thumb.alt = `Row ${r.idx + 1}`;
-		thumb.width = Math.max(1, Math.round(r.rect.w));
-		thumb.height = Math.max(1, Math.round(r.rect.h));
 
 		const meta = document.createElement('div');
 		meta.className = 'ocrdbg-row-meta';
