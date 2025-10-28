@@ -219,9 +219,9 @@ export async function processResultsScreen(canvas, nameRects, roster, teamMode=f
 	const worker = await getWorker();
 	await worker.setParameters({
 		tessedit_char_whitelist: whitelist,
-		preserve_interword_spaces: '1', user_defined_dpi: '300',
-		textord_heavy_nr: '1',
-		tessedit_pageseg_mode: '7' // SINGLE_LINE
+		preserve_interword_spaces: '1', user_defined_dpi: '96',
+		textord_heavy_nr: '0',
+		tessedit_pageseg_mode: '6' // SINGLE_BLOCK
 	});
 
 	/** @type {{ text:string, confidence:number }[]} */
