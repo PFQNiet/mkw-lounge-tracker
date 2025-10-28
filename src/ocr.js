@@ -229,7 +229,7 @@ export async function processResultsScreen(canvas, nameRects, roster, teamMode=f
 	for ( let idx = 0; idx < nameRects.length; idx++ ) {
 		const rect = nameRects[idx];
 		const { canvas: img, whiteRatio } = preprocessCrop(canvas, rect, 2, scratch, teamMode);
-		if (whiteRatio < 0.01 || whiteRatio > 0.5) {
+		if (whiteRatio < 0.01 || whiteRatio > 0.3) {
 			// nothing found, skip
 			rawRows.push({ text: '', confidence: 0 });
 			if( dbg ) dbg.rows.push({
