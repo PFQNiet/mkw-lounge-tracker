@@ -112,6 +112,7 @@ export default {
 			total: "Total",
 			editRosterButton: "Edit roster",
 			newSessionButton: "🧹 New session",
+			snapshotScoresButton: "🖼️ Snapshot",
 			downloadZipButton: "📦 Download ZIP",
 			exportScoresButton: "📤 Export scores"
 		},

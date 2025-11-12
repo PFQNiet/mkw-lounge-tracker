@@ -3,7 +3,7 @@ import { preprocessCrop, snapshotBlobUrlFromCanvas } from './capture.js';
 import { normalizeName } from './player.js';
 import { Placement } from './race.js';
 import { manualResolve } from './ui/manual-resolution-dialog.js';
-import { ctx2d, isDebugMode, popcount } from './util.js';
+import { isDebugMode, popcount } from './util.js';
 
 /** @typedef {import("./roster.js").Roster} Roster */
 /**

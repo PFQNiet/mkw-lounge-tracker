@@ -2,9 +2,10 @@
 
 import { fmt, t } from "../i18n/i18n.js";
 import { RACE_COUNT } from "../mogi.js";
-import { toLetter } from "../util.js";
+import { ctx2d, toLetter } from "../util.js";
 import { openEditRace } from "./edit-race-dialog.js";
 import { openEditRoster } from "./edit-roster-dialog.js";
+import { success } from "./toast.js";
 
 /**
  * @param {HTMLTableElement} scoreTable
@@ -144,5 +145,118 @@ export function connectScoreboard(scoreTable, video, mogi) {
 
 		// Swap table content
 		scoreTable.replaceChildren(thead, tbody, tfoot);
+	});
+}
+
+function makeScoreboardDialog() {
+	const dialog = document.createElement('dialog');
+	dialog.innerHTML = `
+		<form method="dialog" class="modal">
+			<h3>${t('scoreboard.title')}</h3>
+			<div></div>
+			<footer>
+				<button type="button" class="btn--primary">${t('exportScores.close')}</button>
+			</footer>
+		</form>
+	`;
+	const snapshot = /** @type {HTMLDivElement} */(dialog.querySelector('div'));
+	const close = /** @type {HTMLButtonElement} */(dialog.querySelector('button'));
+	document.body.append(dialog);
+	dialog.addEventListener('close', () => dialog.remove());
+	return { dialog, snapshot, close };
+}
+
+/**
+ * @param {HTMLButtonElement} captureButton
+ * @param {HTMLTableElement} scoreTable
+ */
+export function connectScoreboardScreenshotter(captureButton, scoreTable) {
+	captureButton.addEventListener('click', () => {
+		const canvas = document.createElement('canvas');
+		const padding = 16;
+		const tableBox = scoreTable.getBoundingClientRect();
+		canvas.width = tableBox.width + padding * 2;
+		canvas.height = tableBox.height + padding * 2;
+		const ctx = ctx2d(canvas);
+		ctx.translate(padding - tableBox.left, padding - tableBox.top);
+		const { backgroundColor } = getComputedStyle(scoreTable.closest('.panel') ?? scoreTable);
+		ctx.fillStyle = backgroundColor;
+		ctx.fillRect(tableBox.left - padding, tableBox.top - padding, tableBox.width + padding * 2, tableBox.height + padding * 2);
+		/**
+		 * @param {Element} el
+		 * @param {number} depth
+		 */
+		function drawElementBox(el, depth = 0) {
+			const box = el.getBoundingClientRect();
+			const { borderWidth, borderColor, backgroundColor, color, fontFamily, fontSize, lineHeight, textAlign, paddingInline } = window.getComputedStyle(el);
+			ctx.fillStyle = backgroundColor;
+			ctx.fillRect(box.left, box.top, box.width, box.height);
+			const lineWidth = parseFloat(borderWidth || '0');
+			if( lineWidth ) {
+				ctx.fillStyle = borderColor;
+				ctx.fillRect(box.left, box.top, box.width, lineWidth);
+				ctx.fillRect(box.left, box.top, lineWidth, box.height);
+				ctx.fillRect(box.left + box.width - lineWidth, box.top, lineWidth, box.height);
+				ctx.fillRect(box.left, box.top + box.height - lineWidth, box.width, lineWidth);
+			}
+			if( depth > 0 ) {
+				for (const child of el.children) {
+					drawElementBox(child, depth - 1);
+				}
+			}
+			else {
+				// if element contains a button, skip it
+				if (el.querySelector('button')) return;
+				// if element contains a newline, handle it as a special case (total score cell)
+				if (el.querySelector('br')) {
+					const [first, _, last] = el.childNodes;
+					ctx.fillStyle = color;
+					ctx.font = `${fontSize} ${fontFamily}`;
+					ctx.textAlign = textAlign === 'left' ? 'start' : textAlign === 'right' ? 'end' : 'center';
+					ctx.textBaseline = 'middle';
+					const offset = textAlign === 'left' ? parseFloat(paddingInline) : textAlign === 'right' ? box.width - parseFloat(paddingInline) : box.width / 2;
+					ctx.fillText(first.nodeValue ?? '', box.left + offset, box.top + box.height / 2 - parseInt(lineHeight) / 2);
+					ctx.fillText(last.nodeValue ?? '', box.left + offset, box.top + box.height / 2 + parseInt(lineHeight) / 2);
+					return;
+				}
+				// if element contains text, draw it
+				if (el.textContent) {
+					ctx.fillStyle = color;
+					ctx.font = `${fontSize} ${fontFamily}`;
+					ctx.textAlign = textAlign === 'left' ? 'start' : textAlign === 'right' ? 'end' : 'center';
+					ctx.textBaseline = 'middle';
+					const offset = textAlign === 'left' ? parseFloat(paddingInline) : textAlign === 'right' ? box.width - parseFloat(paddingInline) : box.width / 2;
+					ctx.fillText(el.textContent, box.left + offset, box.top + box.height / 2);
+					return;
+				}
+			}
+		}
+		drawElementBox(scoreTable, 3); // table, thead/tbody/tfoot, tr, th/td
+
+		function fallbackDialog() {
+			const { dialog, snapshot, close } = makeScoreboardDialog();
+			snapshot.append(canvas);
+			close.addEventListener('click', () => dialog.close());
+			dialog.showModal();
+		}
+		// try to copy to clipboard
+		if( 'ClipboardItem' in window ) {
+			canvas.toBlob(blob => {
+				if( blob) {
+					navigator.clipboard.write([
+						new ClipboardItem({
+							'image/png': blob,
+						})
+					]);
+					success(t('exportScores.copiedToClipboard'));
+				}
+				else {
+					fallbackDialog();
+				}
+			});
+		}
+		else {
+			fallbackDialog();
+		}
 	});
 }

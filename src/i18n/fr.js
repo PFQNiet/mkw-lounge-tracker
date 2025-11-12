@@ -120,6 +120,7 @@ export default {
 			total: "Total",
 			editRosterButton: "Modifier la liste",
 			newSessionButton: "🧹 Nouvelle session",
+			snapshotScoresButton: "🖼️ Capture",
 			downloadZipButton: "📦 Télécharger le ZIP",
 			exportScoresButton: "📤 Exporter les scores"
 		},

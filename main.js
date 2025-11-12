@@ -6,7 +6,7 @@ import { connectExportButton } from "./src/ui/export-results-dialog.js";
 import { connectGallery } from "./src/ui/gallery.js";
 import { setupLocaleSwitcher } from "./src/ui/locale-switcher.js";
 import { setupDebugOcrButton } from "./src/ui/ocr-debug-dialog.js";
-import { connectScoreboard } from "./src/ui/scoreboard.js";
+import { connectScoreboard, connectScoreboardScreenshotter } from "./src/ui/scoreboard.js";
 import { requestRoster } from "./src/ui/set-roster-dialog.js";
 import { isDebugMode } from "./src/util.js";
 
@@ -28,6 +28,7 @@ async function main() {
 	const outputOl = /** @type {HTMLOListElement} */(document.getElementById('output'));
 	const scoreTable = /** @type {HTMLTableElement} */(document.getElementById('scoreTable'));
 	const raceGallery = /** @type {HTMLDivElement} */(document.getElementById('raceGallery'));
+	const snapshotButton = /** @type {HTMLButtonElement} */(document.getElementById('snapshotScores'));
 	const exportBtn = /** @type {HTMLButtonElement} */(document.getElementById('exportScores'));
 	const downloadBtn = /** @type {HTMLButtonElement} */(document.getElementById('downloadMogi'));
 
@@ -41,6 +42,7 @@ async function main() {
 	setupCaptureButton(captureBtn, video, outputOl, mogi);
 	setupAutoCapture(autoCaptureToggle, captureBtn, video, mogi);
 	connectScoreboard(scoreTable, video, mogi);
+	connectScoreboardScreenshotter(snapshotButton, scoreTable);
 	connectExportButton(exportBtn, downloadBtn, mogi);
 	connectGallery(raceGallery, mogi);
 

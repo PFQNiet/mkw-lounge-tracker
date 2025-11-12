@@ -115,6 +115,7 @@ export default {
 			total: '合計',
 			editRosterButton: '一覧を編集',
 			newSessionButton: '🧹 新規セッション',
+			snapshotScoresButton: "🖼️ スナップショット",
 			downloadZipButton: '📦 ZIP をダウンロード',
 			exportScoresButton: '📤 スコアをエクスポート'
 		},
