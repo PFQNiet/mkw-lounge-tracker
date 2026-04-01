@@ -42,7 +42,7 @@ export default {
 
 		rosterSetup: {
 			title: 'プレイヤー一覧の設定',
-			instructions: '{count}人のプレイヤーを貼り付けてください。例: `1. 名前1, 名前2 (5000MMR)`',
+			instructions: '{count}人のプレイヤーを貼り付けてください:',
 			wrongLength: '{count}人を想定しましたが、{actual}人になっています。',
 			badLine: '無効な行: 「{line}」',
 			rosterLoaded: '一覧を読み込みました！'

@@ -13,7 +13,8 @@ function formatManifest(mogi) {
 		meta: {
 			createdAt: mogi.startDate.toISOString(),
 			playersPerTeam: mogi.playersPerTeam,
-			formatVersion: 3
+			tier: mogi.roster.tier,
+			formatVersion: 4
 		},
 		roster: [...mogi.roster].map(p => ({
 			id: p.id,

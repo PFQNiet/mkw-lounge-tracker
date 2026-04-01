@@ -47,7 +47,7 @@ export default {
 
 		rosterSetup: {
 			title: "Configuration de la liste",
-			instructions: "Collez {count} joueurs, par ex. : `1. Nom1, Nom2 (5000 MMR)`",
+			instructions: "Collez {count} joueurs :",
 			wrongLength: "{count} joueurs attendus, {actual} trouvés.",
 			badLine: "Ligne invalide : « {line} »",
 			rosterLoaded: "Liste chargée !"

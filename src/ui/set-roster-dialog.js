@@ -8,7 +8,7 @@ function makeDialog() {
 		<form method="dialog" class="modal">
 			<h3>${t('rosterSetup.title')}</h3>
 			<p class="muted">${t('rosterSetup.instructions', { count: ROSTER_SIZE })}</p>
-			<textarea rows="${ROSTER_SIZE}"></textarea>
+			<textarea rows="${ROSTER_SIZE}" placeholder="Room 1 MMR: 9999 - Tier A&#xA;1. Player1, Player2 (9999 MMR)&#xA;..."></textarea>
 			<footer>
 				<button type="button" class="btn--primary">${t('confirm')}</button>
 			</footer>

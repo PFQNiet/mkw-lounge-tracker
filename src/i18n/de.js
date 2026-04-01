@@ -47,7 +47,7 @@ export default {
 
 		rosterSetup: {
 			title: "Spielerliste einrichten",
-			instructions: "Füge {count} Spieler ein, z. B.: `1. Name1, Name2 (5000MMR)`",
+			instructions: "Füge {count} Spieler ein:",
 			wrongLength: "Erwartet: {count} Spieler, erhalten: {actual}.",
 			badLine: "Ungültige Zeile: „{line}“",
 			rosterLoaded: "Liste geladen!"

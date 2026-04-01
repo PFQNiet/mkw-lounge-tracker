@@ -45,7 +45,7 @@ export default {
 		},
 		rosterSetup: {
 			title: "Roster setup",
-			instructions: "Paste {count} players like: `1. Name1, Name2 (5000 MMR)`",
+			instructions: "Paste {count} players:",
 			wrongLength: "Expected {count} players, got {actual}.",
 			badLine: "Bad line: “{line}”",
 			rosterLoaded: "Roster loaded!"

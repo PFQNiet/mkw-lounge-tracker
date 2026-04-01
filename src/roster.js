@@ -6,6 +6,14 @@ import { normalizeName, Player } from "./player.js";
 export const ROSTER_SIZE = 12;
 
 export class Roster {
+	/** @type {string} */
+	#tier;
+	get tier() { return this.#tier; }
+	/** @param {string} tier */
+	constructor(tier) {
+		this.#tier = tier;
+	}
+
 	/** @type {Player[]} */
 	#roster = [];
 
@@ -38,7 +46,10 @@ export class Roster {
 	/** @param {string} input */
 	static parse(input) {
 		const lines = input.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-		const roster = new Roster();
+		const first = lines.shift();
+		const tier = first?.match(/Tier ([\w+])$/);
+		if( !tier) throw new Error(t('rosterSetup.badLine', { line:first }));
+		const roster = new Roster(tier[1]);
 		const re = /^(\d+)\.\s+(.*?)\s+\((\d+)\s*MMR\)$/;
 		for( const line of lines) {
 			const m = re.exec(line);
