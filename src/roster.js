@@ -47,7 +47,7 @@ export class Roster {
 	static parse(input) {
 		const lines = input.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
 		const first = lines.shift();
-		const tier = first?.match(/Tier ([\w+])$/);
+		const tier = first?.match(/Tier (\w+)$/);
 		if( !tier) throw new Error(t('rosterSetup.badLine', { line:first }));
 		const roster = new Roster(tier[1]);
 		const re = /^(\d+)\.\s+(.*?)\s+\((\d+)\s*MMR\)$/;
