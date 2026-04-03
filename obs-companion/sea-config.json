@@ -1,0 +1,6 @@
+{
+	"main": "./server.js",
+	"mainFormat": "module",
+	"output": "./dist/bridge.exe",
+	"execArgv": ["--no-warnings"]
+}

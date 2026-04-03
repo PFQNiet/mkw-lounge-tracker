@@ -64,6 +64,7 @@ export default {
 			captureButton: "📸 Aufnehmen & OCR",
 			localSaveReminder: "⚠️ Mache zusätzlich einen Screenshot auf der Switch!",
 			autoCaptureLabel: "Auto-Capture",
+			useOverlay: "Overlay verbinden",
 			lastCapture: "Letzte Aufnahme",
 			ocrResult: "OCR: „{ocrText}“",
 			unresolved: "(nicht zugeordnet)",
@@ -73,6 +74,16 @@ export default {
 			noPauseScreenDetected: "Keine Namen gefunden — bitte den Pausebildschirm öffnen.",
 			ocrFailed: "OCR fehlgeschlagen. Details in der Konsole.",
 			raceSaved: "Rennen {number} gespeichert!"
+		},
+
+		overlay: {
+			connected: "Overlay verbunden",
+			failed: "Overlay-Verbindung fehlgeschlagen",
+			title: "Overlay-Verbindung",
+			about: "Das Overlay benötigt eine Bridge, die auf deinem Computer läuft.",
+			firstTime: "Wenn du es zum ersten Mal benutzt, [folge diesen Anweisungen](https://github.com/PFQNiet/mkw-lounge-tracker/blob/master/obs-companion/README.md), um zu beginnen.",
+			instructions: "Wenn du das bereits getan hast, stelle sicher, dass die Bridge läuft. Falls du dem Browser die Verbindung zu localhost verweigert hast, musst du diese Berechtigung möglicherweise in den Website-Einstellungen zurücksetzen.",
+			close: "Schließen"
 		},
 
 		manualResolution: {

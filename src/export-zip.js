@@ -9,39 +9,7 @@ import JSZip from 'https://cdn.jsdelivr.net/npm/jszip@3.10.1/+esm';
  * @param {Mogi} mogi
  */
 function formatManifest(mogi) {
-	return JSON.stringify({
-		meta: {
-			createdAt: mogi.startDate.toISOString(),
-			playersPerTeam: mogi.playersPerTeam,
-			tier: mogi.roster.tier,
-			formatVersion: 4
-		},
-		roster: [...mogi.roster].map(p => ({
-			id: p.id,
-			name: p.name,
-			seed: p.seed,
-			mmr: p.mmr,
-			ign: p.ign,
-			substitutes: p.substitutes.map(s => ({
-				id: s.id,
-				name: s.name,
-				ign: s.ign,
-				joinedAt: s.joinedAt
-			}))
-		})),
-		races: mogi.races.map(r => ({
-			timestamp: r.timestamp,
-			placements: r.placements.map(x => ({
-				placement: x.placement,
-				playerId: x.playerId,
-				resolvedName: x.resolvedName,
-				ocrText: x.ocrText,
-				ocrConfidence: x.ocrConfidence,
-				dc: x.dc,
-				score: x.score
-			}))
-		}))
-	}, null, 2);
+	return JSON.stringify(mogi.export(), null, 2);
 }
 
 /**

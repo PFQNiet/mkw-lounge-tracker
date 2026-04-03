@@ -61,6 +61,7 @@ export default {
 			captureButton: "📸 Capture & OCR",
 			localSaveReminder: "⚠️ Remember to always screenshot on Switch as well!",
 			autoCaptureLabel: "Auto-capture",
+			useOverlay: "Connect overlay",
 			lastCapture: "Last capture",
 			ocrResult: "OCR: “{ocrText}”",
 			unresolved: "(unresolved)",
@@ -70,6 +71,15 @@ export default {
 			noPauseScreenDetected: "No names detected — ensure Pause screen is open.",
 			ocrFailed: "OCR failed. See console for details.",
 			raceSaved: "Race {number} saved!"
+		},
+		overlay: {
+			connected: "Overlay connected",
+			failed: "Overlay connection failed",
+			title: "Overlay connection",
+			about: "The Overlay requires a bridge running on your computer.",
+			firstTime: "If this is your first time using it, [follow these instructions](https://github.com/PFQNiet/mkw-lounge-tracker/blob/master/obs-companion/README.md) to get started.",
+			instructions: "If you've done that, make sure the bridge is running. If you denied the browser permission to connect, you may need to clear that in your browser's site settings.",
+			close: "Close"
 		},
 		manualResolution: {
 			title: "Resolve unmatched players",

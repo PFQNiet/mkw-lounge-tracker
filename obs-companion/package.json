@@ -1,0 +1,9 @@
+{
+  "name": "@mkw-lounge-tracker/obs-companion",
+  "version": "1.0.0",
+  "description": "Provides a bridge between the OCR app and an OBS overlay.",
+  "license": "MIT",
+  "author": "Niet",
+  "type": "module",
+  "main": "server.js"
+}

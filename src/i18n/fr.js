@@ -64,6 +64,7 @@ export default {
 			captureButton: "📸 Capturer & OCR",
 			localSaveReminder: "⚠️ Pensez aussi à faire une capture d'écran sur la Switch !",
 			autoCaptureLabel: "Auto-capture",
+			useOverlay: "Connecter l'overlay",
 			lastCapture: "Dernière capture",
 			ocrResult: "OCR : « {ocrText} »",
 			unresolved: "(non résolu)",
@@ -73,6 +74,16 @@ export default {
 			noPauseScreenDetected: "Aucun nom trouvé — ouvrez l'écran Pause.",
 			ocrFailed: "Échec de l'OCR. Voir la console pour plus de détails.",
 			raceSaved: "Course {number} enregistrée !"
+		},
+
+		overlay: {
+			connected: "Overlay connecté",
+			failed: "Échec de la connexion à l'overlay",
+			title: "Connexion de l'overlay",
+			about: "L'overlay nécessite un programme relais en cours d'exécution sur votre ordinateur.",
+			firstTime: "Si c'est votre première utilisation, [suivez ces instructions](https://github.com/PFQNiet/mkw-lounge-tracker/blob/master/obs-companion/README.md) pour commencer.",
+			instructions: "Si c'est déjà fait, assurez-vous que le relais est en cours d'exécution. Si vous avez refusé l'autorisation du navigateur, vous devrez peut-être la réactiver dans les paramètres du site.",
+			close: "Fermer"
 		},
 
 		manualResolution: {

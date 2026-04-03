@@ -59,6 +59,7 @@ export default {
 			captureButton: '📸 キャプチャ & OCR',
 			localSaveReminder: '⚠️ Switch本体でもスクリーンショットを撮っておくと安心です！',
 			autoCaptureLabel: '自動キャプチャ',
+			useOverlay: "オーバーレイに接続",
 			lastCapture: '最新のキャプチャ',
 			ocrResult: 'OCR: 「{ocrText}」',
 			unresolved: '（未確定）',
@@ -68,6 +69,16 @@ export default {
 			noPauseScreenDetected: '名前が検出されません。ポーズ画面を開いてください。',
 			ocrFailed: 'OCRに失敗しました。詳細はコンソールをご確認ください。',
 			raceSaved: 'レース {number} を保存しました！'
+		},
+
+		overlay: {
+			connected: "オーバーレイに接続しました",
+			failed: "オーバーレイの接続に失敗しました",
+			title: "オーバーレイ接続",
+			about: "オーバーレイを使用するには、パソコン上でブリッジプログラムを実行する必要があります。",
+			firstTime: "初めて使用する場合は、[こちらの手順](https://github.com/PFQNiet/mkw-lounge-tracker/blob/master/obs-companion/README.md)に従って設定してください。",
+			instructions: "設定が完了している場合は、ブリッジが起動していることを確認してください。ブラウザで localhost への接続を拒否した場合は、サイト設定から権限を再度許可する必要があります。",
+			close: "閉じる"
 		},
 
 		manualResolution: {

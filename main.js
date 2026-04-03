@@ -6,6 +6,7 @@ import { connectExportButton } from "./src/ui/export-results-dialog.js";
 import { connectGallery } from "./src/ui/gallery.js";
 import { setupLocaleSwitcher } from "./src/ui/locale-switcher.js";
 import { setupDebugOcrButton } from "./src/ui/ocr-debug-dialog.js";
+import { setupOverlay } from "./src/ui/overlay-toggle.js";
 import { connectScoreboard, connectScoreboardScreenshotter } from "./src/ui/scoreboard.js";
 import { requestRoster } from "./src/ui/set-roster-dialog.js";
 import { isDebugMode } from "./src/util.js";
@@ -25,6 +26,7 @@ async function main() {
 	const cameraSelect = /** @type {HTMLSelectElement} */(document.getElementById('camera'));
 	const captureBtn = /** @type {HTMLButtonElement} */(document.getElementById('capture'));
 	const autoCaptureToggle = /** @type {HTMLInputElement} */(document.getElementById('autoCapture'));
+	const useOverlayToggle = /** @type {HTMLInputElement} */(document.getElementById('useOverlay'));
 	const outputOl = /** @type {HTMLOListElement} */(document.getElementById('output'));
 	const scoreTable = /** @type {HTMLTableElement} */(document.getElementById('scoreTable'));
 	const raceGallery = /** @type {HTMLDivElement} */(document.getElementById('raceGallery'));
@@ -41,6 +43,7 @@ async function main() {
 	setupCameraList(cameraSelect, video);
 	setupCaptureButton(captureBtn, video, outputOl, mogi);
 	setupAutoCapture(autoCaptureToggle, captureBtn, video, mogi);
+	setupOverlay(useOverlayToggle, mogi);
 	connectScoreboard(scoreTable, video, mogi);
 	connectScoreboardScreenshotter(snapshotButton, scoreTable);
 	connectExportButton(exportBtn, downloadBtn, mogi);

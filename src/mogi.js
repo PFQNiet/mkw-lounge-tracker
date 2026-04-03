@@ -101,4 +101,49 @@ export class Mogi extends EventTarget {
 		}
 		return scores;
 	}
+
+	export() {
+		return {
+			meta: {
+				createdAt: this.startDate.toISOString(),
+				playersPerTeam: this.playersPerTeam,
+				tier: this.roster.tier,
+				formatVersion: 5
+			},
+			roster: [...this.roster].map(p => ({
+				id: p.id,
+				name: p.name,
+				seed: p.seed,
+				mmr: p.mmr,
+				ign: p.ign,
+				substitutes: p.substitutes.map(s => ({
+					id: s.id,
+					name: s.name,
+					ign: s.ign,
+					joinedAt: s.joinedAt
+				})),
+				team: p.team?.index
+			})),
+			teams: this.#teams.map(t => ({
+				index: t.index,
+				seed: t.seed,
+				tag: t.tag,
+				colour: t.colour,
+				icon: t.icon,
+				players: t.players.map(p=>p.id)
+			})),
+			races: this.races.map(r => ({
+				completedAt: new Date(r.timestamp).toISOString(),
+				placements: r.placements.map(x => ({
+					placement: x.placement,
+					playerId: x.playerId,
+					resolvedName: x.resolvedName,
+					ocrText: x.ocrText,
+					ocrConfidence: x.ocrConfidence,
+					dc: x.dc,
+					score: x.score
+				}))
+			}))
+		};
+	}
 }
