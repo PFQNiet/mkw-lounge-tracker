@@ -36,7 +36,9 @@ export class Mogi extends EventTarget {
 		if( this.playersPerTeam > 1) {
 			const teamCount = Math.max(...players.map(p=>p.seed));
 			for( let i = 1; i <= teamCount; i++) {
-				this.#teams.push(new Team(i, players.filter(p => p.seed === i)));
+				const team = new Team(i, players.filter(p => p.seed === i));
+				if (roster.isWar && roster.warTags[i - 1]) team.tag = roster.warTags[i - 1];
+				this.#teams.push(team);
 			}
 		}
 		window.addEventListener('beforeunload', e => {

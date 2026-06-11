@@ -25,6 +25,18 @@ function makeDialog() {
 	return { dialog, output, close, copy };
 }
 
+/** @param {Mogi} mogi */
+function formatWarResults(mogi) {
+	const scores = mogi.calculatePlayerScores();
+	const roster = [...mogi.roster];
+	const teams = mogi.teams;
+	return '!tablel\n' + teams.map(team => {
+		const tag = team.tag || `Team ${team.seed}`;
+		const lines = team.players.map(p => `${p.activePlayer.name} ${scores.get(p.id) ?? 0}`);
+		return tag + '\n' + lines.join('\n');
+	}).join('\n\n');
+}
+
 /**
  * @param {Mogi} mogi
  * @param {"q"|"sq"} [mode]
@@ -46,7 +58,7 @@ function formatResults(mogi, mode="q") {
 /** @param {Mogi} mogi */
 function showResults(mogi) {
 	const { dialog, output, close, copy } = makeDialog();
-	output.value = formatResults(mogi);
+	output.value = mogi.roster.isWar ? formatWarResults(mogi) : formatResults(mogi);
 	output.rows = output.value.split('\n').length;
 	dialog.showModal();
 	close.addEventListener('click', () => dialog.close());
