@@ -49,7 +49,7 @@ async function startSelectedCamera(deviceId, video) {
 	try {
 		Config.set(lastCameraConfigKey, deviceId);
 		const stream = await navigator.mediaDevices.getUserMedia({
-			video: { deviceId: { exact: deviceId } }, audio: false
+			video: { deviceId: { exact: deviceId }, width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 60 } }, audio: false
 		});
 		video.srcObject = stream;
 		await video.play();
