@@ -77,10 +77,10 @@ export function connectScoreboard(scoreTable, video, mogi) {
 				const teamData = mogi.teamBySeed(p.seed);
 				const tdTeam = document.createElement('td');
 				tdTeam.rowSpan = mogi.playersPerTeam;
-				const icon = document.createElement('div');
+				const icon = document.createElement('span');
 				icon.textContent = teamData?.icon || '👥';
 				icon.classList.add('team-icon');
-				tdTeam.append(icon, `${teamData?.tag || toLetter(p.seed)}`);
+				tdTeam.append(icon, document.createElement('br'), `${teamData?.tag || toLetter(p.seed)}`);
 
 				if (mogi.roster.isWar && races.length > 0) {
 					const lastRace = races.at(-1);
@@ -248,8 +248,8 @@ export function connectScoreboardScreenshotter(captureButton, scoreTable) {
 					ctx.textAlign = textAlign === 'left' ? 'start' : textAlign === 'right' ? 'end' : 'center';
 					ctx.textBaseline = 'middle';
 					const offset = textAlign === 'left' ? parseFloat(paddingInline) : textAlign === 'right' ? box.width - parseFloat(paddingInline) : box.width / 2;
-					ctx.fillText(first.nodeValue ?? '', box.left + offset, box.top + box.height / 2 - parseInt(lineHeight) / 2);
-					ctx.fillText(last.nodeValue ?? '', box.left + offset, box.top + box.height / 2 + parseInt(lineHeight) / 2);
+					ctx.fillText(first.textContent ?? '', box.left + offset, box.top + box.height / 2 - parseInt(lineHeight) / 2);
+					ctx.fillText(last.textContent ?? '', box.left + offset, box.top + box.height / 2 + parseInt(lineHeight) / 2);
 					return;
 				}
 				// if element contains text, draw it
