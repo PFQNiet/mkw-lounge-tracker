@@ -14,8 +14,12 @@ const lastCameraConfigKey = 'lastSelectedCamera';
  * @param {HTMLVideoElement} video
  */
 export async function setupCameraList(cameraSelect, video) {
-	try { const s = await navigator.mediaDevices.getUserMedia({ video: { width: { ideal: 1920 }, height: { ideal: 1080 }, frameRate: { ideal: 60 } } }); s.getTracks().forEach(t => t.stop()); } catch { }
-	const devices = (await navigator.mediaDevices.enumerateDevices()).filter(d => d.kind === 'videoinput');
+	// Enumerate first; if labels are missing (permission not yet granted), request permission then re-enumerate
+	let devices = (await navigator.mediaDevices.enumerateDevices()).filter(d => d.kind === 'videoinput');
+	if (devices.some(d => !d.label)) {
+		try { const s = await navigator.mediaDevices.getUserMedia({ video: true }); s.getTracks().forEach(t => t.stop()); } catch { }
+		devices = (await navigator.mediaDevices.enumerateDevices()).filter(d => d.kind === 'videoinput');
+	}
 	cameraSelect.innerHTML = '';
 	if (!devices.length) cameraSelect.add(new Option(t('capture.noCameras'), ''));
 	else {

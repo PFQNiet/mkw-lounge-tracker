@@ -34,7 +34,8 @@ export default {
 				"10-player races are valid; 9 or fewer are a redo.",
 				"Supports FFA, 2v2, 3v3, 4v4 and 6v6 Lounge Queue formats.",
 				"Everything stays local in your browser.",
-				"Auto-capture: detects when you take a screenshot on your Switch and automatically captures it."
+				"Auto-capture: detects when you take a screenshot on your Switch and automatically captures it.",
+				"Wars are supported! Use `WAR - Tag1 vs Tag2` followed by two lines of 6 players each."
 			],
 			aboutLabel: "About",
 			about: [
