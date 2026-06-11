@@ -44,12 +44,12 @@ export default {
 			]
 		},
 		rosterSetup: {
-			title: “Roster setup”,
-			instructions: “Paste {count} players:”,
-			wrongLength: “Expected {count} players, got {actual}.”,
-			badLine: “Bad line: “{line}””,
-			warTeamSize: “Team {seed} must have 6 players, got {count}.”,
-			rosterLoaded: “Roster loaded!”
+			title: "Roster setup",
+			instructions: "Paste {count} players:",
+			wrongLength: "Expected {count} players, got {actual}.",
+			badLine: "Bad line: “{line}”",
+			warTeamSize: "Team {seed} must have 6 players, got {count}.",
+			rosterLoaded: "Roster loaded!"
 		},
 		capture: {
 			camera: "Camera",
