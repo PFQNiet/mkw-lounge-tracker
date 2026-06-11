@@ -58,6 +58,20 @@ export function connectScoreboard(scoreTable, video, mogi) {
 			const teamRank = teamScore > 0 ? Array.from(totalsPerTeam.values()).filter(x => x > teamScore).length + 1 : 0;
 			const playerRank = playerScore > 0 ? Array.from(totals.values()).filter(x => x > playerScore).length + 1 : 0;
 
+			if (mogi.playersPerTeam > 1 && team !== null && team !== p.seed) {
+				const prevScore = totalsPerTeam.get(team) || 0;
+				const nextScore = totalsPerTeam.get(p.seed) || 0;
+				const diff = prevScore - nextScore;
+				const dividerRow = document.createElement('tr');
+				dividerRow.className = 'team-diff-row';
+				const tdDiff = document.createElement('td');
+				tdDiff.colSpan = RACE_COUNT + 4;
+				tdDiff.textContent = diff > 0 ? `+${diff}` : diff < 0 ? `${diff}` : `=`;
+				tdDiff.className = diff > 0 ? 'team-diff team-diff--ahead' : diff < 0 ? 'team-diff team-diff--behind' : 'team-diff team-diff--tied';
+				dividerRow.appendChild(tdDiff);
+				tbody.appendChild(dividerRow);
+			}
+
 			if (mogi.playersPerTeam > 1 && team !== p.seed) {
 				const teamData = mogi.teamBySeed(p.seed);
 				const tdTeam = document.createElement('td');
