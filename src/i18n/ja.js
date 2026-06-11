@@ -34,7 +34,7 @@ export default {
 			],
 			aboutLabel: '情報',
 			about: [
-				'作成: [Niet](https://github.com/PFQNiet)',
+				'作成: [Niet](https://github.com/PFQNiet)、協力者: TechyAlex',
 				'[ソースコードを見る](https://github.com/PFQNiet/mkw-lounge-tracker)',
 				'[不具合を報告](https://github.com/PFQNiet/mkw-lounge-tracker/issues)'
 			]

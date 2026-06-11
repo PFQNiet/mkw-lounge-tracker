@@ -39,7 +39,7 @@ export default {
 			],
 			aboutLabel: "À propos",
 			about: [
-				"Créé par [Niet](https://github.com/PFQNiet)",
+				"Créé par [Niet](https://github.com/PFQNiet) ; contributeurs : TechyAlex",
 				"[Voir le code source sur GitHub](https://github.com/PFQNiet/mkw-lounge-tracker)",
 				"[Signaler un bug](https://github.com/PFQNiet/mkw-lounge-tracker/issues)"
 			]

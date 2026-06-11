@@ -34,12 +34,11 @@ export default {
 				"10-player races are valid; 9 or fewer are a redo.",
 				"Supports FFA, 2v2, 3v3, 4v4 and 6v6 Lounge Queue formats.",
 				"Everything stays local in your browser.",
-				"Auto-capture: detects when you take a screenshot on your Switch and automatically captures it.",
-				"Wars are supported! Use `WAR - Tag1 vs Tag2` followed by two lines of 6 players each."
+				"Auto-capture: detects when you take a screenshot on your Switch and automatically captures it."
 			],
 			aboutLabel: "About",
 			about: [
-				"Made by [Niet](https://github.com/PFQNiet)",
+				"Made by [Niet](https://github.com/PFQNiet); Contributors: TechyAlex",
 				"[View source on GitHub](https://github.com/PFQNiet/mkw-lounge-tracker)",
 				"[Report a bug](https://github.com/PFQNiet/mkw-lounge-tracker/issues)"
 			]
@@ -49,7 +48,6 @@ export default {
 			instructions: "Paste {count} players:",
 			wrongLength: "Expected {count} players, got {actual}.",
 			badLine: "Bad line: “{line}”",
-			warTeamSize: "Team {seed} must have 6 players, got {count}.",
 			rosterLoaded: "Roster loaded!"
 		},
 		capture: {

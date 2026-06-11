@@ -69,7 +69,7 @@ export class Roster {
 				const seed = Number(m[1]);
 				if (seed < 1 || seed > 2) throw new Error(t('rosterSetup.badLine', { line }));
 				const names = String(m[2]).split(',').map(x => x.trim()).filter(Boolean);
-				if (names.length !== 6) throw new Error(t('rosterSetup.warTeamSize', { seed, count: names.length }));
+				if (names.length !== 6) throw new Error(t('rosterSetup.badLine', { line }));
 				for (let i = 0; i < names.length; i++) {
 					const player = new Player(`seed-${seed}-${i}`, names[i], seed, 0);
 					roster.add(player);
