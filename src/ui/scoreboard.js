@@ -58,14 +58,47 @@ export function connectScoreboard(scoreTable, video, mogi) {
 			const teamRank = teamScore > 0 ? Array.from(totalsPerTeam.values()).filter(x => x > teamScore).length + 1 : 0;
 			const playerRank = playerScore > 0 ? Array.from(totals.values()).filter(x => x > playerScore).length + 1 : 0;
 
+			if (mogi.playersPerTeam > 1 && team !== null && team !== p.seed) {
+				const prevScore = totalsPerTeam.get(team) || 0;
+				const nextScore = totalsPerTeam.get(p.seed) || 0;
+				const diff = prevScore - nextScore;
+				const dividerRow = document.createElement('tr');
+				dividerRow.className = 'team-diff-row';
+				const tdSpacer = document.createElement('td');
+				tdSpacer.colSpan = RACE_COUNT + 3;
+				const tdDiff = document.createElement('td');
+				tdDiff.textContent = diff > 0 ? `+${diff}` : diff < 0 ? `${diff}` : `=`;
+				tdDiff.className = diff > 0 ? 'team-diff team-diff--ahead' : diff < 0 ? 'team-diff team-diff--behind' : 'team-diff team-diff--tied';
+				dividerRow.append(tdSpacer, tdDiff);
+				tbody.appendChild(dividerRow);
+			}
+
 			if (mogi.playersPerTeam > 1 && team !== p.seed) {
 				const teamData = mogi.teamBySeed(p.seed);
 				const tdTeam = document.createElement('td');
 				tdTeam.rowSpan = mogi.playersPerTeam;
-				const icon = document.createElement('div');
+				const icon = document.createElement('span');
 				icon.textContent = teamData?.icon || '👥';
 				icon.classList.add('team-icon');
-				tdTeam.append(icon, `${teamData?.tag || toLetter(p.seed)}`);
+				tdTeam.append(icon, document.createElement('br'), `${teamData?.tag || toLetter(p.seed)}`);
+
+				if (mogi.roster.isWar && races.length > 0) {
+					const lastRace = races.at(-1);
+					const lastRaceScores = new Map();
+					for (const placement of lastRace.placements) {
+						const pl = mogi.roster.byId(placement.playerId ?? '');
+						if (!pl) continue;
+						lastRaceScores.set(pl.seed, (lastRaceScores.get(pl.seed) || 0) + placement.score);
+					}
+					const myScore = lastRaceScores.get(p.seed) || 0;
+					const otherScore = lastRaceScores.get(p.seed === 1 ? 2 : 1) || 0;
+					const delta = myScore - otherScore;
+					const deltaEl = document.createElement('div');
+					deltaEl.className = `race-delta ${delta > 0 ? 'positive' : delta < 0 ? 'negative' : 'muted'}`;
+					deltaEl.textContent = delta > 0 ? `+${delta}` : `${delta}`;
+					tdTeam.appendChild(deltaEl);
+				}
+
 				tr.appendChild(tdTeam);
 				tdTeam.style.background = `${teamData?.colour || '#000000'}20`;
 			}
@@ -215,8 +248,8 @@ export function connectScoreboardScreenshotter(captureButton, scoreTable) {
 					ctx.textAlign = textAlign === 'left' ? 'start' : textAlign === 'right' ? 'end' : 'center';
 					ctx.textBaseline = 'middle';
 					const offset = textAlign === 'left' ? parseFloat(paddingInline) : textAlign === 'right' ? box.width - parseFloat(paddingInline) : box.width / 2;
-					ctx.fillText(first.nodeValue ?? '', box.left + offset, box.top + box.height / 2 - parseInt(lineHeight) / 2);
-					ctx.fillText(last.nodeValue ?? '', box.left + offset, box.top + box.height / 2 + parseInt(lineHeight) / 2);
+					ctx.fillText(first.textContent ?? '', box.left + offset, box.top + box.height / 2 - parseInt(lineHeight) / 2);
+					ctx.fillText(last.textContent ?? '', box.left + offset, box.top + box.height / 2 + parseInt(lineHeight) / 2);
 					return;
 				}
 				// if element contains text, draw it

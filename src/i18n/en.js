@@ -38,7 +38,7 @@ export default {
 			],
 			aboutLabel: "About",
 			about: [
-				"Made by [Niet](https://github.com/PFQNiet)",
+				"Made by [Niet](https://github.com/PFQNiet); Contributors: TechyAlex",
 				"[View source on GitHub](https://github.com/PFQNiet/mkw-lounge-tracker)",
 				"[Report a bug](https://github.com/PFQNiet/mkw-lounge-tracker/issues)"
 			]

@@ -253,6 +253,28 @@ table.score .team-icon {
 	font-size: 22px;
 }
 
+table.score .team-diff-row td {
+	text-align: center;
+	font-size: 12px;
+	padding: 2px 0;
+	font-variant-numeric: tabular-nums;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+table.score .team-diff--ahead { color: #4ade80; }
+table.score .team-diff--behind { color: #f87171; }
+table.score .team-diff--tied { color: #9aa0a6; }
+
+.positive { color: #4ade80; }
+.negative { color: #f87171; }
+
+.race-delta {
+	font-size: 11px;
+	font-variant-numeric: tabular-nums;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	margin-top: 2px;
+}
+
 table.score .player {
 	text-align: left;
 }

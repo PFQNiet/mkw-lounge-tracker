@@ -9,6 +9,15 @@ export class Roster {
 	/** @type {string} */
 	#tier;
 	get tier() { return this.#tier; }
+
+	/** @type {boolean} */
+	#isWar = false;
+	get isWar() { return this.#isWar; }
+
+	/** @type {string[]} */
+	#warTags = [];
+	get warTags() { return this.#warTags; }
+
 	/** @param {string} tier */
 	constructor(tier) {
 		this.#tier = tier;
@@ -47,6 +56,29 @@ export class Roster {
 	static parse(input) {
 		const lines = input.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
 		const first = lines.shift();
+
+		const warHeader = first?.match(/^WAR\s*-\s*(.+?)\s+vs\s+(.+)$/i);
+		if (warHeader) {
+			const tags = [warHeader[1].trim(), warHeader[2].trim()];
+			const roster = new Roster('WAR');
+			roster.#isWar = true;
+			const re = /^(\d+)\.\s+(.+)$/;
+			for (const line of lines) {
+				const m = re.exec(line);
+				if (!m) throw new Error(t('rosterSetup.badLine', { line }));
+				const seed = Number(m[1]);
+				if (seed < 1 || seed > 2) throw new Error(t('rosterSetup.badLine', { line }));
+				const names = String(m[2]).split(',').map(x => x.trim()).filter(Boolean);
+				if (names.length !== 6) throw new Error(t('rosterSetup.badLine', { line }));
+				for (let i = 0; i < names.length; i++) {
+					const player = new Player(`seed-${seed}-${i}`, names[i], seed, 0);
+					roster.add(player);
+				}
+			}
+			roster.#warTags = tags;
+			return roster;
+		}
+
 		const tier = first?.match(/Tier (\w+)$/);
 		if( !tier) throw new Error(t('rosterSetup.badLine', { line:first }));
 		const roster = new Roster(tier[1]);
