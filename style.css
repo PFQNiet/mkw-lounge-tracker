@@ -268,13 +268,11 @@ table.score .team-diff--tied { color: #9aa0a6; }
 .positive { color: #4ade80; }
 .negative { color: #f87171; }
 
-.team-result-header {
-	display: flex;
-	gap: 8px;
-	align-items: center;
-	border-radius: 12px;
-	padding: 6px 10px;
-	font-size: 13px;
+.race-delta {
+	font-size: 11px;
+	font-variant-numeric: tabular-nums;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	margin-top: 2px;
 }
 
 table.score .player {

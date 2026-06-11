@@ -64,11 +64,12 @@ export function connectScoreboard(scoreTable, video, mogi) {
 				const diff = prevScore - nextScore;
 				const dividerRow = document.createElement('tr');
 				dividerRow.className = 'team-diff-row';
+				const tdSpacer = document.createElement('td');
+				tdSpacer.colSpan = RACE_COUNT + 3;
 				const tdDiff = document.createElement('td');
-				tdDiff.colSpan = RACE_COUNT + 4;
 				tdDiff.textContent = diff > 0 ? `+${diff}` : diff < 0 ? `${diff}` : `=`;
 				tdDiff.className = diff > 0 ? 'team-diff team-diff--ahead' : diff < 0 ? 'team-diff team-diff--behind' : 'team-diff team-diff--tied';
-				dividerRow.appendChild(tdDiff);
+				dividerRow.append(tdSpacer, tdDiff);
 				tbody.appendChild(dividerRow);
 			}
 
@@ -80,6 +81,24 @@ export function connectScoreboard(scoreTable, video, mogi) {
 				icon.textContent = teamData?.icon || '👥';
 				icon.classList.add('team-icon');
 				tdTeam.append(icon, `${teamData?.tag || toLetter(p.seed)}`);
+
+				if (mogi.roster.isWar && races.length > 0) {
+					const lastRace = races.at(-1);
+					const lastRaceScores = new Map();
+					for (const placement of lastRace.placements) {
+						const pl = mogi.roster.byId(placement.playerId ?? '');
+						if (!pl) continue;
+						lastRaceScores.set(pl.seed, (lastRaceScores.get(pl.seed) || 0) + placement.score);
+					}
+					const myScore = lastRaceScores.get(p.seed) || 0;
+					const otherScore = lastRaceScores.get(p.seed === 1 ? 2 : 1) || 0;
+					const delta = myScore - otherScore;
+					const deltaEl = document.createElement('div');
+					deltaEl.className = `race-delta ${delta > 0 ? 'positive' : delta < 0 ? 'negative' : 'muted'}`;
+					deltaEl.textContent = delta > 0 ? `+${delta}` : `${delta}`;
+					tdTeam.appendChild(deltaEl);
+				}
+
 				tr.appendChild(tdTeam);
 				tdTeam.style.background = `${teamData?.colour || '#000000'}20`;
 			}
