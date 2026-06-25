@@ -82,7 +82,7 @@ export function connectScoreboard(scoreTable, video, mogi) {
 				icon.classList.add('team-icon');
 				tdTeam.append(icon, document.createElement('br'), `${teamData?.tag || toLetter(p.seed)}`);
 
-				if (mogi.roster.isWar && races.length > 0) {
+				if (mogi.teams.length === 2 && races.length > 0) {
 					const lastRace = races.at(-1);
 					const lastRaceScores = new Map();
 					for (const placement of lastRace.placements) {
